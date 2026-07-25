@@ -124,6 +124,7 @@
       if (progressText) progressText.textContent = "Finished successfully";
       if (progressHint)
         progressHint.textContent = "You can copy or download the result below.";
+      if (workingNote) workingNote.textContent = "";
       return result;
     } catch (error) {
       clearInterval(timer);
@@ -1085,13 +1086,24 @@
           <label for="qr-input">Text or URL</label>
           <textarea id="qr-input" class="big-textarea" placeholder="Enter a URL or any text to encode as QR code..."></textarea>
         </div>
-        <div class="field-group">
-          <label for="qr-size">QR code size</label>
-          <select id="qr-size" class="text-input">
-            <option value="200">Small (200px)</option>
-            <option value="300" selected>Medium (300px)</option>
-            <option value="500">Large (500px)</option>
-          </select>
+        <div class="two-col-grid">
+          <div class="field-group">
+            <label for="qr-size">QR code size</label>
+            <select id="qr-size" class="text-input">
+              <option value="200">Small (200px)</option>
+              <option value="300" selected>Medium (300px)</option>
+              <option value="500">Large (500px)</option>
+            </select>
+          </div>
+          <div class="field-group">
+            <label for="qr-ec">Error correction</label>
+            <select id="qr-ec" class="text-input">
+              <option value="L">Low (7%)</option>
+              <option value="M" selected>Medium (15%)</option>
+              <option value="Q">Quartile (25%)</option>
+              <option value="H">High (30%)</option>
+            </select>
+          </div>
         </div>
         <div class="action-row">
           <button class="btn btn-primary" data-run>Generate QR code</button>
@@ -1109,6 +1121,7 @@
 
     const input = qs("#qr-input", root);
     const sizeSelect = qs("#qr-size", root);
+    const ecSelect = qs("#qr-ec", root);
     const canvas = qs("#qr-canvas", root);
     const previewWrap = qs("[data-qr-preview]", root);
     const downloadRow = qs("[data-download-row]", root);
@@ -1136,40 +1149,46 @@
       try {
         const text = input.value.trim();
         if (!text) throw new Error("Please enter some text or a URL.");
+        if (typeof qrcode === "undefined")
+          throw new Error(
+            "QR library not loaded. Please refresh and try again.",
+          );
         await withProgress(
           root,
           [
             "Encoding data into QR matrix",
+            "Applying error correction",
             "Rendering pixel grid",
-            "Preparing download",
           ],
           () => {
-            const size = Number(sizeSelect.value);
-            const moduleCount = 25;
-            const moduleSize = Math.floor(size / (moduleCount + 8));
-            const actualSize = moduleSize * (moduleCount + 8);
+            const ecLevel = ecSelect.value;
+            const qr = qrcode(0, ecLevel);
+            qr.addData(text);
+            qr.make();
+            const moduleCount = qr.getModuleCount();
+            const targetSize = Number(sizeSelect.value);
+            const margin = 4;
+            const totalModules = moduleCount + margin * 2;
+            const moduleSize = Math.floor(targetSize / totalModules);
+            const actualSize = moduleSize * totalModules;
             canvas.width = actualSize;
             canvas.height = actualSize;
             const ctx = canvas.getContext("2d");
             ctx.fillStyle = "#ffffff";
             ctx.fillRect(0, 0, actualSize, actualSize);
-            const matrix = generateQRMatrix(text, moduleCount);
             ctx.fillStyle = "#0b1020";
             for (let r = 0; r < moduleCount; r++) {
               for (let c = 0; c < moduleCount; c++) {
-                if (matrix[r][c]) {
+                if (qr.isDark(r, c)) {
                   ctx.fillRect(
-                    (c + 4) * moduleSize,
-                    (r + 4) * moduleSize,
+                    (c + margin) * moduleSize,
+                    (r + margin) * moduleSize,
                     moduleSize,
                     moduleSize,
                   );
                 }
               }
             }
-            drawFinderPattern(ctx, 0, 0, moduleSize);
-            drawFinderPattern(ctx, moduleCount - 7, 0, moduleSize);
-            drawFinderPattern(ctx, 0, moduleCount - 7, moduleSize);
           },
         );
         previewWrap.hidden = false;
@@ -1183,60 +1202,6 @@
         setStatus(root, error.message, "error");
       }
     });
-  }
-
-  function generateQRMatrix(text, size) {
-    const matrix = Array.from({ length: size }, () => Array(size).fill(false));
-    const dataBytes = new TextEncoder().encode(text);
-    const bits = [];
-    for (const byte of dataBytes) {
-      for (let i = 7; i >= 0; i--) bits.push((byte >> i) & 1);
-    }
-    const totalBits = size * size;
-    for (let i = 0; i < Math.min(bits.length, totalBits); i++) {
-      const row = Math.floor(i / size);
-      const col = i % size;
-      matrix[row][col] = !!bits[i];
-    }
-    return matrix;
-  }
-
-  function drawFinderPattern(ctx, row, col, moduleSize) {
-    ctx.fillStyle = "#0b1020";
-    const s = moduleSize;
-    for (let r = 0; r < 7; r++) {
-      for (let c = 0; c < 7; c++) {
-        if (
-          r === 0 ||
-          r === 6 ||
-          c === 0 ||
-          c === 6 ||
-          (r >= 2 && r <= 4 && c >= 2 && c <= 4)
-        ) {
-          ctx.fillRect((col + c) * s, (row + r) * s, s, s);
-        }
-      }
-    }
-    ctx.fillStyle = "#ffffff";
-    for (let r = 1; r < 6; r++) {
-      for (let c = 1; c < 6; c++) {
-        if (
-          r === 1 ||
-          r === 5 ||
-          c === 1 ||
-          c === 5 ||
-          (r >= 2 && r <= 4 && c >= 2 && c <= 4)
-        ) {
-          ctx.fillRect((col + c) * s, (row + r) * s, s, s);
-        }
-      }
-    }
-    ctx.fillStyle = "#0b1020";
-    for (let r = 2; r < 5; r++) {
-      for (let c = 2; c < 5; c++) {
-        ctx.fillRect((col + c) * s, (row + r) * s, s, s);
-      }
-    }
   }
 
   function renderTipCalculator(root, tool) {

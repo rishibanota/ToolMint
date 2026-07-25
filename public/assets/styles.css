@@ -406,6 +406,7 @@ textarea::placeholder {
 .faq-item,
 .progress-card {
   padding: 1.15rem;
+  margin: 10px;
 }
 
 .tool-card h3,
