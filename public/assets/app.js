@@ -46,6 +46,7 @@
     try {
       await navigator.clipboard.writeText(text);
       flashButton(trigger, "Copied");
+      showToast("Copied to clipboard!", "success");
     } catch {
       const area = document.createElement("textarea");
       area.value = text;
@@ -54,7 +55,30 @@
       document.execCommand("copy");
       area.remove();
       flashButton(trigger, "Copied");
+      showToast("Copied to clipboard!", "success");
     }
+  }
+
+  function showToast(message, type = "success") {
+    let container = qs("#toast-container");
+    if (!container) {
+      container = document.createElement("div");
+      container.id = "toast-container";
+      document.body.appendChild(container);
+    }
+    const toast = document.createElement("div");
+    toast.className = `toast toast-${type}`;
+    toast.innerHTML = `<span class="toast-icon">${type === "error" ? "✕" : "✓"}</span><span>${message}</span>`;
+    container.appendChild(toast);
+
+    requestAnimationFrame(() => {
+      toast.classList.add("show");
+    });
+
+    setTimeout(() => {
+      toast.classList.remove("show");
+      setTimeout(() => toast.remove(), 400);
+    }, 2400);
   }
 
   function flashButton(button, label) {
@@ -1559,7 +1583,14 @@
       const q = input.value.trim().toLowerCase();
       cards.forEach((card) => {
         const hay = card.dataset.search || "";
-        card.style.display = !q || hay.includes(q) ? "" : "none";
+        const matches = !q || hay.includes(q);
+        if (matches) {
+          card.classList.remove("card-hide");
+          card.classList.add("card-pop-in");
+        } else {
+          card.classList.add("card-hide");
+          card.classList.remove("card-pop-in");
+        }
       });
     });
   }
@@ -2067,9 +2098,140 @@
     }
   }
 
+  function initAnimations() {
+    // 1. Mouse Spotlight Glow Tracking on Cards
+    const interactiveCards = qsa(".tool-card, .category-card, .info-card, .side-card, .stat, .preview-card");
+    interactiveCards.forEach((card) => {
+      card.addEventListener("mousemove", (e) => {
+        const rect = card.getBoundingClientRect();
+        const x = ((e.clientX - rect.left) / rect.width) * 100;
+        const y = ((e.clientY - rect.top) / rect.height) * 100;
+        card.style.setProperty("--mouse-x", `${x.toFixed(1)}%`);
+        card.style.setProperty("--mouse-y", `${y.toFixed(1)}%`);
+      });
+    });
+
+    // 1b. Mouse Spotlight Glow Tracking on Hero & Main Background
+    const heroSections = qsa(".hero, .page-hero");
+    heroSections.forEach((hero) => {
+      hero.addEventListener("mousemove", (e) => {
+        const rect = hero.getBoundingClientRect();
+        const x = ((e.clientX - rect.left) / rect.width) * 100;
+        const y = ((e.clientY - rect.top) / rect.height) * 100;
+        hero.style.setProperty("--hero-mouse-x", `${x.toFixed(1)}%`);
+        hero.style.setProperty("--hero-mouse-y", `${y.toFixed(1)}%`);
+      });
+    });
+
+    const mainElement = qs("main");
+    if (mainElement) {
+      mainElement.addEventListener("mousemove", (e) => {
+        const rect = mainElement.getBoundingClientRect();
+        const x = ((e.clientX - rect.left) / rect.width) * 100;
+        const y = ((e.clientY - rect.top) / rect.height) * 100;
+        mainElement.style.setProperty("--main-mouse-x", `${x.toFixed(1)}%`);
+        mainElement.style.setProperty("--main-mouse-y", `${y.toFixed(1)}%`);
+      });
+    }
+
+    // 2. Ripple Effect on Buttons & Interactive Links
+    document.addEventListener("click", (e) => {
+      const target = e.target.closest(".btn, .mini-btn, .pill, .tool-card, .category-card");
+      if (!target) return;
+
+      const rect = target.getBoundingClientRect();
+      const ripple = document.createElement("span");
+      ripple.className = "ripple-effect";
+      const size = Math.max(rect.width, rect.height);
+      ripple.style.width = ripple.style.height = `${size}px`;
+      ripple.style.left = `${e.clientX - rect.left - size / 2}px`;
+      ripple.style.top = `${e.clientY - rect.top - size / 2}px`;
+
+      target.appendChild(ripple);
+      setTimeout(() => ripple.remove(), 600);
+    });
+
+    // 3. Header Scroll Glassmorphic Transformation
+    const header = qs(".site-header");
+    if (header) {
+      const handleScroll = () => {
+        if (window.scrollY > 20) {
+          header.classList.add("scrolled");
+        } else {
+          header.classList.remove("scrolled");
+        }
+      };
+      window.addEventListener("scroll", handleScroll, { passive: true });
+      handleScroll();
+    }
+
+    // 4. Scroll Reveal with IntersectionObserver
+    const observerElements = qsa(".tool-card, .category-card, .stat, .info-card, .preview-card, .section-heading, .faq-item");
+    if ("IntersectionObserver" in window) {
+      const observer = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+              entry.target.classList.add("is-visible");
+              observer.unobserve(entry.target);
+            }
+          });
+        },
+        { threshold: 0.08, rootMargin: "0px 0px -30px 0px" }
+      );
+
+      observerElements.forEach((el, index) => {
+        el.classList.add("reveal-on-scroll");
+        el.style.transitionDelay = `${(index % 6) * 0.07}s`;
+        observer.observe(el);
+      });
+    } else {
+      observerElements.forEach((el) => el.classList.add("is-visible"));
+    }
+
+    // 5. Stat Counter Count-up Animation
+    const stats = qsa(".stat strong");
+    if (stats.length > 0 && "IntersectionObserver" in window) {
+      const statObserver = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+              const el = entry.target;
+              const text = el.textContent.trim();
+              const numMatch = text.match(/\d+/);
+              if (numMatch) {
+                const targetNum = parseInt(numMatch[0], 10);
+                const suffix = text.replace(numMatch[0], "");
+                const duration = 1200;
+                const startTime = performance.now();
+                const animateCount = (now) => {
+                  const elapsed = now - startTime;
+                  const progress = Math.min(1, elapsed / duration);
+                  const easeProgress = 1 - Math.pow(1 - progress, 3);
+                  const current = Math.floor(easeProgress * targetNum);
+                  el.textContent = `${current}${suffix}`;
+                  if (progress < 1) {
+                    requestAnimationFrame(animateCount);
+                  } else {
+                    el.textContent = text;
+                  }
+                };
+                requestAnimationFrame(animateCount);
+              }
+              statObserver.unobserve(el);
+            }
+          });
+        },
+        { threshold: 0.5 }
+      );
+      stats.forEach((stat) => statObserver.observe(stat));
+    }
+  }
+
   document.addEventListener("DOMContentLoaded", () => {
     mountAdsense();
     initSearch();
     initToolPage();
+    initAnimations();
   });
 })();
