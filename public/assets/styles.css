@@ -1384,6 +1384,7 @@ html.ads-disabled .ad-card {
   box-sizing: border-box;
   padding: 0.75rem;
   border: 1px solid lightblue;
+  background-color: lightgrey;
   border-radius: 10px;
   font: inherit;
 }
@@ -1407,5 +1408,171 @@ html.ads-disabled .ad-card {
   }
   .auth-user {
     max-width: 130px;
+  }
+}
+
+/* ═══════════════════════════════════════════
+   Usage Limiter – Badge + Limit Banner
+   ═══════════════════════════════════════════ */
+
+/* ── Usage Badge ─────────────────────────── */
+.usage-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  padding: 0.45rem 0.9rem;
+  border-radius: 8px;
+  font-size: 0.82rem;
+  font-weight: 500;
+  margin-bottom: 1rem;
+  background: rgba(109, 94, 252, 0.08);
+  color: #6d5efc;
+  border: 1px solid rgba(109, 94, 252, 0.15);
+  transition: all 0.3s ease;
+}
+.usage-badge-icon {
+  font-size: 1rem;
+}
+.usage-badge--pro {
+  background: linear-gradient(
+    135deg,
+    rgba(16, 185, 129, 0.1),
+    rgba(59, 130, 246, 0.08)
+  );
+  color: #10b981;
+  border-color: rgba(16, 185, 129, 0.2);
+}
+.usage-badge--warn {
+  background: rgba(245, 158, 11, 0.1);
+  color: #d97706;
+  border-color: rgba(245, 158, 11, 0.2);
+  animation: usage-pulse 2s ease-in-out infinite;
+}
+.usage-badge--empty {
+  background: rgba(239, 68, 68, 0.1);
+  color: #dc2626;
+  border-color: rgba(239, 68, 68, 0.2);
+}
+
+@keyframes usage-pulse {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.7;
+  }
+}
+
+/* ── Limit Banner (overlay) ──────────────── */
+.usage-limit-banner {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  animation: limit-fadein 0.3s ease;
+}
+@keyframes limit-fadein {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+.usage-limit-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.55);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+}
+.usage-limit-card {
+  position: relative;
+  z-index: 1;
+  background: #fff;
+  border-radius: 16px;
+  padding: 2.5rem 2rem;
+  max-width: 420px;
+  width: 90%;
+  text-align: center;
+  box-shadow:
+    0 20px 60px rgba(0, 0, 0, 0.15),
+    0 0 0 1px rgba(109, 94, 252, 0.1);
+  animation: limit-slidein 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+}
+@keyframes limit-slidein {
+  from {
+    transform: translateY(24px) scale(0.96);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0) scale(1);
+    opacity: 1;
+  }
+}
+.usage-limit-icon {
+  font-size: 2.8rem;
+  margin-bottom: 0.5rem;
+}
+.usage-limit-card h3 {
+  font-size: 1.35rem;
+  font-weight: 700;
+  margin: 0 0 0.65rem;
+  color: #1a1a2e;
+}
+.usage-limit-card p {
+  font-size: 0.92rem;
+  color: #555;
+  line-height: 1.6;
+  margin: 0 0 1rem;
+}
+.usage-limit-actions {
+  margin: 1.2rem 0 0.6rem;
+}
+.usage-limit-login {
+  width: 100%;
+  padding: 0.75rem 1.5rem;
+  font-size: 1rem;
+}
+.usage-limit-hint {
+  font-size: 0.78rem !important;
+  color: #999 !important;
+  margin-top: 0.5rem !important;
+}
+
+/* ── Dark mode adjustments ───────────────── */
+@media (prefers-color-scheme: dark) {
+  .usage-badge {
+    background: rgba(109, 94, 252, 0.15);
+    border-color: rgba(109, 94, 252, 0.25);
+  }
+  .usage-badge--pro {
+    background: rgba(16, 185, 129, 0.15);
+    border-color: rgba(16, 185, 129, 0.25);
+  }
+  .usage-badge--warn {
+    background: rgba(245, 158, 11, 0.15);
+    border-color: rgba(245, 158, 11, 0.25);
+    color: #fbbf24;
+  }
+  .usage-badge--empty {
+    background: rgba(239, 68, 68, 0.15);
+    border-color: rgba(239, 68, 68, 0.25);
+    color: #f87171;
+  }
+  .usage-limit-card {
+    background: #1e1e2e;
+    box-shadow:
+      0 20px 60px rgba(0, 0, 0, 0.4),
+      0 0 0 1px rgba(109, 94, 252, 0.2);
+  }
+  .usage-limit-card h3 {
+    color: #e2e8f0;
+  }
+  .usage-limit-card p {
+    color: #94a3b8;
   }
 }

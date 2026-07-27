@@ -20,6 +20,26 @@
           "'": "&#39;",
         })[c],
     );
+
+  /* ── Global auth state (used by usage-limiter.js) ── */
+  window.ToolMintAuth = { session: null };
+
+  /* ── Cookie helpers for auth persistence ── */
+  function setAuthCookie(session) {
+    if (session) {
+      const d = new Date();
+      d.setTime(d.getTime() + 30 * 864e5); // 30 days
+      document.cookie = `tm_auth=1;expires=${d.toUTCString()};path=/;SameSite=Lax`;
+    } else {
+      document.cookie =
+        "tm_auth=;expires=Thu, 01 Jan 1970 00:00:00 UTC;path=/;SameSite=Lax";
+    }
+  }
+
+  function fireAuthEvent() {
+    window.dispatchEvent(new CustomEvent("toolmint:authchange"));
+  }
+
   async function init() {
     if (!config.supabase_url || !config.supabase_anon_key) return;
     try {
@@ -36,12 +56,12 @@
     const actions = document.createElement("div");
     actions.className = "auth-actions";
     actions.innerHTML =
-      '<button class="btn btn-secondary auth-trigger" type="button">Log in</button>';
+      '<button class="btn btn-secondary auth-trigger" type="button">Log in</button><button class="btn btn-primary auth-signup-trigger" type="button">Sign up</button>';
     header.appendChild(actions);
     const modal = document.createElement("div");
     modal.className = "auth-modal";
     modal.hidden = true;
-    modal.innerHTML = `<div class="auth-backdrop"></div><section class="auth-box" role="dialog" aria-modal="true" aria-labelledby="auth-title"><button class="auth-close" type="button" aria-label="Close">×</button><h2 id="auth-title">Welcome to ToolMint</h2><p class="muted auth-subtitle">Create an account or log in to continue.</p><form class="auth-form"><label>Email<input name="email" type="email" required autocomplete="email"></label><label>Password<input name="password" type="password" required minlength="6" autocomplete="current-password"></label><button class="btn btn-primary" type="submit">Log in</button></form><button class="auth-switch" type="button">New here? Create an account</button><p class="auth-message" role="status"></p></section>`;
+    modal.innerHTML = `<div class="auth-backdrop"></div><section class="auth-box" role="dialog" aria-modal="true" aria-labelledby="auth-title"><button class="auth-close" type="button" aria-label="Close">×</button><h2 id="auth-title">Welcome to ToolMint</h2><p class="muted auth-subtitle">Create an account or log in to continue.</p><form class="auth-form"><label>Email<input name="email" type="email" required autocomplete="email" placeholder='Enter your email'></label><label>Password<input name="password" type="password" required minlength="6" autocomplete="current-password" placeholder='Enter your password'></label><button class="btn btn-primary" type="submit">Log in</button></form><button class="auth-switch" type="button">New here? Create an account</button><p class="auth-message" role="status"></p></section>`;
     document.body.appendChild(modal);
     let signup = false;
     const title = modal.querySelector("#auth-title"),
@@ -53,11 +73,20 @@
       modal.hidden = false;
       form.email.focus();
     };
+    const openSignup = () => {
+      signup = true;
+      title.textContent = "Create your ToolMint account";
+      submit.textContent = "Sign up";
+      sw.textContent = "Already have an account? Log in";
+      modal.hidden = false;
+      form.email.focus();
+    };
     const close = () => {
       modal.hidden = true;
       msg.textContent = "";
     };
-    actions.querySelector("button").onclick = open;
+    actions.querySelector(".auth-trigger").onclick = open;
+    actions.querySelector(".auth-signup-trigger").onclick = openSignup;
     modal.querySelector(".auth-close").onclick = close;
     modal.querySelector(".auth-backdrop").onclick = close;
     sw.onclick = () => {
@@ -88,11 +117,18 @@
       if (!signup) setTimeout(close, 700);
     };
     const update = ({ session }) => {
+      /* ── Sync global auth state + cookie ── */
+      window.ToolMintAuth.session = session;
+      setAuthCookie(session);
+      fireAuthEvent();
+
       actions.innerHTML = session
         ? `<span class="auth-user">${esc(session.user.email)}</span><button class="btn btn-secondary auth-logout" type="button">Log out</button>`
-        : '<button class="btn btn-secondary auth-trigger" type="button">Log in</button>';
+        : '<button class="btn btn-secondary auth-trigger" type="button">Log in</button><button class="btn btn-primary auth-signup-trigger" type="button">Sign up</button>';
       const b = actions.querySelector(".auth-trigger");
       if (b) b.onclick = open;
+      const s = actions.querySelector(".auth-signup-trigger");
+      if (s) s.onclick = openSignup;
       const l = actions.querySelector(".auth-logout");
       if (l) l.onclick = () => client.auth.signOut();
     };
