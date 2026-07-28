@@ -1,3 +1,5 @@
 User-agent: *
 Allow: /
-Sitemap: https://starter-tools-website.rishibanota.workers.dev/sitemap.xml
+
+Sitemap: https://toolmint.rishibanota.workers.dev/sitemap.xml
+
