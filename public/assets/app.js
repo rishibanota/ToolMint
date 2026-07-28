@@ -2228,10 +2228,40 @@
     }
   }
 
+  function initMobileNav() {
+    const headerInner = qs(".header-inner");
+    const nav = qs(".nav");
+    if (!headerInner || !nav) return;
+
+    let toggle = qs(".mobile-nav-toggle");
+    if (!toggle) {
+      toggle = document.createElement("button");
+      toggle.className = "mobile-nav-toggle";
+      toggle.type = "button";
+      toggle.setAttribute("aria-label", "Toggle Navigation");
+      toggle.innerHTML = `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line class="line-1" x1="4" y1="6" x2="20" y2="6"></line><line class="line-2" x1="4" y1="12" x2="20" y2="12"></line><line class="line-3" x1="4" y1="18" x2="20" y2="18"></line></svg>`;
+      headerInner.appendChild(toggle);
+    }
+
+    toggle.onclick = (e) => {
+      e.stopPropagation();
+      nav.classList.toggle("open");
+      toggle.classList.toggle("active");
+    };
+
+    document.addEventListener("click", (e) => {
+      if (!headerInner.contains(e.target) && nav.classList.contains("open")) {
+        nav.classList.remove("open");
+        toggle.classList.remove("active");
+      }
+    });
+  }
+
   document.addEventListener("DOMContentLoaded", () => {
     mountAdsense();
     initSearch();
     initToolPage();
     initAnimations();
+    initMobileNav();
   });
 })();
