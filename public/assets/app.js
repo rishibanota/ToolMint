@@ -30,6 +30,13 @@
     "text-reverser": "Hello World from ToolMint!",
     "find-and-replace":
       "The quick brown fox jumps over the lazy dog.\nThe quick brown fox is very fast.",
+    "lorem-ipsum-generator": "Generate placeholder text for design mockups.",
+    "yaml-to-json": "name: ToolMint\nversion: 2.0\nfeatures:\n  - fast\n  - private\n  - browser-side\nsettings:\n  theme: dark\n  notifications: true",
+    "json-to-yaml": "{\n  \"name\": \"ToolMint\",\n  \"version\": 2,\n  \"features\": [\n    \"fast\",\n    \"private\",\n    \"browser-side\"\n  ],\n  \"settings\": {\n    \"theme\": \"dark\",\n    \"notifications\": true\n  }\n}",
+    "md5-generator": "Hello World from ToolMint",
+    "text-cleaner": "   This line has extra spaces at start and end.   \n\n\n  This line has   multiple    spaces   between words.\n   This line has extra spaces at start and end.   \n\n<div><p>HTML paragraph to strip</p></div>",
+    "diff-checker": "Line 1: Original text\nLine 2: Unchanged content\nLine 3: Text to be deleted",
+    "binary-converter": "Hello World",
   };
 
   const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
@@ -441,6 +448,12 @@
 
     sampleBtn.addEventListener("click", () => {
       input.value = SAMPLE_DATA[tool.id] || "";
+      if (tool.id === "diff-checker") {
+        const modInput = qs("#diff-modified-text", root);
+        if (modInput) {
+          modInput.value = "Line 1: Original text updated\nLine 2: Unchanged content\nLine 4: Newly added text";
+        }
+      }
       setStatus(
         root,
         "Loaded a quick example to help first-time users.",
@@ -1553,6 +1566,450 @@
     });
   }
 
+
+  function md5(string) {
+    function md5cycle(x, k) {
+      var a = x[0], b = x[1], c = x[2], d = x[3];
+      a = ff(a, b, c, d, k[0], 7, -680876936);
+      d = ff(d, a, b, c, k[1], 12, -389564586);
+      c = ff(c, d, a, b, k[2], 17, 606105819);
+      b = ff(b, c, d, a, k[3], 22, -1044525330);
+      a = ff(a, b, c, d, k[4], 7, -176418897);
+      d = ff(d, a, b, c, k[5], 12, 1200080426);
+      c = ff(c, d, a, b, k[6], 17, -1473231341);
+      b = ff(b, c, d, a, k[7], 22, -45705983);
+      a = ff(a, b, c, d, k[8], 7, 1770035416);
+      d = ff(d, a, b, c, k[9], 12, -1958414417);
+      c = ff(c, d, a, b, k[10], 17, -42063);
+      b = ff(b, c, d, a, k[11], 22, -1990404162);
+      a = ff(a, b, c, d, k[12], 7, 1804603682);
+      d = ff(d, a, b, c, k[13], 12, -40341101);
+      c = ff(c, d, a, b, k[14], 17, -1502002290);
+      b = ff(b, c, d, a, k[15], 22, 1236535329);
+
+      a = gg(a, b, c, d, k[1], 5, -165796510);
+      d = gg(d, a, b, c, k[6], 9, -1069501632);
+      c = gg(c, d, a, b, k[11], 14, 643717713);
+      b = gg(b, c, d, a, k[0], 20, -373897302);
+      a = gg(a, b, c, d, k[5], 5, -701558691);
+      d = gg(d, a, b, c, k[10], 9, 38016083);
+      c = gg(c, d, a, b, k[15], 14, -660478335);
+      b = gg(b, c, d, a, k[4], 20, -405537848);
+      a = gg(a, b, c, d, k[9], 5, 568446438);
+      d = gg(d, a, b, c, k[14], 9, -1019803690);
+      c = gg(c, d, a, b, k[3], 14, -187363961);
+      b = gg(b, c, d, a, k[8], 20, 1163531501);
+      a = gg(a, b, c, d, k[13], 5, -144468057);
+      d = gg(d, a, b, c, k[2], 9, -51403784);
+      c = gg(c, d, a, b, k[7], 14, 1735328473);
+      b = gg(b, c, d, a, k[12], 20, -1926607734);
+
+      a = hh(a, b, c, d, k[5], 4, -378558);
+      d = hh(d, a, b, c, k[8], 11, -2022574463);
+      c = hh(c, d, a, b, k[11], 16, 1839030562);
+      b = hh(b, c, d, a, k[14], 23, -35309556);
+      a = hh(a, b, c, d, k[1], 4, -1530992060);
+      d = hh(d, a, b, c, k[4], 11, 1272893353);
+      c = hh(c, d, a, b, k[7], 16, -155497632);
+      b = hh(b, c, d, a, k[10], 23, -1094730640);
+      a = hh(a, b, c, d, k[13], 4, 681279174);
+      d = hh(d, a, b, c, k[0], 11, -358537222);
+      c = hh(c, d, a, b, k[3], 16, -722521979);
+      b = hh(b, c, d, a, k[6], 23, 76029189);
+      a = hh(a, b, c, d, k[9], 4, -640364409);
+      d = hh(d, a, b, c, k[12], 11, -343485551);
+      c = hh(c, d, a, b, k[15], 16, -41086007);
+      b = hh(b, c, d, a, k[2], 23, 1163531501);
+
+      a = ii(a, b, c, d, k[0], 6, -198630844);
+      d = ii(d, a, b, c, k[7], 10, 1126891415);
+      c = ii(c, d, a, b, k[14], 15, -1416354905);
+      b = ii(b, c, d, a, k[5], 21, -57434055);
+      a = ii(a, b, c, d, k[12], 6, 1700485571);
+      d = ii(d, a, b, c, k[3], 10, -1894980194);
+      c = ii(c, d, a, b, k[10], 15, -1051523);
+      b = ii(b, c, d, a, k[1], 21, -2054922799);
+      a = ii(a, b, c, d, k[8], 6, 1873313359);
+      d = ii(d, a, b, c, k[15], 10, -30611744);
+      c = ii(c, d, a, b, k[6], 15, -1560198380);
+      b = ii(b, c, d, a, k[13], 21, 1309151649);
+      a = ii(a, b, c, d, k[4], 6, -145523070);
+      d = ii(d, a, b, c, k[11], 10, -1120210379);
+      c = ii(c, d, a, b, k[2], 15, 718787259);
+      b = ii(b, c, d, a, k[9], 21, -343485551);
+
+      x[0] = add32(a, x[0]);
+      x[1] = add32(b, x[1]);
+      x[2] = add32(c, x[2]);
+      x[3] = add32(d, x[3]);
+    }
+    function cmn(q, a, b, x, s, t) {
+      a = add32(add32(a, q), add32(x, t));
+      return add32((a << s) | (a >>> (32 - s)), b);
+    }
+    function ff(a, b, c, d, x, s, t) { return cmn((b & c) | ((~b) & d), a, b, x, s, t); }
+    function gg(a, b, c, d, x, s, t) { return cmn((b & d) | (c & (~d)), a, b, x, s, t); }
+    function hh(a, b, c, d, x, s, t) { return cmn(b ^ c ^ d, a, b, x, s, t); }
+    function ii(a, b, c, d, x, s, t) { return cmn(c ^ (b | (~d)), a, b, x, s, t); }
+    function add32(a, b) { return (a + b) & 0xFFFFFFFF; }
+    
+    var utf8 = unescape(encodeURIComponent(string));
+    var n = utf8.length, state = [1732584193, -271733879, -1732584194, 271733878], i;
+    for (i = 64; i <= utf8.length; i += 64) {
+      var sub = utf8.substring(i - 64, i), k = [];
+      for (var j = 0; j < 64; j += 4) {
+        k[j >> 2] = sub.charCodeAt(j) + (sub.charCodeAt(j + 1) << 8) + (sub.charCodeAt(j + 2) << 16) + (sub.charCodeAt(j + 3) << 24);
+      }
+      md5cycle(state, k);
+    }
+    utf8 = utf8.substring(i - 64);
+    var tail = [0,0,0,0, 0,0,0,0, 0,0,0,0, 0,0,0,0];
+    for (i = 0; i < utf8.length; i++) tail[i >> 2] |= utf8.charCodeAt(i) << ((i % 4) << 3);
+    tail[i >> 2] |= 0x80 << ((i % 4) << 3);
+    if (i > 55) {
+      md5cycle(state, tail);
+      tail = [0,0,0,0, 0,0,0,0, 0,0,0,0, 0,0,0,0];
+    }
+    tail[14] = n * 8;
+    md5cycle(state, tail);
+    var hex = "";
+    for (i = 0; i < 4; i++) {
+      for (var j = 0; j < 32; j += 8) hex += ("0" + ((state[i] >> j) & 0xFF).toString(16)).slice(-2);
+    }
+    return hex;
+  }
+
+  function yamlToJson(yamlStr) {
+    const lines = yamlStr.split("\n");
+    const result = {};
+    const stack = [{ indent: -1, obj: result }];
+
+    for (let rawLine of lines) {
+      const line = rawLine.replace(/#.*/, "");
+      if (!line.trim()) continue;
+      const indent = rawLine.search(/\S/);
+      const trimmed = line.trim();
+
+      while (stack.length > 1 && stack[stack.length - 1].indent >= indent) {
+        stack.pop();
+      }
+      const parent = stack[stack.length - 1].obj;
+
+      if (trimmed.includes(":")) {
+        const colonIdx = trimmed.indexOf(":");
+        const key = trimmed.slice(0, colonIdx).trim().replace(/^["']|["']$/g, "");
+        const valStr = trimmed.slice(colonIdx + 1).trim();
+
+        if (!valStr) {
+          const newObj = {};
+          parent[key] = newObj;
+          stack.push({ indent, obj: newObj });
+        } else {
+          parent[key] = parseYamlVal(valStr);
+        }
+      }
+    }
+    return result;
+  }
+
+  function parseYamlVal(str) {
+    if (!str) return null;
+    if (str === "true") return true;
+    if (str === "false") return false;
+    if (str === "null" || str === "~") return null;
+    if (!isNaN(Number(str)) && str.trim() !== "") return Number(str);
+    if ((str.startsWith('"') && str.endsWith('"')) || (str.startsWith("'") && str.endsWith("'"))) {
+      return str.slice(1, -1);
+    }
+    if (str.startsWith("[") && str.endsWith("]")) {
+      try { return JSON.parse(str); } catch(e) {}
+    }
+    return str;
+  }
+
+  function jsonToYaml(obj, indent = 0) {
+    const spaces = " ".repeat(indent);
+    if (obj === null || obj === undefined) return "null";
+    if (typeof obj === "boolean" || typeof obj === "number") return String(obj);
+    if (typeof obj === "string") {
+      if (obj.includes("\n") || obj.includes(":") || obj.includes("#")) {
+        return `"${obj.replace(/"/g, '\\"')}"`;
+      }
+      return obj || '""';
+    }
+    if (Array.isArray(obj)) {
+      if (obj.length === 0) return "[]";
+      return obj.map(item => {
+        if (typeof item === "object" && item !== null) {
+          const sub = jsonToYaml(item, indent + 2).trimStart();
+          return `${spaces}- ${sub}`;
+        }
+        return `${spaces}- ${jsonToYaml(item, 0)}`;
+      }).join("\n");
+    }
+    if (typeof obj === "object") {
+      const keys = Object.keys(obj);
+      if (keys.length === 0) return "{}";
+      return keys.map(key => {
+        const val = obj[key];
+        const formattedKey = key.includes(" ") || key.includes(":") ? `"${key}"` : key;
+        if (typeof val === "object" && val !== null) {
+          if (Array.isArray(val) && val.length === 0) return `${spaces}${formattedKey}: []`;
+          if (!Array.isArray(val) && Object.keys(val).length === 0) return `${spaces}${formattedKey}: {}`;
+          return `${spaces}${formattedKey}:\n${jsonToYaml(val, indent + 2)}`;
+        }
+        return `${spaces}${formattedKey}: ${jsonToYaml(val, 0)}`;
+      }).join("\n");
+    }
+    return String(obj);
+  }
+
+  function renderBMICalculator(root, tool) {
+    root.innerHTML = `
+      ${renderSharedShell(tool.title)}
+      <div class="tool-workspace">
+        <div class="field-group">
+          <label for="bmi-system">Unit System</label>
+          <select id="bmi-system" class="text-input">
+            <option value="metric" selected>Metric (kg, cm)</option>
+            <option value="imperial">Imperial (lbs, inches)</option>
+          </select>
+        </div>
+        <div class="two-col-grid">
+          <div class="field-group">
+            <label id="bmi-height-label" for="bmi-height">Height (cm)</label>
+            <input id="bmi-height" class="text-input" type="number" min="1" placeholder="175" />
+          </div>
+          <div class="field-group">
+            <label id="bmi-weight-label" for="bmi-weight">Weight (kg)</label>
+            <input id="bmi-weight" class="text-input" type="number" min="1" step="0.1" placeholder="70" />
+          </div>
+        </div>
+        <div class="action-row"><button class="btn btn-primary" data-run>Calculate BMI</button><button class="btn btn-secondary" data-sample>Load example</button></div>
+        <div class="result-grid" data-result-grid hidden>
+          <div class="result-card"><span>BMI Score</span><strong data-bmi>0.0</strong></div>
+          <div class="result-card"><span>Category</span><strong data-category>Normal</strong></div>
+          <div class="result-card"><span>Healthy Range</span><strong data-range>18.5 - 24.9</strong></div>
+        </div>
+      </div>
+    `;
+
+    const sysSelect = qs("#bmi-system", root);
+    sysSelect.addEventListener("change", () => {
+      if (sysSelect.value === "metric") {
+        qs("#bmi-height-label", root).textContent = "Height (cm)";
+        qs("#bmi-height", root).placeholder = "175";
+        qs("#bmi-weight-label", root).textContent = "Weight (kg)";
+        qs("#bmi-weight", root).placeholder = "70";
+      } else {
+        qs("#bmi-height-label", root).textContent = "Height (inches)";
+        qs("#bmi-height", root).placeholder = "69";
+        qs("#bmi-weight-label", root).textContent = "Weight (lbs)";
+        qs("#bmi-weight", root).placeholder = "154";
+      }
+    });
+
+    qs("[data-run]", root).addEventListener("click", async () => {
+      try {
+        const result = await withProgress(
+          root,
+          ["Reading physical parameters", "Calculating BMI index", "Determining weight category"],
+          () => {
+            const system = sysSelect.value;
+            const height = Number(qs("#bmi-height", root).value);
+            const weight = Number(qs("#bmi-weight", root).value);
+
+            if (!height || height <= 0) throw new Error("Please enter a valid height.");
+            if (!weight || weight <= 0) throw new Error("Please enter a valid weight.");
+
+            let bmi;
+            if (system === "metric") {
+              const heightMeters = height / 100;
+              bmi = weight / (heightMeters * heightMeters);
+            } else {
+              bmi = (weight / (height * height)) * 703;
+            }
+
+            let cat = "";
+            if (bmi < 18.5) cat = "Underweight";
+            else if (bmi < 25) cat = "Normal weight";
+            else if (bmi < 30) cat = "Overweight";
+            else cat = "Obese";
+
+            return { bmi: bmi.toFixed(1), category: cat };
+          }
+        );
+        qs("[data-result-grid]", root).hidden = false;
+        qs("[data-bmi]", root).textContent = result.bmi;
+        qs("[data-category]", root).textContent = result.category;
+        setStatus(root, "BMI calculation complete.", "success");
+      } catch (err) {
+        qs("[data-result-grid]", root).hidden = true;
+        setStatus(root, err.message, "error");
+      }
+    });
+
+    qs("[data-sample]", root).addEventListener("click", () => {
+      qs("#bmi-system", root).value = "metric";
+      qs("#bmi-height", root).value = "175";
+      qs("#bmi-weight", root).value = "70";
+      setStatus(root, "Loaded a quick example.", "info");
+    });
+  }
+
+  function renderDiscountCalculator(root, tool) {
+    root.innerHTML = `
+      ${renderSharedShell(tool.title)}
+      <div class="tool-workspace">
+        <div class="three-col-grid">
+          <div class="field-group">
+            <label for="disc-price">Original price</label>
+            <input id="disc-price" class="text-input" type="number" min="0" step="0.01" placeholder="100" />
+          </div>
+          <div class="field-group">
+            <label for="disc-percent">Discount (%)</label>
+            <input id="disc-percent" class="text-input" type="number" min="0" max="100" step="0.1" placeholder="20" />
+          </div>
+          <div class="field-group">
+            <label for="disc-tax">Sales Tax (%)</label>
+            <input id="disc-tax" class="text-input" type="number" min="0" max="100" step="0.1" value="0" />
+          </div>
+        </div>
+        <div class="action-row"><button class="btn btn-primary" data-run>Calculate Savings</button><button class="btn btn-secondary" data-sample>Load example</button></div>
+        <div class="result-grid" data-result-grid hidden>
+          <div class="result-card"><span>Final Price</span><strong data-final>₹0.00</strong></div>
+          <div class="result-card"><span>You Save</span><strong data-saved>₹0.00</strong></div>
+          <div class="result-card"><span>Tax Amount</span><strong data-tax-amt>₹0.00</strong></div>
+        </div>
+      </div>
+    `;
+
+    qs("[data-run]", root).addEventListener("click", async () => {
+      try {
+        const result = await withProgress(
+          root,
+          ["Reading price & discount", "Calculating discount savings", "Applying sales tax"],
+          () => {
+            const price = Number(qs("#disc-price", root).value);
+            const discPct = Number(qs("#disc-percent", root).value);
+            const taxPct = Number(qs("#disc-tax", root).value) || 0;
+
+            if (!price || price < 0) throw new Error("Please enter a valid original price.");
+            if (discPct < 0 || discPct > 100) throw new Error("Please enter a valid discount percentage (0 - 100).");
+
+            const saved = price * (discPct / 100);
+            const discountedPrice = price - saved;
+            const taxAmt = discountedPrice * (taxPct / 100);
+            const finalPrice = discountedPrice + taxAmt;
+
+            return {
+              finalPrice: finalPrice.toFixed(2),
+              saved: saved.toFixed(2),
+              taxAmt: taxAmt.toFixed(2)
+            };
+          }
+        );
+        qs("[data-result-grid]", root).hidden = false;
+        qs("[data-final]", root).textContent = `₹${result.finalPrice}`;
+        qs("[data-saved]", root).textContent = `₹${result.saved}`;
+        qs("[data-tax-amt]", root).textContent = `₹${result.taxAmt}`;
+        setStatus(root, "Discount calculated successfully.", "success");
+      } catch (err) {
+        qs("[data-result-grid]", root).hidden = true;
+        setStatus(root, err.message, "error");
+      }
+    });
+
+    qs("[data-sample]", root).addEventListener("click", () => {
+      qs("#disc-price", root).value = "1000";
+      qs("#disc-percent", root).value = "20";
+      qs("#disc-tax", root).value = "5";
+      setStatus(root, "Loaded a quick example.", "info");
+    });
+  }
+
+  function renderAspectRatioCalculator(root, tool) {
+    root.innerHTML = `
+      ${renderSharedShell(tool.title)}
+      <div class="tool-workspace">
+        <div class="two-col-grid">
+          <div class="field-group">
+            <label for="ar-w1">Original Width (px)</label>
+            <input id="ar-w1" class="text-input" type="number" min="1" placeholder="1920" value="1920" />
+          </div>
+          <div class="field-group">
+            <label for="ar-h1">Original Height (px)</label>
+            <input id="ar-h1" class="text-input" type="number" min="1" placeholder="1080" value="1080" />
+          </div>
+        </div>
+        <div class="two-col-grid">
+          <div class="field-group">
+            <label for="ar-w2">New Target Width (px)</label>
+            <input id="ar-w2" class="text-input" type="number" min="1" placeholder="1280" />
+          </div>
+          <div class="field-group">
+            <label for="ar-h2">New Target Height (px)</label>
+            <input id="ar-h2" class="text-input" type="number" min="1" placeholder="Optional..." />
+          </div>
+        </div>
+        <div class="action-row"><button class="btn btn-primary" data-run>Calculate Aspect Ratio</button><button class="btn btn-secondary" data-sample>Load example</button></div>
+        <div class="result-grid" data-result-grid hidden>
+          <div class="result-card"><span>Aspect Ratio</span><strong data-ratio>16:9</strong></div>
+          <div class="result-card"><span>New Dimensions</span><strong data-dim>1280 × 720 px</strong></div>
+        </div>
+      </div>
+    `;
+
+    qs("[data-run]", root).addEventListener("click", async () => {
+      try {
+        const result = await withProgress(
+          root,
+          ["Reading original dimensions", "Calculating ratio", "Computing target dimensions"],
+          () => {
+            const w1 = Number(qs("#ar-w1", root).value);
+            const h1 = Number(qs("#ar-h1", root).value);
+            let w2 = Number(qs("#ar-w2", root).value);
+            let h2 = Number(qs("#ar-h2", root).value);
+
+            if (!w1 || w1 <= 0 || !h1 || h1 <= 0) {
+              throw new Error("Please enter valid positive original dimensions.");
+            }
+
+            const gcd = (a, b) => (b === 0 ? a : gcd(b, a % b));
+            const common = gcd(w1, h1);
+            const ratioStr = `${w1 / common}:${h1 / common}`;
+
+            if (w2 && w2 > 0) {
+              h2 = Math.round((w2 * h1) / w1);
+            } else if (h2 && h2 > 0) {
+              w2 = Math.round((h2 * w1) / h1);
+            } else {
+              w2 = 1280;
+              h2 = Math.round((w2 * h1) / w1);
+            }
+
+            return { ratio: ratioStr, dimensions: `${w2} × ${h2} px` };
+          }
+        );
+        qs("[data-result-grid]", root).hidden = false;
+        qs("[data-ratio]", root).textContent = result.ratio;
+        qs("[data-dim]", root).textContent = result.dimensions;
+        setStatus(root, "Aspect ratio calculated successfully.", "success");
+      } catch (err) {
+        qs("[data-result-grid]", root).hidden = true;
+        setStatus(root, err.message, "error");
+      }
+    });
+
+    qs("[data-sample]", root).addEventListener("click", () => {
+      qs("#ar-w1", root).value = "1920";
+      qs("#ar-h1", root).value = "1080";
+      qs("#ar-w2", root).value = "1280";
+      qs("#ar-h2", root).value = "";
+      setStatus(root, "Loaded a quick example.", "info");
+    });
+  }
+
   function escapeHtml(str) {
     return str
       .replace(/&/g, "&amp;")
@@ -2093,6 +2550,263 @@
       case "unit-converter":
         renderUnitConverter(root, tool);
         break;
+      case "lorem-ipsum-generator":
+        renderTextTool(root, tool, {
+          runLabel: "Generate Lorem Ipsum",
+          steps: ["Configuring text parameters", "Building paragraph structures", "Formatting text output"],
+          extraControls: `
+            <div class="two-col-grid">
+              <div class="field-group">
+                <label for="lorem-count">Amount</label>
+                <input id="lorem-count" class="text-input" type="number" min="1" max="100" value="3" />
+              </div>
+              <div class="field-group">
+                <label for="lorem-unit">Unit</label>
+                <select id="lorem-unit" class="text-input">
+                  <option value="paragraphs">Paragraphs</option>
+                  <option value="sentences">Sentences</option>
+                  <option value="words">Words</option>
+                </select>
+              </div>
+            </div>
+            <div class="field-group">
+              <label><input type="checkbox" id="lorem-start" checked /> Start with "Lorem ipsum dolor sit amet..."</label>
+            </div>
+          `,
+          compute: async (input, localRoot) => {
+            const count = parseInt(qs("#lorem-count", localRoot).value, 10) || 3;
+            const unit = qs("#lorem-unit", localRoot).value;
+            const startWithLorem = qs("#lorem-start", localRoot).checked;
+
+            const wordsList = [
+              "lorem", "ipsum", "dolor", "sit", "amet", "consectetur", "adipiscing", "elit",
+              "sed", "do", "eiusmod", "tempor", "incididunt", "ut", "labore", "et", "dolore",
+              "magna", "aliqua", "ut", "enim", "ad", "minim", "veniam", "quis", "nostrud",
+              "exercitation", "ullamco", "laboris", "nisi", "ut", "aliquip", "ex", "ea",
+              "commodo", "consequat", "duis", "aute", "irure", "dolor", "in", "reprehenderit",
+              "in", "voluptate", "velit", "esse", "cillum", "dolore", "eu", "fugiat", "nulla",
+              "pariatur", "excepteur", "sint", "occaecat", "cupidatat", "non", "proident",
+              "sunt", "in", "culpa", "qui", "officia", "deserunt", "mollit", "anim", "id", "est", "laborum"
+            ];
+
+            const getRandomWord = () => wordsList[Math.floor(Math.random() * wordsList.length)];
+            const getRandomSentence = (numWords = 8) => {
+              let s = [];
+              for (let i = 0; i < numWords; i++) s.push(getRandomWord());
+              return s[0].charAt(0).toUpperCase() + s.slice(1).join(" ") + ".";
+            };
+
+            if (unit === "words") {
+              let res = [];
+              if (startWithLorem && count >= 5) {
+                res = ["Lorem", "ipsum", "dolor", "sit", "amet"];
+                for (let i = 5; i < count; i++) res.push(getRandomWord());
+              } else {
+                for (let i = 0; i < count; i++) res.push(getRandomWord());
+              }
+              return res.join(" ");
+            } else if (unit === "sentences") {
+              let res = [];
+              for (let i = 0; i < count; i++) res.push(getRandomSentence(6 + Math.floor(Math.random() * 6)));
+              if (startWithLorem && res.length > 0) {
+                res[0] = "Lorem ipsum dolor sit amet, consectetur adipiscing elit.";
+              }
+              return res.join(" ");
+            } else {
+              let paragraphs = [];
+              for (let p = 0; p < count; p++) {
+                let sentences = [];
+                const sCount = 3 + Math.floor(Math.random() * 3);
+                for (let s = 0; s < sCount; s++) sentences.push(getRandomSentence(7 + Math.floor(Math.random() * 6)));
+                paragraphs.push(sentences.join(" "));
+              }
+              if (startWithLorem && paragraphs.length > 0) {
+                paragraphs[0] = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. " + paragraphs[0].slice(paragraphs[0].indexOf(".") + 2);
+              }
+              return paragraphs.join("\n\n");
+            }
+          }
+        });
+        break;
+
+      case "yaml-to-json":
+        renderTextTool(root, tool, {
+          runLabel: "Convert YAML to JSON",
+          steps: ["Parsing YAML syntax", "Converting data hierarchy", "Formatting JSON output"],
+          compute: async (input) => {
+            if (!input.trim()) throw new Error("Please enter YAML data.");
+            const parsed = yamlToJson(input);
+            return JSON.stringify(parsed, null, 2);
+          }
+        });
+        break;
+
+      case "json-to-yaml":
+        renderTextTool(root, tool, {
+          runLabel: "Convert JSON to YAML",
+          steps: ["Validating JSON input", "Mapping object keys", "Generating clean YAML structure"],
+          compute: async (input) => {
+            if (!input.trim()) throw new Error("Please enter JSON data.");
+            const parsed = JSON.parse(input);
+            return jsonToYaml(parsed);
+          }
+        });
+        break;
+
+      case "md5-generator":
+        renderTextTool(root, tool, {
+          runLabel: "Generate MD5 Hash",
+          steps: ["Reading input string", "Calculating MD5 digest", "Formatting hexadecimal output"],
+          compute: async (input) => {
+            return md5(input);
+          }
+        });
+        break;
+
+      case "text-cleaner":
+        renderTextTool(root, tool, {
+          runLabel: "Clean Text",
+          steps: ["Scanning lines and whitespace", "Applying selected filters", "Formatting clean result"],
+          extraControls: `
+            <div class="field-group">
+              <label><input type="checkbox" id="clean-trim-lines" checked /> Trim spaces at line start/end</label><br>
+              <label><input type="checkbox" id="clean-extra-spaces" checked /> Collapse multiple spaces into one space</label><br>
+              <label><input type="checkbox" id="clean-empty-lines" checked /> Remove empty lines</label><br>
+              <label><input type="checkbox" id="clean-dup-lines" /> Remove duplicate lines</label><br>
+              <label><input type="checkbox" id="clean-strip-html" /> Strip HTML tags</label>
+            </div>
+          `,
+          compute: async (input, localRoot) => {
+            const trimLines = qs("#clean-trim-lines", localRoot).checked;
+            const collapseSpaces = qs("#clean-extra-spaces", localRoot).checked;
+            const removeEmpty = qs("#clean-empty-lines", localRoot).checked;
+            const removeDups = qs("#clean-dup-lines", localRoot).checked;
+            const stripHtml = qs("#clean-strip-html", localRoot).checked;
+
+            let text = input;
+            if (stripHtml) {
+              text = text.replace(/<[^>]*>/g, "");
+            }
+            let lines = text.split("\n");
+            if (trimLines) {
+              lines = lines.map((l) => l.trim());
+            }
+            if (collapseSpaces) {
+              lines = lines.map((l) => l.replace(/ +/g, " "));
+            }
+            if (removeEmpty) {
+              lines = lines.filter((l) => l.length > 0);
+            }
+            if (removeDups) {
+              lines = Array.from(new Set(lines));
+            }
+            return lines.join("\n");
+          }
+        });
+        break;
+
+      case "diff-checker":
+        renderTextTool(root, tool, {
+          runLabel: "Compare Text",
+          steps: ["Analyzing original text", "Analyzing modified text", "Calculating line differences"],
+          extraControls: `
+            <div class="field-group">
+              <label for="diff-modified-text">Modified Text (Comparison)</label>
+              <textarea id="diff-modified-text" class="big-textarea" placeholder="Paste modified text here..."></textarea>
+            </div>
+          `,
+          compute: async (input, localRoot) => {
+            const modified = qs("#diff-modified-text", localRoot).value;
+            const origLines = input.split("\n");
+            const modLines = modified.split("\n");
+
+            let diffOutput = [];
+            let added = 0;
+            let removed = 0;
+            let unchanged = 0;
+
+            let i = 0, j = 0;
+
+            while (i < origLines.length || j < modLines.length) {
+              if (i < origLines.length && j < modLines.length) {
+                if (origLines[i] === modLines[j]) {
+                  diffOutput.push(`  ${origLines[i]}`);
+                  i++; j++; unchanged++;
+                } else if (modLines.slice(j).includes(origLines[i])) {
+                  diffOutput.push(`+ ${modLines[j]}`);
+                  j++; added++;
+                } else {
+                  diffOutput.push(`- ${origLines[i]}`);
+                  i++; removed++;
+                }
+              } else if (i < origLines.length) {
+                diffOutput.push(`- ${origLines[i]}`);
+                i++; removed++;
+              } else {
+                diffOutput.push(`+ ${modLines[j]}`);
+                j++; added++;
+              }
+            }
+
+            return `--- Differences ---\n+ Added: ${added} line(s)\n- Removed: ${removed} line(s)\n  Unchanged: ${unchanged} line(s)\n\n--- Line Diff ---\n${diffOutput.join("\n")}`;
+          }
+        });
+        break;
+
+      case "bmi-calculator":
+        renderBMICalculator(root, tool);
+        break;
+
+      case "discount-calculator":
+        renderDiscountCalculator(root, tool);
+        break;
+
+      case "aspect-ratio-calculator":
+        renderAspectRatioCalculator(root, tool);
+        break;
+
+      case "binary-converter":
+        renderTextTool(root, tool, {
+          runLabel: "Convert Binary",
+          steps: ["Reading input data", "Executing binary transformation", "Formatting result"],
+          extraControls: `
+            <div class="field-group">
+              <label for="binary-mode">Conversion mode</label>
+              <select id="binary-mode" class="text-input">
+                <option value="text-to-bin">Text to Binary</option>
+                <option value="bin-to-text">Binary to Text</option>
+                <option value="dec-to-bin">Decimal Number to Binary</option>
+                <option value="bin-to-dec">Binary to Decimal Number</option>
+              </select>
+            </div>
+          `,
+          compute: async (input, localRoot) => {
+            const mode = qs("#binary-mode", localRoot).value;
+            const str = input.trim();
+            if (!str) throw new Error("Please enter input text or binary code.");
+
+            if (mode === "text-to-bin") {
+              return str
+                .split("")
+                .map((char) => char.charCodeAt(0).toString(2).padStart(8, "0"))
+                .join(" ");
+            } else if (mode === "bin-to-text") {
+              const cleanBin = str.replace(/[^01\s]/g, "");
+              const bytes = cleanBin.split(/\s+/).filter(Boolean);
+              return bytes.map((b) => String.fromCharCode(parseInt(b, 2))).join("");
+            } else if (mode === "dec-to-bin") {
+              const num = parseInt(str, 10);
+              if (isNaN(num)) throw new Error("Invalid decimal number.");
+              return num.toString(2);
+            } else {
+              const cleanBin = str.replace(/[^01]/g, "");
+              if (!cleanBin) throw new Error("Invalid binary string.");
+              return parseInt(cleanBin, 2).toString(10);
+            }
+          }
+        });
+        break;
+
       default:
         root.innerHTML = "<p>This tool is not configured yet.</p>";
     }
@@ -2228,6 +2942,96 @@
     }
   }
 
+
+  function initFeedbackSection() {
+    const main = qs("main");
+    if (!main || qs("#feedback-section")) return;
+
+    const feedbackSec = document.createElement("section");
+    feedbackSec.id = "feedback-section";
+    feedbackSec.className = "section feedback-section";
+    feedbackSec.innerHTML = `
+      <div class="container">
+        <div class="feedback-card">
+          <div class="feedback-head">
+            <span class="eyebrow">💬 We value your thoughts</span>
+            <h2>Have Feedback or Tool Suggestions?</h2>
+            <p class="hero-copy">Found a bug, want a new tool added, or have an idea to improve ToolMint? Type your message below to send it directly to our team!</p>
+          </div>
+          <form id="feedback-form" class="feedback-form">
+            <div class="two-col-grid">
+              <div class="field-group">
+                <label for="fb-name">Your Name (Optional)</label>
+                <input id="fb-name" class="text-input" type="text" placeholder="e.g. Alex" />
+              </div>
+              <div class="field-group">
+                <label for="fb-subject">Feedback Type</label>
+                <select id="fb-subject" class="text-input">
+                  <option value="General Feedback" selected>General Feedback</option>
+                  <option value="New Tool Request">New Tool Request</option>
+                  <option value="Bug Report">Bug Report</option>
+                  <option value="Other">Other Inquiry</option>
+                </select>
+              </div>
+            </div>
+            <div class="field-group">
+              <label for="fb-message">Your Message *</label>
+              <textarea id="fb-message" class="big-textarea" rows="4" placeholder="Write your feedback or tool suggestion here..." required></textarea>
+            </div>
+            <div class="action-row">
+              <button type="submit" class="btn btn-primary btn-glow">
+                <span>Send Feedback via Email</span>
+                <span aria-hidden="true">✉️</span>
+              </button>
+            </div>
+            <div id="fb-status" class="fb-status-msg" hidden></div>
+          </form>
+        </div>
+      </div>
+    `;
+
+    main.appendChild(feedbackSec);
+
+    const form = qs("#feedback-form", feedbackSec);
+    form.addEventListener("submit", (e) => {
+      e.preventDefault();
+      const name = qs("#fb-name", feedbackSec).value.trim() || "Anonymous";
+      const subject = qs("#fb-subject", feedbackSec).value;
+      const message = qs("#fb-message", feedbackSec).value.trim();
+      const statusNode = qs("#fb-status", feedbackSec);
+
+      if (!message) {
+        statusNode.hidden = false;
+        statusNode.className = "fb-status-msg error";
+        statusNode.textContent = "Please write a message before sending.";
+        return;
+      }
+
+      const recipientEmail = "rishibanota837@gmail.com";
+      const emailSubject = `[ToolMint Feedback] ${subject}`;
+      const pageUrl = window.location.href;
+      const pageTitle = document.title;
+      
+      const emailBody = `Name: ${name}
+Page Title: ${pageTitle}
+Page URL: ${pageUrl}
+Feedback Type: ${subject}
+
+Message:
+${message}`;
+
+      const mailtoUrl = `mailto:${recipientEmail}?subject=${encodeURIComponent(emailSubject)}&body=${encodeURIComponent(emailBody)}`;
+
+      statusNode.hidden = false;
+      statusNode.className = "fb-status-msg success";
+      statusNode.textContent = "Redirecting to your email app to send your message to rishibanota837@gmail.com...";
+
+      setTimeout(() => {
+        window.location.href = mailtoUrl;
+      }, 400);
+    });
+  }
+
   function initMobileNav() {
     const headerInner = qs(".header-inner");
     const nav = qs(".nav");
@@ -2263,5 +3067,6 @@
     initToolPage();
     initAnimations();
     initMobileNav();
+    initFeedbackSection();
   });
 })();

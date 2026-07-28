@@ -1,19 +1,10 @@
 const fs = require('fs');
 const path = require('path');
 
-const files = [
-  'age-calculator',
-  'base64-decoder',
-  'base64-encoder',
-  'case-converter',
-  'color-converter',
-  'csv-to-json',
-  'emi-calculator',
-  'find-and-replace',
-  'gst-calculator',
-  'html-decoder',
-  'html-encoder'
-].map(f => `C:/Users/Rishi/Documents/GitHub/ToolMint/public/tools/${f}/index.html`);
+const toolsDir = path.join(__dirname, 'public', 'tools');
+const files = fs.readdirSync(toolsDir)
+  .filter(f => fs.statSync(path.join(toolsDir, f)).isDirectory())
+  .map(f => path.join(toolsDir, f, 'index.html'));
 
 const catToApp = {
   'developer': 'DeveloperApplication',
