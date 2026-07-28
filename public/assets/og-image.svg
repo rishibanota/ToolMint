@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#09101e"/>
+      <stop offset="100%" stop-color="#0b1020"/>
+    </linearGradient>
+    <radialGradient id="glow1" cx="30%" cy="40%" r="50%">
+      <stop offset="0%" stop-color="#6d5efc" stop-opacity="0.35"/>
+      <stop offset="100%" stop-color="transparent" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="glow2" cx="75%" cy="60%" r="45%">
+      <stop offset="0%" stop-color="#2dd4bf" stop-opacity="0.25"/>
+      <stop offset="100%" stop-color="transparent" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <rect width="1200" height="630" fill="url(#bg)"/>
+  <rect width="1200" height="630" fill="url(#glow1)"/>
+  <rect width="1200" height="630" fill="url(#glow2)"/>
+  <text x="600" y="240" text-anchor="middle" font-family="Inter, system-ui, sans-serif" font-size="72" font-weight="800" fill="#ffffff" letter-spacing="0.02em">✦ ToolMint</text>
+  <text x="600" y="310" text-anchor="middle" font-family="Inter, system-ui, sans-serif" font-size="28" font-weight="400" fill="#9cadcf">Fast, Private Browser Tools</text>
+  <text x="600" y="380" text-anchor="middle" font-family="Inter, system-ui, sans-serif" font-size="20" font-weight="500" fill="#8a7cff">31 Free Tools • 100% Client-Side • No Upload Required</text>
+  <rect x="50" y="560" width="1100" height="3" rx="2" fill="#6d5efc" opacity="0.4"/>
+  <text x="600" y="595" text-anchor="middle" font-family="Inter, system-ui, sans-serif" font-size="16" font-weight="500" fill="#667085">toolmint.rishibanota.workers.dev</text>
+</svg>
