@@ -37,6 +37,16 @@
     "text-cleaner": "   This line has extra spaces at start and end.   \n\n\n  This line has   multiple    spaces   between words.\n   This line has extra spaces at start and end.   \n\n<div><p>HTML paragraph to strip</p></div>",
     "diff-checker": "Line 1: Original text\nLine 2: Unchanged content\nLine 3: Text to be deleted",
     "binary-converter": "Hello World",
+    "json-minifier": "{\n  \"name\": \"ToolMint\",\n  \"features\": [\n    \"fast\",\n    \"private\"\n  ]\n}",
+    "random-number-generator": "10",
+    "mac-address-generator": "5",
+    "morse-code-converter": "HELLO WORLD",
+    "hex-to-text": "48 65 6c 6c 6f 20 57 6f 72 6c 64",
+    "text-to-hex": "Hello World",
+    "vowel-counter": "Hello from ToolMint! Counting vowels and consonants.",
+    "palindrome-checker": "A man a plan a canal Panama",
+    "number-to-words": "12345",
+    "html-minifier": "<div>\n  <p>Hello World</p>\n  <!-- comment -->\n</div>",
   };
 
   const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
@@ -2803,6 +2813,201 @@
               if (!cleanBin) throw new Error("Invalid binary string.");
               return parseInt(cleanBin, 2).toString(10);
             }
+          }
+        });
+        break;
+
+      case "json-minifier":
+        renderTextTool(root, tool, {
+          runLabel: "Minify JSON",
+          steps: ["Parsing JSON", "Minifying data", "Preparing output"],
+          compute: async (input) => {
+            if (!input.trim()) throw new Error("Please enter JSON data.");
+            const parsed = JSON.parse(input);
+            return JSON.stringify(parsed);
+          }
+        });
+        break;
+
+      case "random-number-generator":
+        renderTextTool(root, tool, {
+          runLabel: "Generate Numbers",
+          steps: ["Parsing range", "Generating random numbers", "Formatting output"],
+          extraControls: `
+            <div class="two-col-grid">
+              <div class="field-group">
+                <label for="rand-min">Min</label>
+                <input id="rand-min" class="text-input" type="number" value="1" />
+              </div>
+              <div class="field-group">
+                <label for="rand-max">Max</label>
+                <input id="rand-max" class="text-input" type="number" value="100" />
+              </div>
+            </div>
+          `,
+          compute: async (input, localRoot) => {
+            const count = parseInt(input.trim()) || 1;
+            const min = parseInt(qs("#rand-min", localRoot).value);
+            const max = parseInt(qs("#rand-max", localRoot).value);
+            if (isNaN(min) || isNaN(max)) throw new Error("Min and Max must be valid numbers.");
+            if (min > max) throw new Error("Min must be less than or equal to Max.");
+            const result = [];
+            for (let i = 0; i < count; i++) {
+              result.push(Math.floor(Math.random() * (max - min + 1)) + min);
+            }
+            return result.join("\n");
+          }
+        });
+        break;
+
+      case "mac-address-generator":
+        renderTextTool(root, tool, {
+          runLabel: "Generate MAC Addresses",
+          steps: ["Generating random bytes", "Formatting MAC addresses", "Preparing output"],
+          compute: async (input) => {
+            const count = parseInt(input.trim()) || 1;
+            const result = [];
+            const hexChars = "0123456789ABCDEF";
+            for (let i = 0; i < count; i++) {
+              let mac = [];
+              for (let j = 0; j < 6; j++) {
+                mac.push(hexChars[Math.floor(Math.random() * 16)] + hexChars[Math.floor(Math.random() * 16)]);
+              }
+              result.push(mac.join(":"));
+            }
+            return result.join("\n");
+          }
+        });
+        break;
+
+      case "morse-code-converter":
+        renderTextTool(root, tool, {
+          runLabel: "Convert Morse",
+          steps: ["Parsing input", "Converting characters", "Formatting result"],
+          extraControls: `
+            <div class="field-group">
+              <label for="morse-mode">Conversion mode</label>
+              <select id="morse-mode" class="text-input">
+                <option value="text-to-morse">Text to Morse</option>
+                <option value="morse-to-text">Morse to Text</option>
+              </select>
+            </div>
+          `,
+          compute: async (input, localRoot) => {
+            const mode = qs("#morse-mode", localRoot).value;
+            const morseMap = {
+              'A': '.-', 'B': '-...', 'C': '-.-.', 'D': '-..', 'E': '.', 'F': '..-.',
+              'G': '--.', 'H': '....', 'I': '..', 'J': '.---', 'K': '-.-', 'L': '.-..',
+              'M': '--', 'N': '-.', 'O': '---', 'P': '.--.', 'Q': '--.-', 'R': '.-.',
+              'S': '...', 'T': '-', 'U': '..-', 'V': '...-', 'W': '.--', 'X': '-..-',
+              'Y': '-.--', 'Z': '--..', '0': '-----', '1': '.----', '2': '..---',
+              '3': '...--', '4': '....-', '5': '.....', '6': '-....', '7': '--...',
+              '8': '---..', '9': '----.', '.': '.-.-.-', ',': '--..--', '?': '..--..',
+              '\'': '.----.', '!': '-.-.--', '/': '-..-.', '(': '-.--.', ')': '-.--.-',
+              '&': '.-...', ':': '---...', ';': '-.-.-.', '=': '-...-', '+': '.-.-.',
+              '-': '-....-', '_': '..--.-', '"': '.-..-.', '$': '...-..-', '@': '.--.-.',
+              ' ': '/'
+            };
+            if (mode === "text-to-morse") {
+              return input.toUpperCase().split('').map(char => morseMap[char] || char).join(' ');
+            } else {
+              const reverseMap = Object.fromEntries(Object.entries(morseMap).map(([k, v]) => [v, k]));
+              return input.split(' ').map(code => reverseMap[code] || code).join('').replace(/\//g, ' ');
+            }
+          }
+        });
+        break;
+
+      case "hex-to-text":
+        renderTextTool(root, tool, {
+          runLabel: "Convert Hex to Text",
+          steps: ["Parsing hex pairs", "Decoding characters", "Preparing output"],
+          compute: async (input) => {
+            const hex = input.replace(/\s/g, "");
+            let text = "";
+            for (let i = 0; i < hex.length; i += 2) {
+              text += String.fromCharCode(parseInt(hex.substr(i, 2), 16));
+            }
+            return text;
+          }
+        });
+        break;
+
+      case "text-to-hex":
+        renderTextTool(root, tool, {
+          runLabel: "Convert Text to Hex",
+          steps: ["Reading characters", "Encoding to hex", "Preparing output"],
+          compute: async (input) => {
+            return input.split("").map(c => c.charCodeAt(0).toString(16).padStart(2, "0")).join(" ");
+          }
+        });
+        break;
+
+      case "vowel-counter":
+        renderTextTool(root, tool, {
+          runLabel: "Count Vowels",
+          steps: ["Scanning text", "Counting characters", "Formatting result"],
+          compute: async (input) => {
+            const vowels = (input.match(/[aeiou]/gi) || []).length;
+            const consonants = (input.match(/[bcdfghjklmnpqrstvwxyz]/gi) || []).length;
+            return `Vowels: ${vowels}\nConsonants: ${consonants}\nTotal letters: ${vowels + consonants}`;
+          }
+        });
+        break;
+
+      case "palindrome-checker":
+        renderTextTool(root, tool, {
+          runLabel: "Check Palindrome",
+          steps: ["Sanitizing text", "Comparing strings", "Preparing result"],
+          compute: async (input) => {
+            const clean = input.replace(/[^a-zA-Z0-9]/g, "").toLowerCase();
+            const reversed = clean.split("").reverse().join("");
+            if (clean.length === 0) throw new Error("Please enter some text.");
+            const isPal = clean === reversed;
+            return isPal ? "Yes, this is a palindrome!" : "No, this is not a palindrome.";
+          }
+        });
+        break;
+
+      case "number-to-words":
+        renderTextTool(root, tool, {
+          runLabel: "Convert to Words",
+          steps: ["Parsing number", "Translating digits", "Preparing output"],
+          compute: async (input) => {
+            const num = parseInt(input.trim().replace(/,/g, ""));
+            if (isNaN(num)) throw new Error("Please enter a valid number.");
+            
+            const a = ['','one ','two ','three ','four ', 'five ','six ','seven ','eight ','nine ','ten ','eleven ','twelve ','thirteen ','fourteen ','fifteen ','sixteen ','seventeen ','eighteen ','nineteen '];
+            const b = ['', '', 'twenty','thirty','forty','fifty', 'sixty','seventy','eighty','ninety'];
+
+            const inWords = (num) => {
+                if ((num = num.toString()).length > 9) return 'overflow';
+                const n = ('000000000' + num).substr(-9).match(/^(\d{2})(\d{2})(\d{2})(\d{1})(\d{2})$/);
+                if (!n) return '';
+                let str = '';
+                str += (n[1] != 0) ? (a[Number(n[1])] || b[n[1][0]] + ' ' + a[n[1][1]]) + 'crore ' : '';
+                str += (n[2] != 0) ? (a[Number(n[2])] || b[n[2][0]] + ' ' + a[n[2][1]]) + 'lakh ' : '';
+                str += (n[3] != 0) ? (a[Number(n[3])] || b[n[3][0]] + ' ' + a[n[3][1]]) + 'thousand ' : '';
+                str += (n[4] != 0) ? (a[Number(n[4])] || b[n[4][0]] + ' ' + a[n[4][1]]) + 'hundred ' : '';
+                str += (n[5] != 0) ? ((str != '') ? 'and ' : '') + (a[Number(n[5])] || b[n[5][0]] + ' ' + a[n[5][1]]) : '';
+                return str.trim();
+            };
+            if (num === 0) return "zero";
+            return inWords(num);
+          }
+        });
+        break;
+
+      case "html-minifier":
+        renderTextTool(root, tool, {
+          runLabel: "Minify HTML",
+          steps: ["Parsing HTML", "Removing whitespace", "Preparing output"],
+          compute: async (input) => {
+            return input
+              .replace(/<!--[\s\S]*?-->/g, "")
+              .replace(/>\s+</g, "><")
+              .replace(/\s{2,}/g, " ")
+              .trim();
           }
         });
         break;

@@ -1,0 +1,21 @@
+{
+  "name": "toolmint",
+  "version": "1.0.0",
+  "description": "ToolMint is a lightweight collection of browser-based utility tools built for developers, students, and anyone who needs a quick productivity boost.",
+  "main": "add-json-ld.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/rishibanota/ToolMint.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/rishibanota/ToolMint/issues"
+  },
+  "homepage": "https://github.com/rishibanota/ToolMint#readme"
+}
