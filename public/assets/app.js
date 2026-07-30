@@ -3018,40 +3018,39 @@
   }
 
   function initAnimations() {
+    // Utility to throttle mousemove with requestAnimationFrame
+    function addThrottledMouseMove(element, cssVarPrefix) {
+      if (!element) return;
+      let ticking = false;
+      element.addEventListener("mousemove", (e) => {
+        if (!ticking) {
+          window.requestAnimationFrame(() => {
+            const rect = element.getBoundingClientRect();
+            const x = ((e.clientX - rect.left) / rect.width) * 100;
+            const y = ((e.clientY - rect.top) / rect.height) * 100;
+            element.style.setProperty(`--${cssVarPrefix}-x`, `${x.toFixed(1)}%`);
+            element.style.setProperty(`--${cssVarPrefix}-y`, `${y.toFixed(1)}%`);
+            ticking = false;
+          });
+          ticking = true;
+        }
+      });
+    }
+
     // 1. Mouse Spotlight Glow Tracking on Cards
     const interactiveCards = qsa(".tool-card, .category-card, .info-card, .side-card, .stat, .preview-card");
     interactiveCards.forEach((card) => {
-      card.addEventListener("mousemove", (e) => {
-        const rect = card.getBoundingClientRect();
-        const x = ((e.clientX - rect.left) / rect.width) * 100;
-        const y = ((e.clientY - rect.top) / rect.height) * 100;
-        card.style.setProperty("--mouse-x", `${x.toFixed(1)}%`);
-        card.style.setProperty("--mouse-y", `${y.toFixed(1)}%`);
-      });
+      addThrottledMouseMove(card, "mouse");
     });
 
     // 1b. Mouse Spotlight Glow Tracking on Hero & Main Background
     const heroSections = qsa(".hero, .page-hero");
     heroSections.forEach((hero) => {
-      hero.addEventListener("mousemove", (e) => {
-        const rect = hero.getBoundingClientRect();
-        const x = ((e.clientX - rect.left) / rect.width) * 100;
-        const y = ((e.clientY - rect.top) / rect.height) * 100;
-        hero.style.setProperty("--hero-mouse-x", `${x.toFixed(1)}%`);
-        hero.style.setProperty("--hero-mouse-y", `${y.toFixed(1)}%`);
-      });
+      addThrottledMouseMove(hero, "hero-mouse");
     });
 
     const mainElement = qs("main");
-    if (mainElement) {
-      mainElement.addEventListener("mousemove", (e) => {
-        const rect = mainElement.getBoundingClientRect();
-        const x = ((e.clientX - rect.left) / rect.width) * 100;
-        const y = ((e.clientY - rect.top) / rect.height) * 100;
-        mainElement.style.setProperty("--main-mouse-x", `${x.toFixed(1)}%`);
-        mainElement.style.setProperty("--main-mouse-y", `${y.toFixed(1)}%`);
-      });
-    }
+    addThrottledMouseMove(mainElement, "main-mouse");
 
     // 2. Ripple Effect on Buttons & Interactive Links
     document.addEventListener("click", (e) => {

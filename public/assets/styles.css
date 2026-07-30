@@ -53,10 +53,15 @@ body {
       transparent 35%
     ),
     linear-gradient(180deg, #09101e 0%, #090d1a 100%);
-  background-attachment: fixed;
   line-height: 1.6;
   overflow-x: hidden;
   position: relative;
+}
+
+@media (min-width: 768px) {
+  body {
+    background-attachment: fixed;
+  }
 }
 
 /* Ambient animated glowing background orbs */
@@ -456,7 +461,6 @@ main > * {
   background: rgba(255, 255, 255, 0.05);
   color: var(--text);
   border: 1px solid rgba(255, 255, 255, 0.1);
-  backdrop-filter: blur(8px);
 }
 
 .btn-secondary:hover,
