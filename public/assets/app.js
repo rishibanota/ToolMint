@@ -2053,10 +2053,8 @@
         const matches = !q || hay.includes(q);
         if (matches) {
           card.classList.remove("card-hide");
-          card.classList.add("card-pop-in");
         } else {
           card.classList.add("card-hide");
-          card.classList.remove("card-pop-in");
         }
       });
     });
@@ -3084,7 +3082,7 @@
     }
 
     // 4. Scroll Reveal with IntersectionObserver
-    const observerElements = qsa(".tool-card, .category-card, .stat, .info-card, .preview-card, .section-heading, .faq-item");
+    const observerElements = qsa(".stat, .info-card, .preview-card, .section-heading, .faq-item");
     if ("IntersectionObserver" in window) {
       const observer = new IntersectionObserver(
         (entries) => {

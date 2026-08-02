@@ -262,7 +262,7 @@ main > * {
 
 .hero,
 .page-hero {
-  padding: 4.25rem 0 2.5rem;
+  padding: 2.25rem 0 2rem;
   position: relative;
 }
 
@@ -295,7 +295,7 @@ main > * {
 }
 
 .page-hero.small {
-  padding-top: 3rem;
+  padding-top: 2rem;
 }
 
 .hero-grid,
@@ -308,7 +308,7 @@ main > * {
 
 .hero-grid {
   grid-template-columns: 1.15fr 0.85fr;
-  align-items: center;
+  align-items: flex-start;
 }
 
 .hero h1,
@@ -317,10 +317,41 @@ main > * {
   line-height: 1.08;
   font-size: clamp(2.3rem, 4vw, 4.3rem);
   letter-spacing: -0.03em;
-  background: linear-gradient(135deg, #ffffff 30%, #b8aeff 70%, #2dd4bf 100%);
+  background: linear-gradient(
+    135deg,
+    #ffffff 0%,
+    #d8d3ff 35%,
+    #a294ff 65%,
+    #2dd4bf 100%
+  );
+  background-size: 200% auto;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
+  animation: heroTitleFade 0.5s ease-out forwards, titleShimmer 8s linear infinite;
+}
+
+@keyframes heroTitleFade {
+  from {
+    opacity: 0;
+    transform: translateY(-8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes titleShimmer {
+  0% {
+    background-position: 0% center;
+  }
+  50% {
+    background-position: 100% center;
+  }
+  100% {
+    background-position: 0% center;
+  }
 }
 
 .eyebrow {
@@ -337,6 +368,12 @@ main > * {
   border: 1px solid rgba(109, 94, 252, 0.25);
   border-radius: 999px;
   margin-bottom: 0.5rem;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.eyebrow:hover {
+  border-color: rgba(45, 212, 191, 0.5);
+  box-shadow: 0 0 16px rgba(45, 212, 191, 0.25);
 }
 
 .eyebrow .live-dot {
@@ -517,10 +554,10 @@ main > * {
   position: relative;
   overflow: hidden;
   transition:
-    transform 0.35s cubic-bezier(0.16, 1, 0.3, 1),
-    border-color 0.35s ease,
-    box-shadow 0.35s ease,
-    background 0.35s ease;
+    transform 0.2s ease,
+    border-color 0.2s ease,
+    box-shadow 0.2s ease,
+    background 0.2s ease;
 }
 
 /* Spotlight radial gradient following cursor on desktop & ambient pulse on mobile */
@@ -560,11 +597,11 @@ main > * {
 .category-card:hover,
 .info-card:hover,
 .stat:hover {
-  transform: translateY(-6px) scale(1.015);
+  transform: translateY(-3px);
   border-color: rgba(138, 124, 252, 0.45);
   box-shadow:
-    0 22px 45px -10px rgba(109, 94, 252, 0.35),
-    0 0 25px rgba(45, 212, 191, 0.12);
+    0 12px 28px -5px rgba(109, 94, 252, 0.3),
+    0 0 20px rgba(45, 212, 191, 0.1);
 }
 
 .stat {
@@ -796,9 +833,9 @@ textarea::placeholder {
 }
 
 .tool-card:hover .tool-icon {
-  transform: scale(1.15) rotate(6deg);
+  transform: scale(1.06);
   background: linear-gradient(135deg, var(--primary), var(--success));
-  box-shadow: 0 0 20px rgba(109, 94, 252, 0.5);
+  box-shadow: 0 0 15px rgba(109, 94, 252, 0.4);
   color: #ffffff;
 }
 
@@ -1212,13 +1249,21 @@ html.ads-disabled .ad-card {
   font-size: 0.85rem;
 }
 
-/* Scroll Reveal Keyframe Classes */
+/* Ensure Homepage Tool Cards render immediately without animation lag */
+.tool-card,
+.category-card {
+  opacity: 1 !important;
+  transform: none !important;
+  transition-delay: 0s !important;
+}
+
+/* Scroll Reveal Keyframe Classes for page sections */
 .reveal-on-scroll {
   opacity: 0;
-  transform: translateY(28px);
+  transform: translateY(16px);
   transition:
-    opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1),
-    transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+    opacity 0.35s ease,
+    transform 0.35s ease;
 }
 
 .reveal-on-scroll.is-visible {
@@ -1226,24 +1271,9 @@ html.ads-disabled .ad-card {
   transform: translateY(0);
 }
 
-/* Card Search Filter Animation */
+/* Card Search Filter Display */
 .tool-card.card-hide {
   display: none !important;
-}
-
-.tool-card.card-pop-in {
-  animation: cardPopIn 0.35s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-}
-
-@keyframes cardPopIn {
-  from {
-    opacity: 0;
-    transform: scale(0.92) translateY(12px);
-  }
-  to {
-    opacity: 1;
-    transform: scale(1) translateY(0);
-  }
 }
 
 @media (max-width: 980px) {
@@ -1647,8 +1677,7 @@ html.ads-disabled .ad-card {
       rgba(45, 212, 191, 0.12) 60%,
       transparent 80%
     );
-    opacity: 0.65;
-    animation: mobileCardPulse 6s ease-in-out infinite alternate;
+    opacity: 0.4;
   }
 
   .tool-card:active,
