@@ -47,6 +47,16 @@
     "palindrome-checker": "A man a plan a canal Panama",
     "number-to-words": "12345",
     "html-minifier": "<div>\n  <p>Hello World</p>\n  <!-- comment -->\n</div>",
+    "sql-formatter": "select user_id, first_name, last_name, email from users where status = 'active' and created_at >= '2026-01-01' order by created_at desc limit 10;",
+    "xml-to-json": "<company><name>ToolMint</name><employees><employee><id>101</id><name>Alice</name><role>Developer</role></employee><employee><id>102</id><name>Bob</name><role>Designer</role></employee></employees></company>",
+    "url-parser": "https://admin:secret@example.com:8080/api/v1/users?role=developer&status=active&page=2#section-results",
+    "duplicate-line-remover": "Apple\nBanana\nApple\nCherry\nBanana\nDate\nApple\nElderberry\nCherry",
+    "line-sorter": "Zebra\nApple\nMonkey\nBanana\nElephant\nCat\nDog",
+    "sha512-generator": "ToolMint SHA-512 hash example text",
+    "json-escape": "Line 1: \"Hello World\"\nLine 2: C:\\Program Files\\ToolMint",
+    "simple-interest-calculator": "10000",
+    "compound-interest-calculator": "15000",
+    "ip-calculator": "192.168.1.50/24",
   };
 
   const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
@@ -1938,6 +1948,167 @@
     });
   }
 
+  function renderSimpleInterestCalculator(root, tool) {
+    root.innerHTML = `
+      ${renderSharedShell(tool.title)}
+      <div class="tool-workspace">
+        <div class="three-col-grid">
+          <div class="field-group">
+            <label for="si-principal">Principal Amount ($)</label>
+            <input id="si-principal" class="text-input" type="number" min="0" step="0.01" placeholder="10000" />
+          </div>
+          <div class="field-group">
+            <label for="si-rate">Interest Rate (% per year)</label>
+            <input id="si-rate" class="text-input" type="number" min="0" step="0.1" placeholder="6.5" />
+          </div>
+          <div class="field-group">
+            <label for="si-time">Time Period (Years)</label>
+            <input id="si-time" class="text-input" type="number" min="0" step="0.1" placeholder="3" />
+          </div>
+        </div>
+        <div class="action-row">
+          <button class="btn btn-primary" data-run>Calculate Interest</button>
+          <button class="btn btn-secondary" data-sample>Load example</button>
+        </div>
+        <div class="result-grid" data-result-grid hidden>
+          <div class="result-card"><span>Simple Interest</span><strong data-interest>$0.00</strong></div>
+          <div class="result-card"><span>Total Amount</span><strong data-total>$0.00</strong></div>
+          <div class="result-card"><span>Monthly Interest</span><strong data-monthly>$0.00</strong></div>
+        </div>
+      </div>
+    `;
+
+    qs("[data-run]", root).addEventListener("click", async () => {
+      try {
+        const result = await withProgress(
+          root,
+          ["Reading principal & rate", "Calculating simple interest", "Computing total maturity amount"],
+          () => {
+            const principal = Number(qs("#si-principal", root).value);
+            const rate = Number(qs("#si-rate", root).value);
+            const time = Number(qs("#si-time", root).value);
+
+            if (!principal || principal <= 0) throw new Error("Please enter a valid principal amount.");
+            if (!rate || rate <= 0) throw new Error("Please enter a valid interest rate.");
+            if (!time || time <= 0) throw new Error("Please enter a valid time period in years.");
+
+            const interest = (principal * rate * time) / 100;
+            const total = principal + interest;
+            const monthly = interest / (time * 12);
+
+            return {
+              interest: interest.toFixed(2),
+              total: total.toFixed(2),
+              monthly: monthly.toFixed(2)
+            };
+          }
+        );
+        qs("[data-result-grid]", root).hidden = false;
+        qs("[data-interest]", root).textContent = `$${result.interest}`;
+        qs("[data-total]", root).textContent = `$${result.total}`;
+        qs("[data-monthly]", root).textContent = `$${result.monthly}`;
+        setStatus(root, "Simple interest calculated successfully.", "success");
+      } catch (err) {
+        qs("[data-result-grid]", root).hidden = true;
+        setStatus(root, err.message, "error");
+      }
+    });
+
+    qs("[data-sample]", root).addEventListener("click", () => {
+      qs("#si-principal", root).value = "10000";
+      qs("#si-rate", root).value = "6.5";
+      qs("#si-time", root).value = "3";
+      setStatus(root, "Loaded a quick example.", "info");
+    });
+  }
+
+  function renderCompoundInterestCalculator(root, tool) {
+    root.innerHTML = `
+      ${renderSharedShell(tool.title)}
+      <div class="tool-workspace">
+        <div class="two-col-grid">
+          <div class="field-group">
+            <label for="ci-principal">Initial Principal ($)</label>
+            <input id="ci-principal" class="text-input" type="number" min="0" step="0.01" placeholder="15000" />
+          </div>
+          <div class="field-group">
+            <label for="ci-rate">Annual Interest Rate (%)</label>
+            <input id="ci-rate" class="text-input" type="number" min="0" step="0.1" placeholder="7" />
+          </div>
+        </div>
+        <div class="two-col-grid">
+          <div class="field-group">
+            <label for="ci-time">Investment Term (Years)</label>
+            <input id="ci-time" class="text-input" type="number" min="0" step="0.5" placeholder="5" />
+          </div>
+          <div class="field-group">
+            <label for="ci-freq">Compounding Frequency</label>
+            <select id="ci-freq" class="text-input">
+              <option value="1" selected>Annually (1/yr)</option>
+              <option value="2">Semi-Annually (2/yr)</option>
+              <option value="4">Quarterly (4/yr)</option>
+              <option value="12">Monthly (12/yr)</option>
+            </select>
+          </div>
+        </div>
+        <div class="action-row">
+          <button class="btn btn-primary" data-run>Calculate Growth</button>
+          <button class="btn btn-secondary" data-sample>Load example</button>
+        </div>
+        <div class="result-grid" data-result-grid hidden>
+          <div class="result-card"><span>Ending Balance</span><strong data-balance>$0.00</strong></div>
+          <div class="result-card"><span>Compound Interest</span><strong data-interest>$0.00</strong></div>
+          <div class="result-card"><span>Total Principal</span><strong data-principal>$0.00</strong></div>
+        </div>
+      </div>
+    `;
+
+    qs("[data-run]", root).addEventListener("click", async () => {
+      try {
+        const result = await withProgress(
+          root,
+          ["Reading principal & rate", "Calculating compounding growth", "Formatting ending balance"],
+          () => {
+            const principal = Number(qs("#ci-principal", root).value);
+            const rate = Number(qs("#ci-rate", root).value);
+            const time = Number(qs("#ci-time", root).value);
+            const freq = Number(qs("#ci-freq", root).value) || 1;
+
+            if (!principal || principal <= 0) throw new Error("Please enter a valid principal amount.");
+            if (!rate || rate <= 0) throw new Error("Please enter a valid interest rate.");
+            if (!time || time <= 0) throw new Error("Please enter a valid investment term.");
+
+            const r = rate / 100;
+            const balance = principal * Math.pow(1 + r / freq, freq * time);
+            const interest = balance - principal;
+
+            return {
+              balance: balance.toFixed(2),
+              interest: interest.toFixed(2),
+              principal: principal.toFixed(2)
+            };
+          }
+        );
+        qs("[data-result-grid]", root).hidden = false;
+        qs("[data-balance]", root).textContent = `$${result.balance}`;
+        qs("[data-interest]", root).textContent = `$${result.interest}`;
+        qs("[data-principal]", root).textContent = `$${result.principal}`;
+        setStatus(root, "Compound interest calculated successfully.", "success");
+      } catch (err) {
+        qs("[data-result-grid]", root).hidden = true;
+        setStatus(root, err.message, "error");
+      }
+    });
+
+    qs("[data-sample]", root).addEventListener("click", () => {
+      qs("#ci-principal", root).value = "15000";
+      qs("#ci-rate", root).value = "7";
+      qs("#ci-time", root).value = "5";
+      qs("#ci-freq", root).value = "1";
+      setStatus(root, "Loaded a quick example.", "info");
+    });
+  }
+
   function renderAspectRatioCalculator(root, tool) {
     root.innerHTML = `
       ${renderSharedShell(tool.title)}
@@ -3008,6 +3179,273 @@
               .trim();
           }
         });
+        break;
+
+      case "sql-formatter":
+        renderTextTool(root, tool, {
+          runLabel: "Format SQL",
+          steps: ["Parsing SQL tokens", "Capitalizing keywords", "Formatting clauses"],
+          compute: async (input) => {
+            if (!input || !input.trim()) throw new Error("Please enter a SQL query to format.");
+            let sql = input.trim();
+            const keywords = [
+              "SELECT", "FROM", "WHERE", "JOIN", "LEFT JOIN", "RIGHT JOIN", "INNER JOIN", "OUTER JOIN",
+              "CROSS JOIN", "ON", "GROUP BY", "ORDER BY", "HAVING", "LIMIT", "OFFSET", "INSERT INTO",
+              "VALUES", "UPDATE", "SET", "DELETE FROM", "CREATE TABLE", "ALTER TABLE", "DROP TABLE",
+              "AND", "OR", "NOT", "IN", "IS NULL", "IS NOT NULL", "LIKE", "AS", "UNION", "ALL",
+              "CASE", "WHEN", "THEN", "ELSE", "END", "COUNT", "SUM", "AVG", "MIN", "MAX", "DISTINCT"
+            ];
+            keywords.forEach((kw) => {
+              const regex = new RegExp(`\\b${kw.replace(" ", "\\s+")}\\b`, "gi");
+              sql = sql.replace(regex, kw);
+            });
+            const newLineClauses = [
+              "SELECT", "FROM", "WHERE", "GROUP BY", "ORDER BY", "HAVING", "LIMIT", "OFFSET",
+              "JOIN", "LEFT JOIN", "RIGHT JOIN", "INNER JOIN", "OUTER JOIN", "CROSS JOIN",
+              "INSERT INTO", "VALUES", "UPDATE", "SET", "DELETE FROM"
+            ];
+            newLineClauses.forEach((clause) => {
+              const regex = new RegExp(`\\s+\\b${clause.replace(" ", "\\s+")}\\b`, "g");
+              sql = sql.replace(regex, `\n${clause}`);
+            });
+            sql = sql.replace(/,([^\s\n])/g, ", $1");
+            return sql;
+          }
+        });
+        break;
+
+      case "xml-to-json":
+        renderTextTool(root, tool, {
+          runLabel: "Convert to JSON",
+          steps: ["Reading XML markup", "Building document tree", "Formatting JSON output"],
+          compute: async (input) => {
+            if (!input || !input.trim()) throw new Error("Please enter XML data.");
+            const parser = new DOMParser();
+            const xmlDoc = parser.parseFromString(input.trim(), "text/xml");
+            const parserError = xmlDoc.querySelector("parsererror");
+            if (parserError) throw new Error("Invalid XML: " + parserError.textContent);
+
+            function domToObj(node) {
+              if (node.nodeType === 3) return node.nodeValue.trim();
+              if (node.nodeType !== 1) return null;
+              let obj = {};
+              if (node.attributes && node.attributes.length > 0) {
+                for (let i = 0; i < node.attributes.length; i++) {
+                  const attr = node.attributes[i];
+                  obj[`@${attr.nodeName}`] = attr.nodeValue;
+                }
+              }
+              let hasElementChildren = false;
+              for (let i = 0; i < node.childNodes.length; i++) {
+                const child = node.childNodes[i];
+                if (child.nodeType === 1) {
+                  hasElementChildren = true;
+                  const childName = child.nodeName;
+                  const childObj = domToObj(child);
+                  if (obj[childName] !== undefined) {
+                    if (!Array.isArray(obj[childName])) {
+                      obj[childName] = [obj[childName]];
+                    }
+                    obj[childName].push(childObj);
+                  } else {
+                    obj[childName] = childObj;
+                  }
+                }
+              }
+              if (!hasElementChildren) {
+                const text = node.textContent.trim();
+                if (Object.keys(obj).length === 0) return text;
+                if (text) obj["#text"] = text;
+              }
+              return obj;
+            }
+
+            const rootObj = {};
+            rootObj[xmlDoc.documentElement.nodeName] = domToObj(xmlDoc.documentElement);
+            return JSON.stringify(rootObj, null, 2);
+          }
+        });
+        break;
+
+      case "url-parser":
+        renderTextTool(root, tool, {
+          runLabel: "Parse URL",
+          steps: ["Validating URL", "Extracting parameters", "Generating JSON summary"],
+          compute: async (input) => {
+            if (!input || !input.trim()) throw new Error("Please enter a URL to parse.");
+            let str = input.trim();
+            if (!/^https?:\/\//i.test(str)) {
+              str = "https://" + str;
+            }
+            const u = new URL(str);
+            const queryParams = {};
+            u.searchParams.forEach((val, key) => {
+              if (queryParams[key] !== undefined) {
+                if (!Array.isArray(queryParams[key])) {
+                  queryParams[key] = [queryParams[key]];
+                }
+                queryParams[key].push(val);
+              } else {
+                queryParams[key] = val;
+              }
+            });
+            return JSON.stringify(
+              {
+                href: u.href,
+                protocol: u.protocol,
+                origin: u.origin,
+                host: u.host,
+                hostname: u.hostname,
+                port: u.port || (u.protocol === "https:" ? "443" : "80"),
+                pathname: u.pathname,
+                search: u.search,
+                hash: u.hash,
+                queryParameters: queryParams,
+              },
+              null,
+              2
+            );
+          }
+        });
+        break;
+
+      case "duplicate-line-remover":
+        renderTextTool(root, tool, {
+          runLabel: "Remove Duplicates",
+          steps: ["Scanning lines", "Filtering unique entries", "Preparing output"],
+          compute: async (input) => {
+            if (!input) return "";
+            const lines = input.split("\n");
+            const seen = new Set();
+            const result = [];
+            lines.forEach((line) => {
+              if (!seen.has(line)) {
+                seen.add(line);
+                result.push(line);
+              }
+            });
+            return result.join("\n");
+          }
+        });
+        break;
+
+      case "line-sorter":
+        renderTextTool(root, tool, {
+          runLabel: "Sort Lines",
+          steps: ["Reading lines", "Sorting alphabetically", "Preparing output"],
+          extraControls: `
+            <div class="field-group">
+              <label for="sort-direction">Sort Order</label>
+              <select id="sort-direction" class="text-input">
+                <option value="asc">A to Z (Alphabetical)</option>
+                <option value="desc">Z to A (Reverse Alphabetical)</option>
+                <option value="length">By Line Length (Short to Long)</option>
+              </select>
+            </div>
+          `,
+          compute: async (input, localRoot) => {
+            if (!input) return "";
+            const dir = qs("#sort-direction", localRoot).value;
+            const lines = input.split("\n");
+            if (dir === "asc") {
+              lines.sort((a, b) => a.localeCompare(b, undefined, { sensitivity: "base" }));
+            } else if (dir === "desc") {
+              lines.sort((a, b) => b.localeCompare(a, undefined, { sensitivity: "base" }));
+            } else if (dir === "length") {
+              lines.sort((a, b) => a.length - b.length);
+            }
+            return lines.join("\n");
+          }
+        });
+        break;
+
+      case "sha512-generator":
+        renderTextTool(root, tool, {
+          runLabel: "Generate SHA-512 Hash",
+          steps: ["Encoding text bytes", "Computing SHA-512 digest", "Formatting hex hash"],
+          compute: async (input) => {
+            const encoder = new TextEncoder();
+            const data = encoder.encode(input || "");
+            const hashBuffer = await crypto.subtle.digest("SHA-512", data);
+            const hashArray = Array.from(new Uint8Array(hashBuffer));
+            return hashArray.map((b) => b.toString(16).padStart(2, "0")).join("");
+          }
+        });
+        break;
+
+      case "json-escape":
+        renderTextTool(root, tool, {
+          runLabel: "Escape / Unescape",
+          steps: ["Reading input string", "Applying JSON escape rules", "Preparing output"],
+          compute: async (input) => {
+            if (!input) return "";
+            const trimmed = input.trim();
+            if (trimmed.startsWith('"') && trimmed.endsWith('"')) {
+              try {
+                return JSON.parse(trimmed);
+              } catch {
+                // fallthrough
+              }
+            }
+            return JSON.stringify(input);
+          }
+        });
+        break;
+
+      case "ip-calculator":
+        renderTextTool(root, tool, {
+          runLabel: "Calculate Subnet",
+          steps: ["Parsing IPv4 address", "Calculating CIDR mask", "Formatting network info"],
+          compute: async (input) => {
+            if (!input || !input.trim()) throw new Error("Please enter an IPv4 address with CIDR (e.g. 192.168.1.1/24).");
+            const match = input.trim().match(/^(\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3})\/(\d{1,2})$/);
+            if (!match) throw new Error("Invalid CIDR format. Use format like 192.168.1.1/24");
+            const ipStr = match[1];
+            const maskBits = parseInt(match[2], 10);
+            if (maskBits < 0 || maskBits > 32) throw new Error("Prefix length must be between 0 and 32.");
+            const ipOctets = ipStr.split(".").map(Number);
+            if (ipOctets.some((o) => o < 0 || o > 255)) throw new Error("Invalid IPv4 address octets.");
+
+            const maskNum = maskBits === 0 ? 0 : (~0 << (32 - maskBits)) >>> 0;
+            const wildcardNum = (~maskNum) >>> 0;
+            const ipNum = ((ipOctets[0] << 24) | (ipOctets[1] << 16) | (ipOctets[2] << 8) | ipOctets[3]) >>> 0;
+            const netNum = (ipNum & maskNum) >>> 0;
+            const bcastNum = (netNum | wildcardNum) >>> 0;
+
+            const numToIp = (num) =>
+              [(num >>> 24) & 255, (num >>> 16) & 255, (num >>> 8) & 255, num & 255].join(".");
+
+            const totalHosts = Math.pow(2, 32 - maskBits);
+            const usableHosts = maskBits >= 31 ? 0 : totalHosts - 2;
+            const firstHost = maskBits >= 31 ? "N/A" : numToIp(netNum + 1);
+            const lastHost = maskBits >= 31 ? "N/A" : numToIp(bcastNum - 1);
+
+            return JSON.stringify(
+              {
+                ipAddress: ipStr,
+                cidr: `/${maskBits}`,
+                subnetMask: numToIp(maskNum),
+                wildcardMask: numToIp(wildcardNum),
+                networkAddress: numToIp(netNum),
+                broadcastAddress: numToIp(bcastNum),
+                firstUsableHost: firstHost,
+                lastUsableHost: lastHost,
+                totalHosts: totalHosts,
+                usableHosts: usableHosts,
+              },
+              null,
+              2
+            );
+          }
+        });
+        break;
+
+      case "simple-interest-calculator":
+        renderSimpleInterestCalculator(root, tool);
+        break;
+
+      case "compound-interest-calculator":
+        renderCompoundInterestCalculator(root, tool);
         break;
 
       default:
