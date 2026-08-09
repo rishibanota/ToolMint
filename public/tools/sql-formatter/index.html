@@ -3,45 +3,61 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>SQL Formatter Online - Format & Beautify SQL Queries</title>
-  <meta name="description" content="Format, beautify, and clean SQL queries online instantly in your browser." />
+  <title>SQL Formatter Online - Beautify SQL Queries</title>
+  <meta name="description" content="Format and beautify SQL queries with clean indentation and capitalized keywords." />
   <link rel="canonical" href="https://toolmint.rishibanota.workers.dev/tools/sql-formatter/" />
-  <meta property="og:title" content="SQL Formatter Online - Format & Beautify SQL Queries" />
-  <meta property="og:description" content="Format, beautify, and clean SQL queries online instantly in your browser." />
+  <meta property="og:title" content="SQL Formatter Online - Beautify SQL Queries" />
+  <meta property="og:description" content="Format and beautify SQL queries with clean indentation and capitalized keywords." />
   <meta property="og:type" content="website" />
   <meta property="og:url" content="https://toolmint.rishibanota.workers.dev/tools/sql-formatter/" />
-  <meta name="theme-color" content="#6d5efc" />
-  <meta property="og:image" content="https://toolmint.rishibanota.workers.dev/assets/og-image.png" />
+  <meta name="theme-color" content="#6366f1" />
+  <meta property="og:image" content="https://toolmint.rishibanota.workers.dev/assets/favicon.svg" />
   <meta property="og:image:width" content="1200" />
   <meta property="og:image:height" content="630" />
   <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:title" content="SQL Formatter Online - Format & Beautify SQL Queries" />
-  <meta name="twitter:description" content="Format, beautify, and clean SQL queries online instantly in your browser." />
-  <meta name="twitter:image" content="https://toolmint.rishibanota.workers.dev/assets/og-image.png" />
+  <meta name="twitter:title" content="SQL Formatter Online - Beautify SQL Queries" />
+  <meta name="twitter:description" content="Format and beautify SQL queries with clean indentation and capitalized keywords." />
+  <meta name="twitter:image" content="https://toolmint.rishibanota.workers.dev/assets/favicon.svg" />
   <link rel="icon" href="/assets/favicon.svg" type="image/svg+xml" />
-  <link rel="stylesheet" href="/assets/styles.css?v=2" />
-  <script defer src="/assets/site-config.js?v=2"></script>
-  <script defer src="/assets/app.js?v=2"></script>
-  <script defer src="/assets/ads.js?v=1"></script>
-  <script defer src="/assets/auth.js?v=1"></script>
-  <script defer src="/assets/usage-limiter.js?v=1"></script>
-  <script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"WebApplication","name":"SQL Formatter","url":"https://toolmint.rishibanota.workers.dev/tools/sql-formatter/","applicationCategory":"DeveloperApplication","operatingSystem":"Any","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"description":"Beautify and clean messy SQL statements with standard clause formatting."},{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://toolmint.rishibanota.workers.dev/"},{"@type":"ListItem","position":2,"name":"Developer","item":"https://toolmint.rishibanota.workers.dev/category/developer/"},{"@type":"ListItem","position":3,"name":"SQL Formatter"}]},{"@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Is my database query kept private?","acceptedAnswer":{"@type":"Answer","text":"Yes, all SQL formatting happens entirely in your browser."}},{"@type":"Question","name":"Which SQL dialects are supported?","acceptedAnswer":{"@type":"Answer","text":"It formats standard SQL clauses compatible with MySQL, PostgreSQL, SQLite, and SQL Server."}}]}]}</script>
+  <link rel="stylesheet" href="/assets/styles.css?v=4" />
+  
+  <script defer src="/assets/site-config.js?v=4"></script>
+  <script defer src="/assets/app.js?v=4"></script>
+  <script defer src="/assets/ads.js?v=2"></script>
+  <script defer src="/assets/auth.js?v=2"></script>
+  <script defer src="/assets/usage-limiter.js?v=2"></script>
+  <script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"WebApplication","name":"SQL Formatter","url":"https://toolmint.rishibanota.workers.dev/tools/sql-formatter/","applicationCategory":"DeveloperApplication","operatingSystem":"Any","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"description":"Format and beautify SQL queries with clean indentation and capitalized keywords."},{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://toolmint.rishibanota.workers.dev/"},{"@type":"ListItem","position":2,"name":"Developer & Data","item":"https://toolmint.rishibanota.workers.dev/category/developer/"},{"@type":"ListItem","position":3,"name":"SQL Formatter"}]},{"@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Is my data stored or uploaded when using SQL Formatter?","acceptedAnswer":{"@type":"Answer","text":"No. All computations in SQL Formatter take place 100% locally inside your web browser. Your inputs never leave your device."}},{"@type":"Question","name":"Is SQL Formatter free to use?","acceptedAnswer":{"@type":"Answer","text":"Yes! SQL Formatter is completely free to use without registration or forced software downloads."}}]}]}</script>
 </head>
 <body>
   <div class="site-shell">
-    <header class="site-header">
-      <div class="container header-inner">
-        <a class="brand" href="/"><span class="brand-mark">✦</span><span>ToolMint</span></a>
-        <nav class="nav"><a href="/">Home</a><a href="/category/developer/">Developer</a><a href="/category/image/">Image</a><a href="/category/calculators/">Calculators</a><a href="/about/">About</a></nav>
-      </div>
-    </header>
+      <header class="site-header">
+        <div class="container header-inner">
+          <a class="brand" href="/"
+            ><span class="brand-mark">✦</span><span>ToolMint</span></a
+          >
+          <button class="mobile-nav-toggle" id="mobile-nav-toggle" aria-label="Toggle navigation menu">
+            <span aria-hidden="true">☰</span>
+          </button>
+          <nav class="nav" id="site-nav">
+            <a href="/" class="">Home</a>
+            <a href="/category/developer/" class="active">Developer</a>
+            <a href="/category/text/" class="">Text</a>
+            <a href="/category/calculators/" class="">Calculators</a>
+            <a href="/category/image/" class="">Image</a>
+            <a href="/category/pdf/" class="">PDF &amp; Docs <span class="nav-badge">New</span></a>
+            <a href="/about/" class="">About</a>
+          </nav>
+        </div>
+      </header>
     <main>
       <section class="page-hero small">
         <div class="container">
-          <nav class="breadcrumbs"><a href="/">Home</a><span>›</span><a href="/category/developer/">Developer</a><span>›</span><span>SQL Formatter</span></nav>
-          <span class="eyebrow">Developer tool</span>
+          <nav class="breadcrumbs">
+            <a href="/">Home</a><span>›</span><a href="/category/developer/">Developer & Data</a><span>›</span><span>SQL Formatter</span>
+          </nav>
+          <span class="eyebrow">Developer & Data Tool</span>
           <h1>SQL Formatter</h1>
-          <p class="hero-copy">Beautify and clean messy SQL statements with standard clause formatting.</p>
+          <p class="hero-copy">Format, beautify, and clean SQL queries online instantly.</p>
         </div>
       </section>
 
@@ -51,28 +67,32 @@
             <div class="tool-panel">
               <div class="tool-panel-head">
                 <div>
-                  <h2>Use this tool</h2>
+                  <h2>SQL Formatter</h2>
                 </div>
-                <span class="privacy-badge">Local processing</span>
+                <span class="privacy-badge">🔒 100% Local Browser Processing</span>
               </div>
               <div id="tool-root" class="tool-root"></div>
             </div>
             <div class="ad-card" data-ad-slot="content-inline">
-              <div class="ad-placeholder">Ad space reserved. Keep disabled until your site is approved.</div>
+              <div class="ad-placeholder">Ad space reserved.</div>
             </div>
           </div>
           <aside class="tool-sidebar">
             <div class="side-card">
-              <h3>Why users like this</h3>
+              <h3>Why users choose ToolMint</h3>
               <ul class="feature-list">
-                <li>No login required</li>
-                <li>Instant client-side formatting</li>
-                <li>Capitalizes keywords automatically</li>
+                <li>Zero data logging or cloud storage</li>
+                <li>Instant client-side execution speed</li>
+                <li>Mobile and desktop optimized UI</li>
               </ul>
             </div>
             <div class="side-card">
               <h3>How to use</h3>
-              <ol class="steps-list"><li>Paste unformatted SQL code.</li><li>Click Format SQL.</li><li>Copy structured, readable SQL output.</li></ol>
+              <ol class="steps-list">
+                <li>Paste or select your input data.</li>
+                <li>Configure optional tool options or click the primary action button.</li>
+                <li>Copy the formatted output or download the resulting file.</li>
+              </ol>
             </div>
             <div class="ad-card" data-ad="rectangle" style="position:sticky; top:88px"></div>
           </aside>
@@ -82,49 +102,90 @@
       <section class="section soft-section">
         <div class="container faq-wrap">
           <div class="section-heading">
-            <h2>Frequently asked questions</h2>
+            <h2>Frequently Asked Questions</h2>
           </div>
-          <details class="faq-item"><summary>Is my database query kept private?</summary><p>Yes, all SQL formatting happens entirely in your browser.</p></details>
-          <details class="faq-item"><summary>Which SQL dialects are supported?</summary><p>It formats standard SQL clauses compatible with MySQL, PostgreSQL, SQLite, and SQL Server.</p></details>
+          <details class="faq-item" open>
+            <summary>Is my data stored or uploaded when using SQL Formatter?</summary>
+            <p>No. All calculations and transformations run entirely in your web browser using client-side JavaScript. Your data never leaves your computer or phone.</p>
+          </details>
+          <details class="faq-item">
+            <summary>Is SQL Formatter free to use?</summary>
+            <p>Yes! ToolMint provides 100% free browser-based productivity utilities with no account requirement.</p>
+          </details>
         </div>
       </section>
 
       <section class="section">
         <div class="container">
           <div class="section-heading">
-            <h2>Related tools</h2>
+            <h2>Related Tools</h2>
           </div>
           <div class="tool-grid related-grid">
-            <article class="tool-card" data-category="developer" data-search="json formatter beautify and validate json instantly in your browser.">
-              <div class="tool-card-top"><span class="tool-icon">{}</span><span class="pill">Developer</span></div>
-              <h3><a href="/tools/json-formatter/">JSON Formatter</a></h3>
-              <p>Beautify and validate JSON instantly in your browser.</p>
-              <a class="tool-link" href="/tools/json-formatter/">Open tool <span aria-hidden="true">→</span></a>
-            </article>
+              <article class="tool-card" data-category="developer" data-trending="true" data-search="css gradient generator create beautiful linear and radial css gradients with live preview and instant css code copy. css gradient generator background gradient css linear gradient builder">
+                <div class="tool-card-top">
+                  <span class="tool-icon">🎨</span>
+                  <span class="pill trending-pill">🔥 Trending</span>
+                </div>
+                <h3><a href="/tools/css-gradient-generator/">CSS Gradient Generator</a></h3>
+                <p>Create beautiful linear and radial CSS gradients with live preview and instant CSS code copy.</p>
+                <a class="tool-link" href="/tools/css-gradient-generator/">Open tool <span aria-hidden="true">→</span></a>
+              </article>
+              <article class="tool-card" data-category="developer" data-trending="true" data-search="glassmorphism generator customize backdrop blur, opacity, borders, and shadows to generate modern glass ui css code. glassmorphism generator css glass effect backdrop filter css generator">
+                <div class="tool-card-top">
+                  <span class="tool-icon">✨</span>
+                  <span class="pill trending-pill">🔥 Trending</span>
+                </div>
+                <h3><a href="/tools/glassmorphism-generator/">Glassmorphism Generator</a></h3>
+                <p>Customize backdrop blur, opacity, borders, and shadows to generate modern glass UI CSS code.</p>
+                <a class="tool-link" href="/tools/glassmorphism-generator/">Open tool <span aria-hidden="true">→</span></a>
+              </article>
+              <article class="tool-card" data-category="developer" data-trending="true" data-search="cron expression parser parse cron schedule syntax into plain english explanations and next run schedules. cron parser cron expression generator crontab visualizer">
+                <div class="tool-card-top">
+                  <span class="tool-icon">⏰</span>
+                  <span class="pill trending-pill">🔥 Trending</span>
+                </div>
+                <h3><a href="/tools/cron-expression-parser/">Cron Expression Parser</a></h3>
+                <p>Parse cron schedule syntax into plain English explanations and next run schedules.</p>
+                <a class="tool-link" href="/tools/cron-expression-parser/">Open tool <span aria-hidden="true">→</span></a>
+              </article>
           </div>
         </div>
       </section>
 
-      <script id="tool-data" type="application/json">{"id": "sql-formatter", "slug": "sql-formatter", "title": "SQL Formatter", "category": "developer", "icon": "SQL", "type": "text", "summary": "Beautify and clean messy SQL statements with standard clause formatting.", "seo_title": "SQL Formatter Online - Format & Beautify SQL Queries", "meta_description": "Format, beautify, and clean SQL queries online instantly in your browser.", "keywords": ["sql formatter", "format sql", "sql beautifier"]}</script>
+      <script id="tool-data" type="application/json">{"id": "sql-formatter", "slug": "sql-formatter", "title": "SQL Formatter", "category": "developer", "icon": "SQL", "type": "text", "summary": "Format, beautify, and clean SQL queries online instantly.", "seo_title": "SQL Formatter Online - Beautify SQL Queries", "meta_description": "Format and beautify SQL queries with clean indentation and capitalized keywords.", "keywords": ["sql formatter", "sql beautifier", "format sql query"]}</script>
     </main>
     <footer class="site-footer">
       <div class="container footer-grid">
         <div>
           <h3>ToolMint</h3>
-          <p>ToolMint is a privacy-friendly collection of online utilities for text, developer data, images, and everyday calculators. All tools run directly in your browser.</p>
-          <p class="muted">© 2026 ToolMint. Built for fast browser-side tools.</p>
+          <p>ToolMint is a privacy-friendly collection of 72+ browser-side utilities for developer data, text formatting, image tools, PDFs, and everyday calculators.</p>
+          <p class="footer-bottom" style="margin-top:1rem; text-align:left; padding-top:0; border:none;">© 2026 ToolMint. 100% Client-Side Processing.</p>
         </div>
         <div>
-          <h4>Useful pages</h4>
-          <div class="footer-links"><a href="/about/">About</a><a href="/privacy/">Privacy</a><a href="/terms/">Terms</a><a href="/contact/">Contact</a><a href="/sitemap.xml">Sitemap</a></div>
+          <h4>Categories &amp; Tools</h4>
+          <div class="footer-links">
+            <a href="/category/developer/">Developer &amp; Data</a>
+            <a href="/category/text/">Text Utilities</a>
+            <a href="/category/calculators/">Calculators</a>
+            <a href="/category/image/">Image Tools</a>
+            <a href="/category/pdf/">PDF &amp; Document Tools</a>
+          </div>
         </div>
         <div>
-          <h4>Privacy-first setup</h4>
+          <h4>Privacy &amp; Security</h4>
           <ul class="footer-list">
-            <li>Most tools run locally in the browser</li>
-            <li>No login wall or forced upload</li>
-            <li>Fast static pages</li>
+            <li>100% Client-Side Browser Execution</li>
+            <li>No file uploads to external servers</li>
+            <li>Instant offline performance</li>
+            <li>Free to use anytime</li>
           </ul>
+          <div class="footer-links" style="margin-top:1rem;">
+            <a href="/about/">About ToolMint</a>
+            <a href="/privacy/">Privacy Policy</a>
+            <a href="/terms/">Terms of Service</a>
+            <a href="/contact/">Contact Us</a>
+            <a href="/sitemap.xml">Sitemap</a>
+          </div>
         </div>
       </div>
     </footer>

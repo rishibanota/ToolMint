@@ -169,7 +169,7 @@
     try {
       const result = await task();
       const elapsed = performance.now() - started;
-      if (elapsed < 900) await sleep(900 - elapsed);
+      // Instant execution without artificial delay
       clearInterval(timer);
       if (progressBar) progressBar.style.width = "100%";
       if (progressText) progressText.textContent = "Finished successfully";
@@ -365,16 +365,18 @@
     });
   }
 
-  async function resizeImage(file, width, format, quality) {
+  async function resizeImage(file, targetWidth, targetHeight, format, quality) {
     const dataUrl = await readFileAsDataURL(file);
     const img = await loadImage(dataUrl);
-    const ratio = width / img.width;
-    const height = Math.round(img.height * ratio);
+    const w = targetWidth || img.width;
+    const h = targetHeight || Math.round(img.height * (w / img.width));
+
     const canvas = document.createElement("canvas");
-    canvas.width = width;
-    canvas.height = height;
+    canvas.width = w;
+    canvas.height = h;
     const ctx = canvas.getContext("2d");
-    ctx.drawImage(img, 0, 0, width, height);
+    ctx.drawImage(img, 0, 0, w, h);
+
     const mime = format === "jpg" ? "image/jpeg" : `image/${format}`;
     const outUrl = canvas.toDataURL(
       mime,
@@ -382,8 +384,8 @@
     );
     return {
       outUrl,
-      width,
-      height,
+      width: w,
+      height: h,
       originalWidth: img.width,
       originalHeight: img.height,
     };
@@ -650,20 +652,24 @@
     });
   }
 
-  function renderImageResizer(root, tool) {
+    function renderImageResizer(root, tool) {
     root.innerHTML = `
       ${renderSharedShell(tool.title)}
       <div class="tool-workspace">
-        <div class="three-col-grid">
-          <div class="field-group">
-            <label for="image-file">Choose image</label>
+        <div class="field-group" style="display:grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap:1rem;">
+          <div>
+            <label for="image-file">Choose Image</label>
             <input id="image-file" class="text-input" type="file" accept="image/*" />
           </div>
-          <div class="field-group">
-            <label for="resize-width">Output width (px)</label>
-            <input id="resize-width" class="text-input" type="number" min="32" value="1200" />
+          <div>
+            <label for="resize-width">Output Width (px)</label>
+            <input id="resize-width" class="text-input" type="number" min="10" placeholder="Width" />
           </div>
-          <div class="field-group">
+          <div>
+            <label for="resize-height">Output Height (px)</label>
+            <input id="resize-height" class="text-input" type="number" min="10" placeholder="Height" />
+          </div>
+          <div>
             <label for="resize-format">Format</label>
             <select id="resize-format" class="text-input">
               <option value="jpg">JPG</option>
@@ -672,12 +678,16 @@
             </select>
           </div>
         </div>
+        <div class="field-group" style="display:flex; align-items:center; gap:0.5rem; margin-top:0.3rem;">
+          <input type="checkbox" id="resize-aspect" checked style="width:18px; height:18px; cursor:pointer;" />
+          <label for="resize-aspect" style="cursor:pointer; font-weight:600; font-size:0.88rem;">Lock Aspect Ratio</label>
+        </div>
         <div class="field-group">
           <label for="resize-quality">Quality for JPG/WebP: <span data-quality-label>0.85</span></label>
           <input id="resize-quality" type="range" min="0.4" max="1" step="0.05" value="0.85" />
         </div>
         <div class="action-row">
-          <button class="btn btn-primary" data-run>Resize image</button>
+          <button class="btn btn-primary" data-run>Resize Image</button>
           <button class="btn btn-secondary" data-clear>Clear</button>
         </div>
         <div class="preview-grid">
@@ -702,6 +712,8 @@
 
     const fileInput = qs("#image-file", root);
     const widthInput = qs("#resize-width", root);
+    const heightInput = qs("#resize-height", root);
+    const aspectCheckbox = qs("#resize-aspect", root);
     const formatInput = qs("#resize-format", root);
     const qualityInput = qs("#resize-quality", root);
     const qualityLabel = qs("[data-quality-label]", root);
@@ -711,6 +723,7 @@
     const originalPreview = qs("[data-original-preview]", root);
     const outputPreview = qs("[data-output-preview]", root);
     let latestOutput = null;
+    let aspectRatio = null;
 
     qualityInput.addEventListener("input", () => {
       qualityLabel.textContent = Number(qualityInput.value).toFixed(2);
@@ -719,8 +732,35 @@
     fileInput.addEventListener("change", async () => {
       const file = fileInput.files?.[0];
       if (!file) return;
-      originalPreview.src = await readFileAsDataURL(file);
+      const dataUrl = await readFileAsDataURL(file);
+      originalPreview.src = dataUrl;
       originalWrap.hidden = false;
+
+      const img = new Image();
+      img.onload = () => {
+        aspectRatio = img.width / img.height;
+        widthInput.value = img.width;
+        heightInput.value = img.height;
+      };
+      img.src = dataUrl;
+    });
+
+    widthInput.addEventListener("input", () => {
+      if (aspectCheckbox.checked && aspectRatio && widthInput.value) {
+        const w = Number(widthInput.value);
+        if (w > 0) {
+          heightInput.value = Math.round(w / aspectRatio);
+        }
+      }
+    });
+
+    heightInput.addEventListener("input", () => {
+      if (aspectCheckbox.checked && aspectRatio && heightInput.value) {
+        const h = Number(heightInput.value);
+        if (h > 0) {
+          widthInput.value = Math.round(h * aspectRatio);
+        }
+      }
     });
 
     qs("[data-run]", root).addEventListener("click", async () => {
@@ -728,26 +768,34 @@
         const file = fileInput.files?.[0];
         if (!file) throw new Error("Please choose an image first.");
         const width = Number(widthInput.value);
-        if (!width || width < 32)
-          throw new Error("Please enter a sensible width above 32 pixels.");
+        const height = Number(heightInput.value);
+        if (!width || width < 10)
+          throw new Error("Please enter a valid width above 10 pixels.");
+        if (!height || height < 10)
+          throw new Error("Please enter a valid height above 10 pixels.");
+
         latestOutput = await withProgress(
           root,
           [
             "Reading image",
-            "Resizing on your device",
-            "Rendering the download",
+            "Resizing to custom width & height",
+            "Rendering download",
           ],
           async () =>
             resizeImage(
               file,
               width,
+              height,
               formatInput.value,
               Number(qualityInput.value),
             ),
         );
         outputPreview.src = latestOutput.outUrl;
         outputWrap.hidden = false;
-        output.value = `Original size: ${latestOutput.originalWidth} × ${latestOutput.originalHeight}\nOutput size: ${latestOutput.width} × ${latestOutput.height}\nFormat: ${formatInput.value.toUpperCase()}\nQuality: ${Number(qualityInput.value).toFixed(2)}`;
+        output.value = `Original size: ${latestOutput.originalWidth} × ${latestOutput.originalHeight} px
+Output size: ${latestOutput.width} × ${latestOutput.height} px
+Format: ${formatInput.value.toUpperCase()}
+Quality: ${Number(qualityInput.value).toFixed(2)}`;
         setStatus(
           root,
           "Image resized successfully. Download is ready.",
@@ -768,10 +816,13 @@
 
     qs("[data-clear]", root).addEventListener("click", () => {
       fileInput.value = "";
+      widthInput.value = "";
+      heightInput.value = "";
       output.value = "";
       originalWrap.hidden = true;
       outputWrap.hidden = true;
       latestOutput = null;
+      aspectRatio = null;
       setStatus(root, "Cleared. Select another image to continue.", "info");
     });
   }
@@ -2213,22 +2264,112 @@
     document.head.appendChild(script);
   }
 
-  function initSearch() {
+    function initSearch() {
     const input = qs("#tool-search");
-    if (!input) return;
+    const clearBtn = qs("#search-clear");
+    const countLabel = qs("#search-count");
+    const categoryTabs = qsa(".cat-tab");
     const cards = qsa(".tool-card");
-    input.addEventListener("input", () => {
-      const q = input.value.trim().toLowerCase();
+    const heroBtnTrending = qs("#hero-btn-trending");
+    const heroBtnAll = qs("#hero-btn-all");
+
+    let activeFilter = "all";
+
+    function filterTools() {
+      const q = input ? input.value.trim().toLowerCase() : "";
+      if (clearBtn) clearBtn.style.display = q ? "block" : "none";
+
+      let visibleCount = 0;
+
       cards.forEach((card) => {
+        const cat = card.dataset.category;
+        const isTrending = card.dataset.trending === "true";
         const hay = card.dataset.search || "";
-        const matches = !q || hay.includes(q);
-        if (matches) {
+
+        const matchesQuery = !q || hay.includes(q);
+        let matchesCategory = true;
+
+        if (activeFilter === "trending") {
+          matchesCategory = isTrending;
+        } else if (activeFilter !== "all") {
+          matchesCategory = cat === activeFilter;
+        }
+
+        if (matchesQuery && matchesCategory) {
           card.classList.remove("card-hide");
+          visibleCount++;
         } else {
           card.classList.add("card-hide");
         }
       });
+
+      if (countLabel) {
+        countLabel.textContent = `Showing ${visibleCount} tool${visibleCount === 1 ? "" : "s"}`;
+      }
+    }
+
+    if (input) {
+      input.addEventListener("input", filterTools);
+    }
+
+    if (clearBtn) {
+      clearBtn.addEventListener("click", () => {
+        input.value = "";
+        filterTools();
+        input.focus();
+      });
+    }
+
+    function setActiveTab(filterName) {
+      activeFilter = filterName;
+      categoryTabs.forEach((t) => {
+        if (t.dataset.filter === filterName) {
+          t.classList.add("active");
+        } else {
+          t.classList.remove("active");
+        }
+      });
+      filterTools();
+    }
+
+    categoryTabs.forEach((tab) => {
+      tab.addEventListener("click", () => {
+        setActiveTab(tab.dataset.filter || "all");
+      });
     });
+
+    if (heroBtnTrending) {
+      heroBtnTrending.addEventListener("click", (e) => {
+        e.preventDefault();
+        setActiveTab("trending");
+        const target = qs("#all-tools");
+        if (target) target.scrollIntoView({ behavior: "smooth" });
+      });
+    }
+
+    if (heroBtnAll) {
+      heroBtnAll.addEventListener("click", (e) => {
+        e.preventDefault();
+        setActiveTab("all");
+        const target = qs("#all-tools");
+        if (target) target.scrollIntoView({ behavior: "smooth" });
+      });
+    }
+
+    document.addEventListener("keydown", (e) => {
+      if (
+        (e.key === "/" && document.activeElement.tagName !== "INPUT" && document.activeElement.tagName !== "TEXTAREA") ||
+        ((e.metaKey || e.ctrlKey) && e.key === "k")
+      ) {
+        e.preventDefault();
+        if (input) {
+          input.focus();
+          input.select();
+        }
+      }
+    });
+
+    filterTools();
   }
 
   function initToolPage() {
@@ -2238,6 +2379,39 @@
     const tool = JSON.parse(toolDataNode.textContent);
 
     switch (tool.id) {
+            case "pdf-to-image":
+        renderPdfToImage(root, tool);
+        break;
+      case "image-format-converter":
+        renderImageFormatConverter(root, tool);
+        break;
+      case "pdf-page-rotator":
+        renderPdfPageRotator(root, tool);
+        break;
+      case "pdf-merger":
+        renderPdfMerger(root, tool);
+        break;
+      case "image-to-pdf":
+        renderImageToPdf(root, tool);
+        break;
+      case "css-gradient-generator":
+        renderCssGradientGenerator(root, tool);
+        break;
+      case "glassmorphism-generator":
+        renderGlassmorphismGenerator(root, tool);
+        break;
+      case "color-palette-generator":
+        renderColorPaletteGenerator(root, tool);
+        break;
+      case "cron-expression-parser":
+        renderCronParser(root, tool);
+        break;
+      case "meta-tag-generator":
+        renderMetaTagGenerator(root, tool);
+        break;
+      case "svg-optimizer":
+        renderSvgOptimizer(root, tool);
+        break;
       case "json-formatter":
         renderTextTool(root, tool, {
           runLabel: "Format JSON",
@@ -3583,7 +3757,820 @@
   }
 
 
-  function initFeedbackSection() {
+  
+  function renderPdfMerger(root, tool) {
+    root.innerHTML = `
+      ${renderSharedShell(tool.title)}
+      <div class="tool-workspace">
+        <div class="field-group">
+          <label for="pdf-file-input">Select PDF Files</label>
+          <input type="file" id="pdf-file-input" accept="application/pdf" multiple class="text-input" />
+          <p class="muted" style="margin-top:0.3rem; font-size:0.85rem;">Select multiple PDF files to merge into a single PDF document.</p>
+        </div>
+        <div id="pdf-files-list" class="field-group" style="display:flex; flex-direction:column; gap:0.5rem;"></div>
+        <div class="action-row">
+          <button class="btn btn-primary" id="btn-run-pdf-merge">Merge PDF Files</button>
+          <button class="btn btn-secondary" id="btn-clear-pdf-merge">Clear Files</button>
+        </div>
+        <div id="pdf-merge-status"></div>
+      </div>
+    `;
+
+    const fileInput = qs("#pdf-file-input", root);
+    const filesList = qs("#pdf-files-list", root);
+    const mergeBtn = qs("#btn-run-pdf-merge", root);
+    const clearBtn = qs("#btn-clear-pdf-merge", root);
+
+    let selectedFiles = [];
+
+    fileInput.addEventListener("change", (e) => {
+      selectedFiles = selectedFiles.concat(Array.from(e.target.files));
+      updateFileList();
+    });
+
+    function updateFileList() {
+      filesList.innerHTML = selectedFiles.map((file, idx) => `
+        <div style="display:flex; align-items:center; justify-content:space-between; padding:0.6rem 0.9rem; background:rgba(255,255,255,0.06); border-radius:8px; border:1px solid rgba(255,255,255,0.1);">
+          <span>📄 ${idx + 1}. <strong>${file.name}</strong> (${(file.size / 1024 / 1024).toFixed(2)} MB)</span>
+          <button class="mini-btn" data-remove="${idx}">Remove</button>
+        </div>
+      `).join("");
+
+      qsa("[data-remove]", filesList).forEach(btn => {
+        btn.addEventListener("click", () => {
+          const idx = parseInt(btn.dataset.remove, 10);
+          selectedFiles.splice(idx, 1);
+          updateFileList();
+        });
+      });
+    }
+
+    clearBtn.addEventListener("click", () => {
+      selectedFiles = [];
+      fileInput.value = "";
+      updateFileList();
+      setStatus(root, "Cleared files list.", "info");
+    });
+
+    mergeBtn.addEventListener("click", async () => {
+      if (selectedFiles.length < 2) {
+        setStatus(root, "Please select at least 2 PDF files to merge.", "error");
+        return;
+      }
+      try {
+        setStatus(root, "Merging PDF files in browser...", "info");
+
+        if (typeof PDFLib === "undefined") {
+          throw new Error("PDF processing library is loading, please try again in a moment.");
+        }
+
+        const mergedPdf = await PDFLib.PDFDocument.create();
+
+        for (const file of selectedFiles) {
+          const arrayBuffer = await file.arrayBuffer();
+          const pdf = await PDFLib.PDFDocument.load(arrayBuffer);
+          const copiedPages = await mergedPdf.copyPages(pdf, pdf.getPageIndices());
+          copiedPages.forEach((page) => mergedPdf.addPage(page));
+        }
+
+        const pdfBytes = await mergedPdf.save();
+        const blob = new Blob([pdfBytes], { type: "application/pdf" });
+        const url = URL.createObjectURL(blob);
+
+        const a = document.createElement("a");
+        a.href = url;
+        a.download = "merged_document.pdf";
+        a.click();
+
+        setStatus(root, "PDFs merged successfully! Download started.", "success");
+      } catch (err) {
+        setStatus(root, err.message || "Failed to merge PDFs.", "error");
+      }
+    });
+  }
+
+  function renderImageToPdf(root, tool) {
+    root.innerHTML = `
+      ${renderSharedShell(tool.title)}
+      <div class="tool-workspace">
+        <div class="field-group">
+          <label for="img-file-input">Select Image Files (JPG, PNG, WebP)</label>
+          <input type="file" id="img-file-input" accept="image/*" multiple class="text-input" />
+        </div>
+        <div id="img-files-list" class="field-group" style="display:flex; flex-wrap:wrap; gap:0.75rem;"></div>
+        <div class="action-row">
+          <button class="btn btn-primary" id="btn-run-img-pdf">Convert Images to PDF</button>
+          <button class="btn btn-secondary" id="btn-clear-img-pdf">Clear Images</button>
+        </div>
+      </div>
+    `;
+
+    const fileInput = qs("#img-file-input", root);
+    const filesList = qs("#img-files-list", root);
+    const convertBtn = qs("#btn-run-img-pdf", root);
+    const clearBtn = qs("#btn-clear-img-pdf", root);
+
+    let selectedFiles = [];
+
+    fileInput.addEventListener("change", (e) => {
+      selectedFiles = selectedFiles.concat(Array.from(e.target.files));
+      updateList();
+    });
+
+    function updateList() {
+      filesList.innerHTML = selectedFiles.map((file, idx) => `
+        <div style="position:relative; width:90px; height:90px; border-radius:10px; overflow:hidden; border:1px solid rgba(255,255,255,0.2);">
+          <img src="${URL.createObjectURL(file)}" style="width:100%; height:100%; object-fit:cover;" />
+          <button data-remove="${idx}" style="position:absolute; top:2px; right:2px; background:rgba(0,0,0,0.7); color:#fff; border:none; border-radius:50%; width:20px; height:20px; font-size:12px; cursor:pointer;">✕</button>
+        </div>
+      `).join("");
+
+      qsa("[data-remove]", filesList).forEach(btn => {
+        btn.addEventListener("click", () => {
+          const idx = parseInt(btn.dataset.remove, 10);
+          selectedFiles.splice(idx, 1);
+          updateList();
+        });
+      });
+    }
+
+    clearBtn.addEventListener("click", () => {
+      selectedFiles = [];
+      fileInput.value = "";
+      updateList();
+      setStatus(root, "Cleared images list.", "info");
+    });
+
+    convertBtn.addEventListener("click", async () => {
+      if (selectedFiles.length === 0) {
+        setStatus(root, "Please select at least one image file.", "error");
+        return;
+      }
+      try {
+        setStatus(root, "Converting images to PDF...", "info");
+
+        if (typeof PDFLib === "undefined") {
+          throw new Error("PDF processing library loading, please try again in a moment.");
+        }
+
+        const pdfDoc = await PDFLib.PDFDocument.create();
+
+        for (const file of selectedFiles) {
+          const arrayBuffer = await file.arrayBuffer();
+          let image;
+          if (file.type === "image/png") {
+            image = await pdfDoc.embedPng(arrayBuffer);
+          } else {
+            image = await pdfDoc.embedJpg(arrayBuffer);
+          }
+          const page = pdfDoc.addPage([image.width, image.height]);
+          page.drawImage(image, { x: 0, y: 0, width: image.width, height: image.height });
+        }
+
+        const pdfBytes = await pdfDoc.save();
+        const blob = new Blob([pdfBytes], { type: "application/pdf" });
+        const url = URL.createObjectURL(blob);
+
+        const a = document.createElement("a");
+        a.href = url;
+        a.download = "images_document.pdf";
+        a.click();
+
+        setStatus(root, "PDF generated and downloaded successfully!", "success");
+      } catch (err) {
+        setStatus(root, err.message || "Failed to convert images to PDF.", "error");
+      }
+    });
+  }
+
+  function renderCssGradientGenerator(root, tool) {
+    root.innerHTML = `
+      ${renderSharedShell(tool.title)}
+      <div class="tool-workspace">
+        <div id="grad-preview" style="height: 180px; border-radius: 14px; border: 1px solid rgba(255,255,255,0.15); box-shadow: 0 10px 30px rgba(0,0,0,0.3); transition: background 0.3s ease;"></div>
+        <div class="field-group" style="display:grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap:1rem;">
+          <div>
+            <label for="grad-type">Gradient Type</label>
+            <select id="grad-type" class="text-input">
+              <option value="linear">Linear</option>
+              <option value="radial">Radial</option>
+            </select>
+          </div>
+          <div>
+            <label for="grad-angle">Angle (<span id="grad-angle-val">135</span>°)</label>
+            <input type="range" id="grad-angle" min="0" max="360" value="135" class="text-input" />
+          </div>
+          <div>
+            <label for="grad-color1">Color 1</label>
+            <input type="color" id="grad-color1" value="#6366f1" style="height:42px; width:100%; cursor:pointer; background:none; border:1px solid rgba(255,255,255,0.2); border-radius:8px;" />
+          </div>
+          <div>
+            <label for="grad-color2">Color 2</label>
+            <input type="color" id="grad-color2" value="#06b6d4" style="height:42px; width:100%; cursor:pointer; background:none; border:1px solid rgba(255,255,255,0.2); border-radius:8px;" />
+          </div>
+        </div>
+        <div class="field-group">
+          <div class="output-head">
+            <label for="grad-output">CSS Property</label>
+            <button class="mini-btn" id="btn-copy-grad">Copy CSS</button>
+          </div>
+          <textarea id="grad-output" class="big-textarea output" readonly style="min-height:90px;"></textarea>
+        </div>
+      </div>
+    `;
+
+    const preview = qs("#grad-preview", root);
+    const typeSelect = qs("#grad-type", root);
+    const angleRange = qs("#grad-angle", root);
+    const angleVal = qs("#grad-angle-val", root);
+    const color1Input = qs("#grad-color1", root);
+    const color2Input = qs("#grad-color2", root);
+    const output = qs("#grad-output", root);
+    const copyBtn = qs("#btn-copy-grad", root);
+
+    function updateGradient() {
+      const type = typeSelect.value;
+      const angle = angleRange.value;
+      const c1 = color1Input.value;
+      const c2 = color2Input.value;
+
+      angleVal.textContent = angle;
+
+      let css = "";
+      if (type === "linear") {
+        css = `background: linear-gradient(${angle}deg, ${c1}, ${c2});`;
+      } else {
+        css = `background: radial-gradient(circle at center, ${c1}, ${c2});`;
+      }
+
+      preview.style.cssText = `height: 180px; border-radius: 14px; border: 1px solid rgba(255,255,255,0.15); box-shadow: 0 10px 30px rgba(0,0,0,0.3); ${css}`;
+      output.value = css;
+    }
+
+    typeSelect.addEventListener("input", updateGradient);
+    angleRange.addEventListener("input", updateGradient);
+    color1Input.addEventListener("input", updateGradient);
+    color2Input.addEventListener("input", updateGradient);
+    copyBtn.addEventListener("click", () => copyText(output.value, copyBtn));
+
+    updateGradient();
+  }
+
+  function renderGlassmorphismGenerator(root, tool) {
+    root.innerHTML = `
+      ${renderSharedShell(tool.title)}
+      <div class="tool-workspace">
+        <div style="background: linear-gradient(135deg, #6366f1, #06b6d4); padding: 2.5rem; border-radius: 16px; display:grid; place-items:center;">
+          <div id="glass-box" style="padding:2rem; width:100%; max-width:320px; color:#fff; text-align:center;">
+            <h4 style="margin:0 0 0.5rem; font-weight:700;">Glass Card</h4>
+            <p style="margin:0; font-size:0.88rem; opacity:0.9;">Frosted glass live UI effect</p>
+          </div>
+        </div>
+        <div class="field-group" style="display:grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap:1rem;">
+          <div>
+            <label for="glass-blur">Blur (<span id="glass-blur-val">16</span>px)</label>
+            <input type="range" id="glass-blur" min="0" max="40" value="16" class="text-input" />
+          </div>
+          <div>
+            <label for="glass-opacity">Opacity (<span id="glass-opacity-val">0.25</span>)</label>
+            <input type="range" id="glass-opacity" min="0.05" max="0.9" step="0.05" value="0.25" class="text-input" />
+          </div>
+          <div>
+            <label for="glass-border">Border (<span id="glass-border-val">0.18</span>)</label>
+            <input type="range" id="glass-border" min="0" max="0.6" step="0.02" value="0.18" class="text-input" />
+          </div>
+        </div>
+        <div class="field-group">
+          <div class="output-head">
+            <label for="glass-output">CSS Properties</label>
+            <button class="mini-btn" id="btn-copy-glass">Copy CSS</button>
+          </div>
+          <textarea id="glass-output" class="big-textarea output" readonly style="min-height:120px;"></textarea>
+        </div>
+      </div>
+    `;
+
+    const box = qs("#glass-box", root);
+    const blurInput = qs("#glass-blur", root);
+    const opacityInput = qs("#glass-opacity", root);
+    const borderInput = qs("#glass-border", root);
+    const blurVal = qs("#glass-blur-val", root);
+    const opacityVal = qs("#glass-opacity-val", root);
+    const borderVal = qs("#glass-border-val", root);
+    const output = qs("#glass-output", root);
+    const copyBtn = qs("#btn-copy-glass", root);
+
+    function updateGlass() {
+      const b = blurInput.value;
+      const o = opacityInput.value;
+      const br = borderInput.value;
+
+      blurVal.textContent = b;
+      opacityVal.textContent = o;
+      borderVal.textContent = br;
+
+      const css = `background: rgba(255, 255, 255, ${o});
+backdrop-filter: blur(${b}px);
+-webkit-backdrop-filter: blur(${b}px);
+border: 1px solid rgba(255, 255, 255, ${br});
+border-radius: 16px;
+box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);`;
+
+      box.style.cssText = `padding:2rem; width:100%; max-width:320px; color:#fff; text-align:center; ${css}`;
+      output.value = css;
+    }
+
+    blurInput.addEventListener("input", updateGlass);
+    opacityInput.addEventListener("input", updateGlass);
+    borderInput.addEventListener("input", updateGlass);
+    copyBtn.addEventListener("click", () => copyText(output.value, copyBtn));
+
+    updateGlass();
+  }
+
+  function renderColorPaletteGenerator(root, tool) {
+    root.innerHTML = `
+      ${renderSharedShell(tool.title)}
+      <div class="tool-workspace">
+        <div id="palette-swatches" style="display:grid; grid-template-columns: repeat(5, 1fr); gap:0.5rem; min-height:140px; border-radius:14px; overflow:hidden;"></div>
+        <div class="action-row">
+          <button class="btn btn-primary" id="btn-gen-palette">🎲 Generate Random Palette</button>
+          <button class="btn btn-secondary" id="btn-copy-palette">Copy Hex Codes</button>
+        </div>
+      </div>
+    `;
+
+    const swatches = qs("#palette-swatches", root);
+    const genBtn = qs("#btn-gen-palette", root);
+    const copyBtn = qs("#btn-copy-palette", root);
+
+    let currentColors = [];
+
+    function generatePalette() {
+      const hue = Math.floor(Math.random() * 360);
+      currentColors = [
+        hslToHex(hue, 70, 50),
+        hslToHex((hue + 30) % 360, 65, 55),
+        hslToHex((hue + 60) % 360, 60, 65),
+        hslToHex((hue + 180) % 360, 75, 45),
+        hslToHex((hue + 210) % 360, 80, 40)
+      ];
+
+      swatches.innerHTML = currentColors.map(c => `
+        <div style="background:${c}; padding:1rem; display:flex; flex-direction:column; justify-content:flex-end; border-radius:8px; cursor:pointer;" onclick="navigator.clipboard.writeText('${c}'); if (typeof showToast === 'function') showToast('Copied ${c}!', 'success');">
+          <span style="font-size:0.85rem; font-weight:700; color:#fff; text-shadow:0 1px 3px rgba(0,0,0,0.8);">${c}</span>
+        </div>
+      `).join("");
+    }
+
+    function hslToHex(h, s, l) {
+      l /= 100;
+      const a = s * Math.min(l, 1 - l) / 100;
+      const f = n => {
+        const k = (n + h / 30) % 12;
+        const color = l - a * Math.max(Math.min(k - 3, 9 - k, 1), -1);
+        return Math.round(255 * color).toString(16).padStart(2, '0');
+      };
+      return `#${f(0)}${f(8)}${f(4)}`;
+    }
+
+    genBtn.addEventListener("click", generatePalette);
+    copyBtn.addEventListener("click", () => copyText(currentColors.join(", "), copyBtn));
+
+    generatePalette();
+  }
+
+  function renderCronParser(root, tool) {
+    root.innerHTML = `
+      ${renderSharedShell(tool.title)}
+      <div class="tool-workspace">
+        <div class="field-group">
+          <label for="cron-input">Cron Expression</label>
+          <input type="text" id="cron-input" class="text-input" value="*/15 * * * *" placeholder="e.g. 0 0 * * 1" />
+        </div>
+        <div class="action-row">
+          <button class="btn btn-primary" id="btn-parse-cron">Parse Expression</button>
+          <button class="btn btn-secondary" id="btn-sample-cron">Load Example</button>
+        </div>
+        <div class="field-group">
+          <label>Human Explanation</label>
+          <div id="cron-output" style="padding:1.2rem; background:rgba(6,9,20,0.85); border:1px solid rgba(99,102,241,0.25); border-radius:12px; font-family:monospace; line-height:1.6; color:#e2e8f0;"></div>
+        </div>
+      </div>
+    `;
+
+    const input = qs("#cron-input", root);
+    const parseBtn = qs("#btn-parse-cron", root);
+    const sampleBtn = qs("#btn-sample-cron", root);
+    const output = qs("#cron-output", root);
+
+    function parseCron() {
+      const expr = input.value.trim();
+      const parts = expr.split(/\s+/);
+      if (parts.length !== 5) {
+        output.innerHTML = `<span style="color:#ef4444;">Invalid cron format. A standard cron expression must have 5 space-separated parts: [minute] [hour] [day-of-month] [month] [day-of-week]</span>`;
+        return;
+      }
+
+      const [min, hr, dom, mon, dow] = parts;
+
+      let explanation = `<strong>Expression:</strong> <code>${expr}</code><br><br>`;
+      explanation += `• <strong>Minute (${min}):</strong> ${min === '*' ? 'Every minute' : min.startsWith('*/') ? `Every ${min.replace('*/', '')} minutes` : `At minute ${min}`}<br>`;
+      explanation += `• <strong>Hour (${hr}):</strong> ${hr === '*' ? 'Every hour' : hr.startsWith('*/') ? `Every ${hr.replace('*/', '')} hours` : `At hour ${hr}:00`}<br>`;
+      explanation += `• <strong>Day of Month (${dom}):</strong> ${dom === '*' ? 'Every day of month' : `On day ${dom}`}<br>`;
+      explanation += `• <strong>Month (${mon}):</strong> ${mon === '*' ? 'Every month' : `In month ${mon}`}<br>`;
+      explanation += `• <strong>Day of Week (${dow}):</strong> ${dow === '*' ? 'Every day of week' : `On day-of-week ${dow}`}`;
+
+      output.innerHTML = explanation;
+    }
+
+    parseBtn.addEventListener("click", parseCron);
+    sampleBtn.addEventListener("click", () => {
+      input.value = "0 9 * * 1-5";
+      parseCron();
+    });
+
+    parseCron();
+  }
+
+  function renderMetaTagGenerator(root, tool) {
+    root.innerHTML = `
+      ${renderSharedShell(tool.title)}
+      <div class="tool-workspace">
+        <div class="field-group" style="display:grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap:1rem;">
+          <div>
+            <label for="meta-title">Page Title</label>
+            <input type="text" id="meta-title" class="text-input" value="ToolMint - Free Online Utility Tools" />
+          </div>
+          <div>
+            <label for="meta-desc">Meta Description</label>
+            <input type="text" id="meta-desc" class="text-input" value="Fast, private browser-based utilities for developers and creators." />
+          </div>
+          <div>
+            <label for="meta-url">Canonical URL</label>
+            <input type="text" id="meta-url" class="text-input" value="https://toolmint.rishibanota.workers.dev/" />
+          </div>
+          <div>
+            <label for="meta-img">Social Image URL</label>
+            <input type="text" id="meta-img" class="text-input" value="https://toolmint.rishibanota.workers.dev/assets/favicon.svg" />
+          </div>
+        </div>
+        <div class="field-group">
+          <div class="output-head">
+            <label for="meta-output">Generated HTML Meta Tags</label>
+            <button class="mini-btn" id="btn-copy-meta">Copy Tags</button>
+          </div>
+          <textarea id="meta-output" class="big-textarea output" readonly style="min-height:160px;"></textarea>
+        </div>
+      </div>
+    `;
+
+    const titleInput = qs("#meta-title", root);
+    const descInput = qs("#meta-desc", root);
+    const urlInput = qs("#meta-url", root);
+    const imgInput = qs("#meta-img", root);
+    const output = qs("#meta-output", root);
+    const copyBtn = qs("#btn-copy-meta", root);
+
+    function updateMeta() {
+      const title = titleInput.value.trim();
+      const desc = descInput.value.trim();
+      const url = urlInput.value.trim();
+      const img = imgInput.value.trim();
+
+      const tags = `<!-- Primary Meta Tags -->
+<title>${title}</title>
+<meta name="title" content="${title}" />
+<meta name="description" content="${desc}" />
+
+<!-- Open Graph / Facebook -->
+<meta property="og:type" content="website" />
+<meta property="og:url" content="${url}" />
+<meta property="og:title" content="${title}" />
+<meta property="og:description" content="${desc}" />
+<meta property="og:image" content="${img}" />
+
+<!-- Twitter Card -->
+<meta property="twitter:card" content="summary_large_image" />
+<meta property="twitter:url" content="${url}" />
+<meta property="twitter:title" content="${title}" />
+<meta property="twitter:description" content="${desc}" />
+<meta property="twitter:image" content="${img}" />`;
+
+      output.value = tags;
+    }
+
+    [titleInput, descInput, urlInput, imgInput].forEach(inp => inp.addEventListener("input", updateMeta));
+    copyBtn.addEventListener("click", () => copyText(output.value, copyBtn));
+
+    updateMeta();
+  }
+
+  function renderSvgOptimizer(root, tool) {
+    root.innerHTML = `
+      ${renderSharedShell(tool.title)}
+      <div class="tool-workspace">
+        <div class="field-group">
+          <label for="svg-input">Raw SVG Code</label>
+          <textarea id="svg-input" class="big-textarea" placeholder="Paste <svg>...</svg> code here..."></textarea>
+        </div>
+        <div class="action-row">
+          <button class="btn btn-primary" id="btn-opt-svg">Optimize SVG</button>
+          <button class="btn btn-secondary" id="btn-sample-svg">Load Sample SVG</button>
+        </div>
+        <div class="field-group">
+          <div class="output-head">
+            <label for="svg-output">Optimized SVG Code</label>
+            <button class="mini-btn" id="btn-copy-svg">Copy SVG</button>
+          </div>
+          <textarea id="svg-output" class="big-textarea output" readonly></textarea>
+        </div>
+        <div class="field-group">
+          <label>SVG Live Render Preview</label>
+          <div id="svg-render-box" style="min-height:120px; border-radius:12px; background:rgba(6,9,20,0.85); border:1px solid var(--line); display:grid; place-items:center; padding:1.5rem;"></div>
+        </div>
+      </div>
+    `;
+
+    const input = qs("#svg-input", root);
+    const optBtn = qs("#btn-opt-svg", root);
+    const sampleBtn = qs("#btn-sample-svg", root);
+    const output = qs("#svg-output", root);
+    const renderBox = qs("#svg-render-box", root);
+    const copyBtn = qs("#btn-copy-svg", root);
+
+    function optimizeSvg() {
+      let code = input.value.trim();
+      if (!code) {
+        output.value = "";
+        renderBox.innerHTML = "";
+        return;
+      }
+
+      code = code.replace(/<!--[\s\S]*?-->/g, "");
+      code = code.replace(/<\?xml[\s\S]*?\?>/g, "");
+      code = code.replace(/<!DOCTYPE[\s\S]*?>/gi, "");
+      code = code.replace(/\s+/g, " ");
+      code = code.replace(/> </g, "><");
+
+      output.value = code;
+      renderBox.innerHTML = code;
+    }
+
+    optBtn.addEventListener("click", optimizeSvg);
+    sampleBtn.addEventListener("click", () => {
+      input.value = `<svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="#6366f1" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><!-- sample icon --><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>`;
+      optimizeSvg();
+    });
+    copyBtn.addEventListener("click", () => copyText(output.value, copyBtn));
+  }
+
+
+
+  function renderPdfToImage(root, tool) {
+    root.innerHTML = `
+      ${renderSharedShell(tool.title)}
+      <div class="tool-workspace">
+        <div class="field-group">
+          <label for="pdf2img-file">Select PDF File</label>
+          <input type="file" id="pdf2img-file" accept="application/pdf" class="text-input" />
+        </div>
+        <div class="field-group" style="display:grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap:1rem;">
+          <div>
+            <label for="pdf2img-format">Output Format</label>
+            <select id="pdf2img-format" class="text-input">
+              <option value="image/png">PNG (.png)</option>
+              <option value="image/jpeg">JPG (.jpg)</option>
+            </select>
+          </div>
+          <div>
+            <label for="pdf2img-scale">Image Resolution / Scale</label>
+            <select id="pdf2img-scale" class="text-input">
+              <option value="1.5">Standard (1.5x)</option>
+              <option value="2.0">High Quality (2.0x)</option>
+            </select>
+          </div>
+        </div>
+        <div class="action-row">
+          <button class="btn btn-primary" id="btn-convert-pdf2img">Convert PDF to Images</button>
+        </div>
+        <div id="pdf2img-results" class="field-group" style="display:flex; flex-wrap:wrap; gap:1rem; margin-top:1rem;"></div>
+      </div>
+    `;
+
+    const fileInput = qs("#pdf2img-file", root);
+    const formatSelect = qs("#pdf2img-format", root);
+    const scaleSelect = qs("#pdf2img-scale", root);
+    const convertBtn = qs("#btn-convert-pdf2img", root);
+    const resultsContainer = qs("#pdf2img-results", root);
+
+    convertBtn.addEventListener("click", async () => {
+      const file = fileInput.files[0];
+      if (!file) {
+        setStatus(root, "Please select a PDF file first.", "error");
+        return;
+      }
+      try {
+        setStatus(root, "Reading PDF pages and rendering images...", "info");
+
+        if (typeof pdfjsLib === "undefined") {
+          throw new Error("PDF rendering engine is initializing, please try again in a moment.");
+        }
+
+        const arrayBuffer = await file.arrayBuffer();
+        const pdf = await pdfjsLib.getDocument({ data: arrayBuffer }).promise;
+        const totalPages = pdf.numPages;
+
+        resultsContainer.innerHTML = "";
+        const fmt = formatSelect.value;
+        const ext = fmt === "image/png" ? "png" : "jpg";
+        const scale = parseFloat(scaleSelect.value);
+
+        for (let pageNum = 1; pageNum <= totalPages; pageNum++) {
+          const page = await pdf.getPage(pageNum);
+          const viewport = page.getViewport({ scale });
+          const canvas = document.createElement("canvas");
+          const ctx = canvas.getContext("2d");
+          canvas.height = viewport.height;
+          canvas.width = viewport.width;
+
+          await page.render({ canvasContext: ctx, viewport }).promise;
+
+          const dataUrl = canvas.toDataURL(fmt, 0.92);
+
+          const card = document.createElement("div");
+          card.style.cssText = "background:rgba(255,255,255,0.06); padding:0.8rem; border-radius:12px; border:1px solid var(--line); display:flex; flex-direction:column; gap:0.5rem; align-items:center; width:180px;";
+          card.innerHTML = `
+            <img src="${dataUrl}" style="width:100%; height:140px; object-fit:contain; border-radius:6px; background:#fff;" />
+            <span style="font-size:0.82rem; font-weight:600;">Page ${pageNum}</span>
+            <a href="${dataUrl}" download="${file.name.replace(/\.pdf$/i, '')}_page_${pageNum}.${ext}" class="mini-btn">Download ${ext.toUpperCase()}</a>
+          `;
+          resultsContainer.appendChild(card);
+        }
+
+        setStatus(root, `Converted ${totalPages} page${totalPages > 1 ? "s" : ""} successfully! Download page images below.`, "success");
+      } catch (err) {
+        setStatus(root, err.message || "Failed to convert PDF pages.", "error");
+      }
+    });
+  }
+
+  function renderImageFormatConverter(root, tool) {
+    root.innerHTML = `
+      ${renderSharedShell(tool.title)}
+      <div class="tool-workspace">
+        <div class="field-group">
+          <label for="imgconv-file">Select Image File (PNG, JPG, WebP, GIF)</label>
+          <input type="file" id="imgconv-file" accept="image/*" class="text-input" />
+        </div>
+        <div class="field-group" style="display:grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap:1rem;">
+          <div>
+            <label for="imgconv-target">Target Format</label>
+            <select id="imgconv-target" class="text-input">
+              <option value="image/png">PNG (.png)</option>
+              <option value="image/jpeg">JPG / JPEG (.jpg)</option>
+              <option value="image/webp">WebP (.webp)</option>
+            </select>
+          </div>
+          <div>
+            <label for="imgconv-quality">Quality (<span id="imgconv-qual-val">90</span>%)</label>
+            <input type="range" id="imgconv-quality" min="10" max="100" value="90" class="text-input" />
+          </div>
+        </div>
+        <div class="action-row">
+          <button class="btn btn-primary" id="btn-run-imgconv">Convert Format</button>
+        </div>
+        <div id="imgconv-output-wrap" class="field-group" style="display:none; margin-top:1rem;">
+          <label>Converted Image Preview</label>
+          <div style="padding:1rem; background:rgba(6,9,20,0.85); border-radius:12px; border:1px solid var(--line); display:flex; flex-direction:column; align-items:center; gap:1rem;">
+            <img id="imgconv-preview" style="max-width:100%; max-height:280px; border-radius:8px; object-fit:contain;" />
+            <a id="imgconv-download" href="#" download="converted_image" class="btn btn-primary">Download Converted Image</a>
+          </div>
+        </div>
+      </div>
+    `;
+
+    const fileInput = qs("#imgconv-file", root);
+    const targetSelect = qs("#imgconv-target", root);
+    const qualityInput = qs("#imgconv-quality", root);
+    const qualVal = qs("#imgconv-qual-val", root);
+    const convertBtn = qs("#btn-run-imgconv", root);
+    const outputWrap = qs("#imgconv-output-wrap", root);
+    const previewImg = qs("#imgconv-preview", root);
+    const downloadBtn = qs("#imgconv-download", root);
+
+    qualityInput.addEventListener("input", () => {
+      qualVal.textContent = qualityInput.value;
+    });
+
+    convertBtn.addEventListener("click", () => {
+      const file = fileInput.files[0];
+      if (!file) {
+        setStatus(root, "Please select an image file.", "error");
+        return;
+      }
+      const targetMime = targetSelect.value;
+      const quality = parseFloat(qualityInput.value) / 100;
+      const ext = targetMime === "image/png" ? "png" : targetMime === "image/jpeg" ? "jpg" : "webp";
+
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        const img = new Image();
+        img.onload = () => {
+          const canvas = document.createElement("canvas");
+          canvas.width = img.width;
+          canvas.height = img.height;
+          const ctx = canvas.getContext("2d");
+
+          if (targetMime === "image/jpeg") {
+            ctx.fillStyle = "#ffffff";
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+          }
+
+          ctx.drawImage(img, 0, 0);
+
+          const dataUrl = canvas.toDataURL(targetMime, quality);
+          previewImg.src = dataUrl;
+          downloadBtn.href = dataUrl;
+          downloadBtn.download = `converted_image.${ext}`;
+          outputWrap.style.display = "block";
+
+          setStatus(root, `Image converted to ${ext.toUpperCase()} successfully!`, "success");
+        };
+        img.src = e.target.result;
+      };
+      reader.readAsDataURL(file);
+    });
+  }
+
+  function renderPdfPageRotator(root, tool) {
+    root.innerHTML = `
+      ${renderSharedShell(tool.title)}
+      <div class="tool-workspace">
+        <div class="field-group">
+          <label for="pdfrot-file">Select PDF File</label>
+          <input type="file" id="pdfrot-file" accept="application/pdf" class="text-input" />
+        </div>
+        <div class="field-group">
+          <label for="pdfrot-angle">Rotation Angle</label>
+          <select id="pdfrot-angle" class="text-input">
+            <option value="90">90° Clockwise</option>
+            <option value="180">180° Flip</option>
+            <option value="270">270° Counter-Clockwise</option>
+          </select>
+        </div>
+        <div class="action-row">
+          <button class="btn btn-primary" id="btn-run-pdfrot">Rotate PDF Pages</button>
+        </div>
+      </div>
+    `;
+
+    const fileInput = qs("#pdfrot-file", root);
+    const angleSelect = qs("#pdfrot-angle", root);
+    const rotateBtn = qs("#btn-run-pdfrot", root);
+
+    rotateBtn.addEventListener("click", async () => {
+      const file = fileInput.files[0];
+      if (!file) {
+        setStatus(root, "Please select a PDF file.", "error");
+        return;
+      }
+      try {
+        setStatus(root, "Rotating PDF pages...", "info");
+
+        if (typeof PDFLib === "undefined") {
+          throw new Error("PDF processing library loading. Please try again in a moment.");
+        }
+
+        const arrayBuffer = await file.arrayBuffer();
+        const pdfDoc = await PDFLib.PDFDocument.load(arrayBuffer);
+
+        const degrees = parseInt(angleSelect.value, 10);
+        const pages = pdfDoc.getPages();
+
+        pages.forEach((page) => {
+          const currentRotation = page.getRotation().angle;
+          page.setRotation(PDFLib.degrees((currentRotation + degrees) % 360));
+        });
+
+        const pdfBytes = await pdfDoc.save();
+        const blob = new Blob([pdfBytes], { type: "application/pdf" });
+        const url = URL.createObjectURL(blob);
+
+        const a = document.createElement("a");
+        a.href = url;
+        a.download = file.name.replace(/\.pdf$/i, "") + "_rotated.pdf";
+        a.click();
+
+        setStatus(root, "Rotated PDF downloaded successfully!", "success");
+      } catch (err) {
+        setStatus(root, err.message || "Failed to rotate PDF pages.", "error");
+      }
+    });
+  }
+
+
+function initFeedbackSection() {
     const main = qs("main");
     if (!main || qs("#feedback-section")) return;
 

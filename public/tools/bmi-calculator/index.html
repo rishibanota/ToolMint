@@ -3,150 +3,189 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>BMI Calculator Online - Free Body Mass Index Tool</title>
-  <meta name="description" content="Calculate your Body Mass Index (BMI) instantly using metric (kg/cm) or imperial (lbs/in) units." />
+  <title>BMI Calculator - Calculate Body Mass Index Privately</title>
+  <meta name="description" content="Calculate Body Mass Index (BMI) using metric or imperial height and weight values." />
   <link rel="canonical" href="https://toolmint.rishibanota.workers.dev/tools/bmi-calculator/" />
-  <meta property="og:title" content="BMI Calculator Online - Free Body Mass Index Tool" />
-  <meta property="og:description" content="Calculate your Body Mass Index (BMI) instantly using metric (kg/cm) or imperial (lbs/in) units." />
+  <meta property="og:title" content="BMI Calculator - Calculate Body Mass Index Privately" />
+  <meta property="og:description" content="Calculate Body Mass Index (BMI) using metric or imperial height and weight values." />
   <meta property="og:type" content="website" />
   <meta property="og:url" content="https://toolmint.rishibanota.workers.dev/tools/bmi-calculator/" />
-  <meta name="theme-color" content="#6d5efc" />
-  <meta property="og:image" content="https://toolmint.rishibanota.workers.dev/assets/og-image.png" />
+  <meta name="theme-color" content="#6366f1" />
+  <meta property="og:image" content="https://toolmint.rishibanota.workers.dev/assets/favicon.svg" />
   <meta property="og:image:width" content="1200" />
   <meta property="og:image:height" content="630" />
   <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:title" content="BMI Calculator Online - Free Body Mass Index Tool" />
-  <meta name="twitter:description" content="Calculate your Body Mass Index (BMI) instantly using metric (kg/cm) or imperial (lbs/in) units." />
-  <meta name="twitter:image" content="https://toolmint.rishibanota.workers.dev/assets/og-image.png" />
-  <meta property="og:image:width" content="1200" />
-  <meta property="og:image:height" content="630" />
+  <meta name="twitter:title" content="BMI Calculator - Calculate Body Mass Index Privately" />
+  <meta name="twitter:description" content="Calculate Body Mass Index (BMI) using metric or imperial height and weight values." />
+  <meta name="twitter:image" content="https://toolmint.rishibanota.workers.dev/assets/favicon.svg" />
   <link rel="icon" href="/assets/favicon.svg" type="image/svg+xml" />
-  <link rel="stylesheet" href="/assets/styles.css?v=2" />
-  <script defer src="/assets/site-config.js?v=2"></script>
-  <script defer src="/assets/app.js?v=2"></script>
-  <script defer src="/assets/ads.js?v=1"></script>
-  <script defer src="/assets/auth.js?v=1"></script>
-  <script defer src="/assets/usage-limiter.js?v=1"></script>
+  <link rel="stylesheet" href="/assets/styles.css?v=4" />
   
-<script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"WebApplication","name":"BMI Calculator","url":"https://toolmint.rishibanota.workers.dev/tools/bmi-calculator/","applicationCategory":"FinanceApplication","operatingSystem":"Any","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"description":"Calculate your Body Mass Index (BMI) instantly using metric (kg/cm) or imperial (lbs/in) units."},{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://toolmint.rishibanota.workers.dev/"},{"@type":"ListItem","position":2,"name":"Calculators","item":"https://toolmint.rishibanota.workers.dev/category/calculators/"},{"@type":"ListItem","position":3,"name":"BMI Calculator"}]},{"@type":"FAQPage","mainEntity":[{"@type":"Question","name":"What is a healthy BMI range?","acceptedAnswer":{"@type":"Answer","text":"A standard normal BMI for adults ranges between 18.5 and 24.9."}},{"@type":"Question","name":"Does it support imperial units?","acceptedAnswer":{"@type":"Answer","text":"Yes, you can easily toggle between Metric (kg/cm) and Imperial (lbs/in)."}}]}]}</script>
+  <script defer src="/assets/site-config.js?v=4"></script>
+  <script defer src="/assets/app.js?v=4"></script>
+  <script defer src="/assets/ads.js?v=2"></script>
+  <script defer src="/assets/auth.js?v=2"></script>
+  <script defer src="/assets/usage-limiter.js?v=2"></script>
+  <script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"WebApplication","name":"BMI Calculator","url":"https://toolmint.rishibanota.workers.dev/tools/bmi-calculator/","applicationCategory":"FinanceApplication","operatingSystem":"Any","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"description":"Calculate Body Mass Index (BMI) using metric or imperial height and weight values."},{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://toolmint.rishibanota.workers.dev/"},{"@type":"ListItem","position":2,"name":"Calculators","item":"https://toolmint.rishibanota.workers.dev/category/calculators/"},{"@type":"ListItem","position":3,"name":"BMI Calculator"}]},{"@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Is my data stored or uploaded when using BMI Calculator?","acceptedAnswer":{"@type":"Answer","text":"No. All computations in BMI Calculator take place 100% locally inside your web browser. Your inputs never leave your device."}},{"@type":"Question","name":"Is BMI Calculator free to use?","acceptedAnswer":{"@type":"Answer","text":"Yes! BMI Calculator is completely free to use without registration or forced software downloads."}}]}]}</script>
 </head>
 <body>
   <div class="site-shell">
-    <header class="site-header">
-      <div class="container header-inner">
-        <a class="brand" href="/"><span class="brand-mark">✦</span><span>ToolMint</span></a>
-        <nav class="nav"><a href="/">Home</a><a href="/category/developer/">Developer</a><a href="/category/image/">Image</a><a href="/category/calculators/">Calculators</a><a href="/about/">About</a></nav>
-      </div>
-    </header>
+      <header class="site-header">
+        <div class="container header-inner">
+          <a class="brand" href="/"
+            ><span class="brand-mark">✦</span><span>ToolMint</span></a
+          >
+          <button class="mobile-nav-toggle" id="mobile-nav-toggle" aria-label="Toggle navigation menu">
+            <span aria-hidden="true">☰</span>
+          </button>
+          <nav class="nav" id="site-nav">
+            <a href="/" class="">Home</a>
+            <a href="/category/developer/" class="">Developer</a>
+            <a href="/category/text/" class="">Text</a>
+            <a href="/category/calculators/" class="active">Calculators</a>
+            <a href="/category/image/" class="">Image</a>
+            <a href="/category/pdf/" class="">PDF &amp; Docs <span class="nav-badge">New</span></a>
+            <a href="/about/" class="">About</a>
+          </nav>
+        </div>
+      </header>
     <main>
-      
-    <section class="page-hero small">
-      <div class="container">
-        <nav class="breadcrumbs"><a href="/">Home</a><span>›</span><a href="https://toolmint.rishibanota.workers.dev/category/calculators/">Calculators</a><span>›</span><span>BMI Calculator</span></nav>
-        <span class="eyebrow">Calculators tool</span>
-        <h1>BMI Calculator</h1>
-        <p class="hero-copy">Calculate Body Mass Index (BMI) and check healthy weight ranges.</p>
-      </div>
-    </section>
+      <section class="page-hero small">
+        <div class="container">
+          <nav class="breadcrumbs">
+            <a href="/">Home</a><span>›</span><a href="/category/calculators/">Calculators</a><span>›</span><span>BMI Calculator</span>
+          </nav>
+          <span class="eyebrow">Calculators Tool</span>
+          <h1>BMI Calculator</h1>
+          <p class="hero-copy">Calculate Body Mass Index (BMI) and health category.</p>
+        </div>
+      </section>
 
-    <section class="section tool-section">
-      <div class="container tool-layout">
-        <div class="tool-main">
-          <div class="tool-panel">
-            <div class="tool-panel-head">
-              <div>
-                <h2>Use this tool</h2>
+      <section class="section tool-section">
+        <div class="container tool-layout">
+          <div class="tool-main">
+            <div class="tool-panel">
+              <div class="tool-panel-head">
+                <div>
+                  <h2>BMI Calculator</h2>
+                </div>
+                <span class="privacy-badge">🔒 100% Local Browser Processing</span>
               </div>
-              <span class="privacy-badge">Local processing</span>
+              <div id="tool-root" class="tool-root"></div>
             </div>
-            <div id="tool-root" class="tool-root"></div>
+            <div class="ad-card" data-ad-slot="content-inline">
+              <div class="ad-placeholder">Ad space reserved.</div>
+            </div>
           </div>
-          <div class="ad-card" data-ad-slot="content-inline">
-            <div class="ad-placeholder">Ad space reserved. Keep disabled until your site is approved.</div>
+          <aside class="tool-sidebar">
+            <div class="side-card">
+              <h3>Why users choose ToolMint</h3>
+              <ul class="feature-list">
+                <li>Zero data logging or cloud storage</li>
+                <li>Instant client-side execution speed</li>
+                <li>Mobile and desktop optimized UI</li>
+              </ul>
+            </div>
+            <div class="side-card">
+              <h3>How to use</h3>
+              <ol class="steps-list">
+                <li>Paste or select your input data.</li>
+                <li>Configure optional tool options or click the primary action button.</li>
+                <li>Copy the formatted output or download the resulting file.</li>
+              </ol>
+            </div>
+            <div class="ad-card" data-ad="rectangle" style="position:sticky; top:88px"></div>
+          </aside>
+        </div>
+      </section>
+
+      <section class="section soft-section">
+        <div class="container faq-wrap">
+          <div class="section-heading">
+            <h2>Frequently Asked Questions</h2>
+          </div>
+          <details class="faq-item" open>
+            <summary>Is my data stored or uploaded when using BMI Calculator?</summary>
+            <p>No. All calculations and transformations run entirely in your web browser using client-side JavaScript. Your data never leaves your computer or phone.</p>
+          </details>
+          <details class="faq-item">
+            <summary>Is BMI Calculator free to use?</summary>
+            <p>Yes! ToolMint provides 100% free browser-based productivity utilities with no account requirement.</p>
+          </details>
+        </div>
+      </section>
+
+      <section class="section">
+        <div class="container">
+          <div class="section-heading">
+            <h2>Related Tools</h2>
+          </div>
+          <div class="tool-grid related-grid">
+              <article class="tool-card" data-category="calculators" data-trending="false" data-search="random number generator generate a list of random numbers within a specified range. random number generator number picker random int generator">
+                <div class="tool-card-top">
+                  <span class="tool-icon">🎲</span>
+                  <span class="pill">Calculators</span>
+                </div>
+                <h3><a href="/tools/random-number-generator/">Random Number Generator</a></h3>
+                <p>Generate a list of random numbers within a specified range.</p>
+                <a class="tool-link" href="/tools/random-number-generator/">Open tool <span aria-hidden="true">→</span></a>
+              </article>
+              <article class="tool-card" data-category="calculators" data-trending="false" data-search="simple interest calculator calculate interest earned over time with simple interest. simple interest calculator calculate simple interest">
+                <div class="tool-card-top">
+                  <span class="tool-icon">💵</span>
+                  <span class="pill">Calculators</span>
+                </div>
+                <h3><a href="/tools/simple-interest-calculator/">Simple Interest Calculator</a></h3>
+                <p>Calculate interest earned over time with simple interest.</p>
+                <a class="tool-link" href="/tools/simple-interest-calculator/">Open tool <span aria-hidden="true">→</span></a>
+              </article>
+              <article class="tool-card" data-category="calculators" data-trending="false" data-search="compound interest calculator calculate investment growth over time with compound interest. compound interest calculator compounding interest formula">
+                <div class="tool-card-top">
+                  <span class="tool-icon">📈</span>
+                  <span class="pill">Calculators</span>
+                </div>
+                <h3><a href="/tools/compound-interest-calculator/">Compound Interest Calculator</a></h3>
+                <p>Calculate investment growth over time with compound interest.</p>
+                <a class="tool-link" href="/tools/compound-interest-calculator/">Open tool <span aria-hidden="true">→</span></a>
+              </article>
           </div>
         </div>
-        <aside class="tool-sidebar">
-          <div class="side-card">
-            <h3>Why users like this</h3>
-            <ul class="feature-list">
-              <li>No login or account required</li>
-              <li>Fast browser-side processing</li>
-              <li>Works well on mobile and desktop</li>
-            </ul>
-          </div>
-          <div class="side-card">
-            <h3>How to use</h3>
-            <ol class="steps-list"><li>Select your preferred measurement unit (Metric or Imperial).</li><li>Enter your height and weight values.</li><li>Click Calculate BMI to view your BMI score and weight category.</li></ol>
-          </div>
-        
-          <div class="ad-card" data-ad="rectangle" style="position:sticky; top:88px"></div>
-        </aside>
-      </div>
-    </section>
+      </section>
 
-    <section class="section soft-section">
-      <div class="container faq-wrap">
-        <div class="section-heading">
-          <h2>Frequently asked questions</h2>
-        </div>
-        <details class="faq-item"><summary>What is a healthy BMI range?</summary><p>A standard normal BMI for adults ranges between 18.5 and 24.9.</p></details><details class="faq-item"><summary>Does it support imperial units?</summary><p>Yes, you can easily toggle between Metric (kg/cm) and Imperial (lbs/in).</p></details>
-      </div>
-    </section>
-
-    
-    <section class="section">
-      <div class="container">
-        <div class="section-heading">
-          <h2>Related tools</h2>
-        </div>
-        <div class="tool-grid related-grid">
-    <article class="tool-card" data-category="calculators" data-search="age calculator calculate exact age in years months days">
-      <div class="tool-card-top">
-        <span class="tool-icon">🎂</span>
-        <span class="pill">Calculators</span>
-      </div>
-      <h3><a href="/tools/age-calculator/">Age Calculator</a></h3>
-      <p>Calculate exact age in years, months, days, hours, and minutes.</p>
-      <a class="tool-link" href="/tools/age-calculator/">Open tool <span aria-hidden="true">→</span></a>
-    </article>
-    
-    <article class="tool-card" data-category="calculators" data-search="percentage calculator calculate percentages percentage increases and changes">
-      <div class="tool-card-top">
-        <span class="tool-icon">%</span>
-        <span class="pill">Calculators</span>
-      </div>
-      <h3><a href="/tools/percentage-calculator/">Percentage Calculator</a></h3>
-      <p>Calculate percentages, percentage increases, and percentage changes.</p>
-      <a class="tool-link" href="/tools/percentage-calculator/">Open tool <span aria-hidden="true">→</span></a>
-    </article>
-    
-
-    </div>
-      </div>
-    </section>
-    
-
-    <script id="tool-data" type="application/json">{"id": "bmi-calculator", "slug": "bmi-calculator", "title": "BMI Calculator", "category": "calculators", "icon": "\u2696\ufe0f", "type": "text", "summary": "Calculate Body Mass Index (BMI) and check healthy weight ranges.", "seo_title": "BMI Calculator Online - Free Body Mass Index Tool", "meta_description": "Calculate your Body Mass Index (BMI) instantly using metric (kg/cm) or imperial (lbs/in) units.", "keywords": ["bmi calculator", "body mass index", "health calculator"]}</script>
-    
+      <script id="tool-data" type="application/json">{"id": "bmi-calculator", "slug": "bmi-calculator", "title": "BMI Calculator", "category": "calculators", "icon": "\u2696\ufe0f", "type": "custom", "summary": "Calculate Body Mass Index (BMI) and health category.", "seo_title": "BMI Calculator - Calculate Body Mass Index Privately", "meta_description": "Calculate Body Mass Index (BMI) using metric or imperial height and weight values.", "keywords": ["bmi calculator", "body mass index calculator", "calculate bmi"]}</script>
     </main>
     <footer class="site-footer">
       <div class="container footer-grid">
         <div>
           <h3>ToolMint</h3>
-          <p>ToolMint is a privacy-friendly collection of online utilities for text, developer data, images, and everyday calculators. All tools run directly in your browser.</p>
-          <p class="muted">© 2026 ToolMint. Built for fast browser-side tools.</p>
+          <p>ToolMint is a privacy-friendly collection of 72+ browser-side utilities for developer data, text formatting, image tools, PDFs, and everyday calculators.</p>
+          <p class="footer-bottom" style="margin-top:1rem; text-align:left; padding-top:0; border:none;">© 2026 ToolMint. 100% Client-Side Processing.</p>
         </div>
         <div>
-          <h4>Useful pages</h4>
-          <div class="footer-links"><a href="/about/">About</a><a href="/privacy/">Privacy</a><a href="/terms/">Terms</a><a href="/contact/">Contact</a><a href="/sitemap.xml">Sitemap</a></div>
+          <h4>Categories &amp; Tools</h4>
+          <div class="footer-links">
+            <a href="/category/developer/">Developer &amp; Data</a>
+            <a href="/category/text/">Text Utilities</a>
+            <a href="/category/calculators/">Calculators</a>
+            <a href="/category/image/">Image Tools</a>
+            <a href="/category/pdf/">PDF &amp; Document Tools</a>
+          </div>
         </div>
         <div>
-          <h4>Privacy-first setup</h4>
+          <h4>Privacy &amp; Security</h4>
           <ul class="footer-list">
-            <li>Most tools run locally in the browser</li>
-            <li>No login wall or forced upload</li>
-            <li>Fast static pages</li>
+            <li>100% Client-Side Browser Execution</li>
+            <li>No file uploads to external servers</li>
+            <li>Instant offline performance</li>
+            <li>Free to use anytime</li>
           </ul>
+          <div class="footer-links" style="margin-top:1rem;">
+            <a href="/about/">About ToolMint</a>
+            <a href="/privacy/">Privacy Policy</a>
+            <a href="/terms/">Terms of Service</a>
+            <a href="/contact/">Contact Us</a>
+            <a href="/sitemap.xml">Sitemap</a>
+          </div>
         </div>
       </div>
     </footer>

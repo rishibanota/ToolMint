@@ -3,150 +3,189 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Word &amp; Character Counter Online - Free Tool</title>
-  <meta name="description" content="Count words, characters, paragraphs, and reading time online instantly in your browser." />
+  <title>Word Counter Online - Count Words and Characters Privately</title>
+  <meta name="description" content="Count words, characters, paragraphs, and reading time for any text." />
   <link rel="canonical" href="https://toolmint.rishibanota.workers.dev/tools/word-counter/" />
-  <meta property="og:title" content="Word &amp; Character Counter Online - Free Tool" />
-  <meta property="og:description" content="Count words, characters, paragraphs, and reading time online instantly in your browser." />
+  <meta property="og:title" content="Word Counter Online - Count Words and Characters Privately" />
+  <meta property="og:description" content="Count words, characters, paragraphs, and reading time for any text." />
   <meta property="og:type" content="website" />
   <meta property="og:url" content="https://toolmint.rishibanota.workers.dev/tools/word-counter/" />
-  <meta name="theme-color" content="#6d5efc" />
-  <meta property="og:image" content="https://toolmint.rishibanota.workers.dev/assets/og-image.png" />
+  <meta name="theme-color" content="#6366f1" />
+  <meta property="og:image" content="https://toolmint.rishibanota.workers.dev/assets/favicon.svg" />
   <meta property="og:image:width" content="1200" />
   <meta property="og:image:height" content="630" />
   <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:title" content="Word &amp; Character Counter Online - Free Tool" />
-  <meta name="twitter:description" content="Count words, characters, paragraphs, and reading time online instantly in your browser." />
-  <meta name="twitter:image" content="https://toolmint.rishibanota.workers.dev/assets/og-image.png" />
-  <meta property="og:image:width" content="1200" />
-  <meta property="og:image:height" content="630" />
+  <meta name="twitter:title" content="Word Counter Online - Count Words and Characters Privately" />
+  <meta name="twitter:description" content="Count words, characters, paragraphs, and reading time for any text." />
+  <meta name="twitter:image" content="https://toolmint.rishibanota.workers.dev/assets/favicon.svg" />
   <link rel="icon" href="/assets/favicon.svg" type="image/svg+xml" />
-  <link rel="stylesheet" href="/assets/styles.css?v=2" />
-  <script defer src="/assets/site-config.js?v=2"></script>
-  <script defer src="/assets/app.js?v=2"></script>
-  <script defer src="/assets/ads.js?v=1"></script>
-  <script defer src="/assets/auth.js?v=1"></script>
-  <script defer src="/assets/usage-limiter.js?v=1"></script>
+  <link rel="stylesheet" href="/assets/styles.css?v=4" />
   
-<script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"WebApplication","name":"Word Counter","url":"https://toolmint.rishibanota.workers.dev/tools/word-counter/","applicationCategory":"UtilitiesApplication","operatingSystem":"Any","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"description":"Count words, characters, paragraphs, and reading time online instantly in your browser."},{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://toolmint.rishibanota.workers.dev/"},{"@type":"ListItem","position":2,"name":"Text","item":"https://toolmint.rishibanota.workers.dev/category/text/"},{"@type":"ListItem","position":3,"name":"Word Counter"}]},{"@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Does it work offline?","acceptedAnswer":{"@type":"Answer","text":"Once loaded, yes. It runs entirely in your browser."}},{"@type":"Question","name":"Are spaces counted?","acceptedAnswer":{"@type":"Answer","text":"Yes, character count includes spaces by default."}}]}]}</script>
+  <script defer src="/assets/site-config.js?v=4"></script>
+  <script defer src="/assets/app.js?v=4"></script>
+  <script defer src="/assets/ads.js?v=2"></script>
+  <script defer src="/assets/auth.js?v=2"></script>
+  <script defer src="/assets/usage-limiter.js?v=2"></script>
+  <script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"WebApplication","name":"Word Counter","url":"https://toolmint.rishibanota.workers.dev/tools/word-counter/","applicationCategory":"UtilitiesApplication","operatingSystem":"Any","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"description":"Count words, characters, paragraphs, and reading time for any text."},{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://toolmint.rishibanota.workers.dev/"},{"@type":"ListItem","position":2,"name":"Text Utilities","item":"https://toolmint.rishibanota.workers.dev/category/text/"},{"@type":"ListItem","position":3,"name":"Word Counter"}]},{"@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Is my data stored or uploaded when using Word Counter?","acceptedAnswer":{"@type":"Answer","text":"No. All computations in Word Counter take place 100% locally inside your web browser. Your inputs never leave your device."}},{"@type":"Question","name":"Is Word Counter free to use?","acceptedAnswer":{"@type":"Answer","text":"Yes! Word Counter is completely free to use without registration or forced software downloads."}}]}]}</script>
 </head>
 <body>
   <div class="site-shell">
-    <header class="site-header">
-      <div class="container header-inner">
-        <a class="brand" href="/"><span class="brand-mark">✦</span><span>ToolMint</span></a>
-        <nav class="nav"><a href="/">Home</a><a href="/category/developer/">Developer</a><a href="/category/image/">Image</a><a href="/category/calculators/">Calculators</a><a href="/about/">About</a></nav>
-      </div>
-    </header>
+      <header class="site-header">
+        <div class="container header-inner">
+          <a class="brand" href="/"
+            ><span class="brand-mark">✦</span><span>ToolMint</span></a
+          >
+          <button class="mobile-nav-toggle" id="mobile-nav-toggle" aria-label="Toggle navigation menu">
+            <span aria-hidden="true">☰</span>
+          </button>
+          <nav class="nav" id="site-nav">
+            <a href="/" class="">Home</a>
+            <a href="/category/developer/" class="">Developer</a>
+            <a href="/category/text/" class="active">Text</a>
+            <a href="/category/calculators/" class="">Calculators</a>
+            <a href="/category/image/" class="">Image</a>
+            <a href="/category/pdf/" class="">PDF &amp; Docs <span class="nav-badge">New</span></a>
+            <a href="/about/" class="">About</a>
+          </nav>
+        </div>
+      </header>
     <main>
-      
-    <section class="page-hero small">
-      <div class="container">
-        <nav class="breadcrumbs"><a href="/">Home</a><span>›</span><a href="/category/text/">Text</a><span>›</span><span>Word &amp; Character Counter</span></nav>
-        <span class="eyebrow">Text tool</span>
-        <h1>Word &amp; Character Counter</h1>
-        <p class="hero-copy">Count words, characters, and paragraphs instantly.</p>
-      </div>
-    </section>
+      <section class="page-hero small">
+        <div class="container">
+          <nav class="breadcrumbs">
+            <a href="/">Home</a><span>›</span><a href="/category/text/">Text Utilities</a><span>›</span><span>Word Counter</span>
+          </nav>
+          <span class="eyebrow">Text Utilities Tool</span>
+          <h1>Word Counter</h1>
+          <p class="hero-copy">Count words, characters, sentences, and estimated reading time.</p>
+        </div>
+      </section>
 
-    <section class="section tool-section">
-      <div class="container tool-layout">
-        <div class="tool-main">
-          <div class="tool-panel">
-            <div class="tool-panel-head">
-              <div>
-                <h2>Use this tool</h2>
+      <section class="section tool-section">
+        <div class="container tool-layout">
+          <div class="tool-main">
+            <div class="tool-panel">
+              <div class="tool-panel-head">
+                <div>
+                  <h2>Word Counter</h2>
+                </div>
+                <span class="privacy-badge">🔒 100% Local Browser Processing</span>
               </div>
-              <span class="privacy-badge">Local processing</span>
+              <div id="tool-root" class="tool-root"></div>
             </div>
-            <div id="tool-root" class="tool-root"></div>
+            <div class="ad-card" data-ad-slot="content-inline">
+              <div class="ad-placeholder">Ad space reserved.</div>
+            </div>
           </div>
-          <div class="ad-card" data-ad-slot="content-inline">
-            <div class="ad-placeholder">Ad space reserved. Keep disabled until your site is approved.</div>
+          <aside class="tool-sidebar">
+            <div class="side-card">
+              <h3>Why users choose ToolMint</h3>
+              <ul class="feature-list">
+                <li>Zero data logging or cloud storage</li>
+                <li>Instant client-side execution speed</li>
+                <li>Mobile and desktop optimized UI</li>
+              </ul>
+            </div>
+            <div class="side-card">
+              <h3>How to use</h3>
+              <ol class="steps-list">
+                <li>Paste or select your input data.</li>
+                <li>Configure optional tool options or click the primary action button.</li>
+                <li>Copy the formatted output or download the resulting file.</li>
+              </ol>
+            </div>
+            <div class="ad-card" data-ad="rectangle" style="position:sticky; top:88px"></div>
+          </aside>
+        </div>
+      </section>
+
+      <section class="section soft-section">
+        <div class="container faq-wrap">
+          <div class="section-heading">
+            <h2>Frequently Asked Questions</h2>
+          </div>
+          <details class="faq-item" open>
+            <summary>Is my data stored or uploaded when using Word Counter?</summary>
+            <p>No. All calculations and transformations run entirely in your web browser using client-side JavaScript. Your data never leaves your computer or phone.</p>
+          </details>
+          <details class="faq-item">
+            <summary>Is Word Counter free to use?</summary>
+            <p>Yes! ToolMint provides 100% free browser-based productivity utilities with no account requirement.</p>
+          </details>
+        </div>
+      </section>
+
+      <section class="section">
+        <div class="container">
+          <div class="section-heading">
+            <h2>Related Tools</h2>
+          </div>
+          <div class="tool-grid related-grid">
+              <article class="tool-card" data-category="text" data-trending="true" data-search="case converter convert text to uppercase, lowercase, title case, or slug-case. case converter uppercase converter title case generator">
+                <div class="tool-card-top">
+                  <span class="tool-icon">Aa</span>
+                  <span class="pill trending-pill">🔥 Trending</span>
+                </div>
+                <h3><a href="/tools/case-converter/">Case Converter</a></h3>
+                <p>Convert text to UPPERCASE, lowercase, Title Case, or slug-case.</p>
+                <a class="tool-link" href="/tools/case-converter/">Open tool <span aria-hidden="true">→</span></a>
+              </article>
+              <article class="tool-card" data-category="text" data-trending="false" data-search="slug generator turn titles and sentences into seo-friendly url slugs. slug generator url slug generator seo slug creator">
+                <div class="tool-card-top">
+                  <span class="tool-icon">slug</span>
+                  <span class="pill">Text</span>
+                </div>
+                <h3><a href="/tools/slug-generator/">Slug Generator</a></h3>
+                <p>Turn titles and sentences into SEO-friendly URL slugs.</p>
+                <a class="tool-link" href="/tools/slug-generator/">Open tool <span aria-hidden="true">→</span></a>
+              </article>
+              <article class="tool-card" data-category="text" data-trending="false" data-search="markdown to html converter convert markdown text into formatted html markup. markdown to html md to html convert markdown online">
+                <div class="tool-card-top">
+                  <span class="tool-icon">MD</span>
+                  <span class="pill">Text</span>
+                </div>
+                <h3><a href="/tools/markdown-to-html/">Markdown to HTML Converter</a></h3>
+                <p>Convert Markdown text into formatted HTML markup.</p>
+                <a class="tool-link" href="/tools/markdown-to-html/">Open tool <span aria-hidden="true">→</span></a>
+              </article>
           </div>
         </div>
-        <aside class="tool-sidebar">
-          <div class="side-card">
-            <h3>Why users like this</h3>
-            <ul class="feature-list">
-              <li>No login or account required</li>
-              <li>Fast browser-side processing</li>
-              <li>Works well on mobile and desktop</li>
-            </ul>
-          </div>
-          <div class="side-card">
-            <h3>How to use</h3>
-            <ol class="steps-list"><li>Type or paste your text into the editor.</li><li>View word and character counts updating in real-time.</li><li>Use the stats to meet your length requirements.</li></ol>
-          </div>
-        
-          <div class="ad-card" data-ad="rectangle" style="position:sticky; top:88px"></div>
-        </aside>
-      </div>
-    </section>
+      </section>
 
-    <section class="section soft-section">
-      <div class="container faq-wrap">
-        <div class="section-heading">
-          <h2>Frequently asked questions</h2>
-        </div>
-        <details class="faq-item"><summary>Does it work offline?</summary><p>Once loaded, yes. It runs entirely in your browser.</p></details>
-<details class="faq-item"><summary>Are spaces counted?</summary><p>Yes, character count includes spaces by default.</p></details>
-      </div>
-    </section>
-
-    
-    <section class="section">
-      <div class="container">
-        <div class="section-heading">
-          <h2>Related tools</h2>
-        </div>
-        <div class="tool-grid related-grid">
-    <article class="tool-card" data-category="text" data-search="text case converter convert text to upper, lower, title, sentence, or slug case.">
-      <div class="tool-card-top">
-        <span class="tool-icon">Aa</span>
-        <span class="pill">Text</span>
-      </div>
-      <h3><a href="/tools/case-converter/">Text Case Converter</a></h3>
-      <p>Convert text to upper, lower, title, sentence, or slug case.</p>
-      <a class="tool-link" href="/tools/case-converter/">Open tool <span aria-hidden="true">→</span></a>
-    </article>
-    
-
-    <article class="tool-card" data-category="text" data-search="slug generator turn a title or phrase into a clean seo-friendly slug.">
-      <div class="tool-card-top">
-        <span class="tool-icon">//</span>
-        <span class="pill">Text</span>
-      </div>
-      <h3><a href="/tools/slug-generator/">Slug Generator</a></h3>
-      <p>Turn a title or phrase into a clean SEO-friendly slug.</p>
-      <a class="tool-link" href="/tools/slug-generator/">Open tool <span aria-hidden="true">→</span></a>
-    </article>
-    </div>
-      </div>
-    </section>
-    
-
-    <script id="tool-data" type="application/json">{"id": "word-counter", "slug": "word-counter", "title": "Word & Character Counter", "category": "text", "icon": "\ud83d\udcdd", "type": "text", "summary": "Count words, characters, and paragraphs instantly.", "seo_title": "Word & Character Counter Online - Free Tool", "meta_description": "Count words, characters, paragraphs, and reading time online instantly in your browser.", "keywords": ["word counter", "character counter", "text length"]}</script>
-    
+      <script id="tool-data" type="application/json">{"id": "word-counter", "slug": "word-counter", "title": "Word Counter", "category": "text", "icon": "\ud83d\udcdd", "type": "text", "summary": "Count words, characters, sentences, and estimated reading time.", "seo_title": "Word Counter Online - Count Words and Characters Privately", "meta_description": "Count words, characters, paragraphs, and reading time for any text.", "keywords": ["word counter", "character counter", "word count tool"]}</script>
     </main>
     <footer class="site-footer">
       <div class="container footer-grid">
         <div>
           <h3>ToolMint</h3>
-          <p>ToolMint is a privacy-friendly collection of online utilities for text, developer data, images, and everyday calculators. All tools run directly in your browser.</p>
-          <p class="muted">© 2026 ToolMint. Built for fast browser-side tools.</p>
+          <p>ToolMint is a privacy-friendly collection of 72+ browser-side utilities for developer data, text formatting, image tools, PDFs, and everyday calculators.</p>
+          <p class="footer-bottom" style="margin-top:1rem; text-align:left; padding-top:0; border:none;">© 2026 ToolMint. 100% Client-Side Processing.</p>
         </div>
         <div>
-          <h4>Useful pages</h4>
-          <div class="footer-links"><a href="/about/">About</a><a href="/privacy/">Privacy</a><a href="/terms/">Terms</a><a href="/contact/">Contact</a><a href="/sitemap.xml">Sitemap</a></div>
+          <h4>Categories &amp; Tools</h4>
+          <div class="footer-links">
+            <a href="/category/developer/">Developer &amp; Data</a>
+            <a href="/category/text/">Text Utilities</a>
+            <a href="/category/calculators/">Calculators</a>
+            <a href="/category/image/">Image Tools</a>
+            <a href="/category/pdf/">PDF &amp; Document Tools</a>
+          </div>
         </div>
         <div>
-          <h4>Privacy-first setup</h4>
+          <h4>Privacy &amp; Security</h4>
           <ul class="footer-list">
-            <li>Most tools run locally in the browser</li>
-            <li>No login wall or forced upload</li>
-            <li>Fast static pages</li>
+            <li>100% Client-Side Browser Execution</li>
+            <li>No file uploads to external servers</li>
+            <li>Instant offline performance</li>
+            <li>Free to use anytime</li>
           </ul>
+          <div class="footer-links" style="margin-top:1rem;">
+            <a href="/about/">About ToolMint</a>
+            <a href="/privacy/">Privacy Policy</a>
+            <a href="/terms/">Terms of Service</a>
+            <a href="/contact/">Contact Us</a>
+            <a href="/sitemap.xml">Sitemap</a>
+          </div>
         </div>
       </div>
     </footer>

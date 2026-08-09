@@ -3,161 +3,189 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Base64 Decoder Online - Browser Based Decoder</title>
-  <meta name="description" content="Decode Base64 text online using a clean privacy-first browser tool." />
+  <title>Base64 Decoder Online - Decode Base64 Text Privately</title>
+  <meta name="description" content="Decode Base64 strings back to text instantly and privately." />
   <link rel="canonical" href="https://toolmint.rishibanota.workers.dev/tools/base64-decoder/" />
-  <meta property="og:title" content="Base64 Decoder Online - Browser Based Decoder" />
-  <meta property="og:description" content="Decode Base64 text online using a clean privacy-first browser tool." />
+  <meta property="og:title" content="Base64 Decoder Online - Decode Base64 Text Privately" />
+  <meta property="og:description" content="Decode Base64 strings back to text instantly and privately." />
   <meta property="og:type" content="website" />
   <meta property="og:url" content="https://toolmint.rishibanota.workers.dev/tools/base64-decoder/" />
-  <meta name="theme-color" content="#6d5efc" />
-  <meta property="og:image" content="https://toolmint.rishibanota.workers.dev/assets/og-image.png" />
+  <meta name="theme-color" content="#6366f1" />
+  <meta property="og:image" content="https://toolmint.rishibanota.workers.dev/assets/favicon.svg" />
   <meta property="og:image:width" content="1200" />
   <meta property="og:image:height" content="630" />
   <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:title" content="Base64 Decoder Online - Browser Based Decoder" />
-  <meta name="twitter:description" content="Decode Base64 text online using a clean privacy-first browser tool." />
-  <meta name="twitter:image" content="https://toolmint.rishibanota.workers.dev/assets/og-image.png" />
-  <meta property="og:image:width" content="1200" />
-  <meta property="og:image:height" content="630" />
+  <meta name="twitter:title" content="Base64 Decoder Online - Decode Base64 Text Privately" />
+  <meta name="twitter:description" content="Decode Base64 strings back to text instantly and privately." />
+  <meta name="twitter:image" content="https://toolmint.rishibanota.workers.dev/assets/favicon.svg" />
   <link rel="icon" href="/assets/favicon.svg" type="image/svg+xml" />
-  <link rel="stylesheet" href="/assets/styles.css?v=2" />
-  <script defer src="/assets/site-config.js?v=2"></script>
-  <script defer src="/assets/app.js?v=2"></script>
-  <script defer src="/assets/ads.js?v=1"></script>
-  <script defer src="/assets/auth.js?v=1"></script>
-  <script defer src="/assets/usage-limiter.js?v=1"></script>
+  <link rel="stylesheet" href="/assets/styles.css?v=4" />
   
-  <script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"WebApplication","name":"Base64 Decoder","url":"https://toolmint.rishibanota.workers.dev/tools/base64-decoder/","applicationCategory":"UtilitiesApplication","operatingSystem":"Any","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"description":"Decode Base64 back into readable text safely on your device."},{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://toolmint.rishibanota.workers.dev/"},{"@type":"ListItem","position":2,"name":"Text","item":"https://toolmint.rishibanota.workers.dev/category/text/"},{"@type":"ListItem","position":3,"name":"Base64 Decoder"}]},{"@type":"FAQPage","mainEntity":[{"@type":"Question","name":"What if the string is invalid?","acceptedAnswer":{"@type":"Answer","text":"The tool will show a friendly error and leave your input unchanged."}},{"@type":"Question","name":"Can I decode text copied from APIs?","acceptedAnswer":{"@type":"Answer","text":"Yes. It is handy for tokens, payload samples, and encoded strings."}}]}]}</script>
+  <script defer src="/assets/site-config.js?v=4"></script>
+  <script defer src="/assets/app.js?v=4"></script>
+  <script defer src="/assets/ads.js?v=2"></script>
+  <script defer src="/assets/auth.js?v=2"></script>
+  <script defer src="/assets/usage-limiter.js?v=2"></script>
+  <script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"WebApplication","name":"Base64 Decoder","url":"https://toolmint.rishibanota.workers.dev/tools/base64-decoder/","applicationCategory":"DeveloperApplication","operatingSystem":"Any","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"description":"Decode Base64 strings back to text instantly and privately."},{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://toolmint.rishibanota.workers.dev/"},{"@type":"ListItem","position":2,"name":"Developer & Data","item":"https://toolmint.rishibanota.workers.dev/category/developer/"},{"@type":"ListItem","position":3,"name":"Base64 Decoder"}]},{"@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Is my data stored or uploaded when using Base64 Decoder?","acceptedAnswer":{"@type":"Answer","text":"No. All computations in Base64 Decoder take place 100% locally inside your web browser. Your inputs never leave your device."}},{"@type":"Question","name":"Is Base64 Decoder free to use?","acceptedAnswer":{"@type":"Answer","text":"Yes! Base64 Decoder is completely free to use without registration or forced software downloads."}}]}]}</script>
 </head>
 <body>
   <div class="site-shell">
-    <header class="site-header">
-      <div class="container header-inner">
-        <a class="brand" href="/"><span class="brand-mark">✦</span><span>ToolMint</span></a>
-        <nav class="nav"><a href="/">Home</a><a href="/category/developer/">Developer</a><a href="/category/image/">Image</a><a href="/category/calculators/">Calculators</a><a href="/about/">About</a></nav>
-      </div>
-    </header>
+      <header class="site-header">
+        <div class="container header-inner">
+          <a class="brand" href="/"
+            ><span class="brand-mark">✦</span><span>ToolMint</span></a
+          >
+          <button class="mobile-nav-toggle" id="mobile-nav-toggle" aria-label="Toggle navigation menu">
+            <span aria-hidden="true">☰</span>
+          </button>
+          <nav class="nav" id="site-nav">
+            <a href="/" class="">Home</a>
+            <a href="/category/developer/" class="active">Developer</a>
+            <a href="/category/text/" class="">Text</a>
+            <a href="/category/calculators/" class="">Calculators</a>
+            <a href="/category/image/" class="">Image</a>
+            <a href="/category/pdf/" class="">PDF &amp; Docs <span class="nav-badge">New</span></a>
+            <a href="/about/" class="">About</a>
+          </nav>
+        </div>
+      </header>
     <main>
-      
-    <section class="page-hero small">
-      <div class="container">
-        <nav class="breadcrumbs"><a href="/">Home</a><span>›</span><a href="/category/text/">Text</a><span>›</span><span>Base64 Decoder</span></nav>
-        <span class="eyebrow">Text tool</span>
-        <h1>Base64 Decoder</h1>
-        <p class="hero-copy">Decode Base64 back into readable text safely on your device.</p>
-      </div>
-    </section>
+      <section class="page-hero small">
+        <div class="container">
+          <nav class="breadcrumbs">
+            <a href="/">Home</a><span>›</span><a href="/category/developer/">Developer & Data</a><span>›</span><span>Base64 Decoder</span>
+          </nav>
+          <span class="eyebrow">Developer & Data Tool</span>
+          <h1>Base64 Decoder</h1>
+          <p class="hero-copy">Decode Base64 strings back into readable plain text.</p>
+        </div>
+      </section>
 
-    <section class="section tool-section">
-      <div class="container tool-layout">
-        <div class="tool-main">
-          <div class="tool-panel">
-            <div class="tool-panel-head">
-              <div>
-                <h2>Use this tool</h2>
+      <section class="section tool-section">
+        <div class="container tool-layout">
+          <div class="tool-main">
+            <div class="tool-panel">
+              <div class="tool-panel-head">
+                <div>
+                  <h2>Base64 Decoder</h2>
+                </div>
+                <span class="privacy-badge">🔒 100% Local Browser Processing</span>
               </div>
-              <span class="privacy-badge">Local processing</span>
+              <div id="tool-root" class="tool-root"></div>
             </div>
-            <div id="tool-root" class="tool-root"></div>
+            <div class="ad-card" data-ad-slot="content-inline">
+              <div class="ad-placeholder">Ad space reserved.</div>
+            </div>
           </div>
-          <div class="ad-card" data-ad-slot="content-inline">
-            <div class="ad-placeholder">Ad space reserved. Keep disabled until your site is approved.</div>
+          <aside class="tool-sidebar">
+            <div class="side-card">
+              <h3>Why users choose ToolMint</h3>
+              <ul class="feature-list">
+                <li>Zero data logging or cloud storage</li>
+                <li>Instant client-side execution speed</li>
+                <li>Mobile and desktop optimized UI</li>
+              </ul>
+            </div>
+            <div class="side-card">
+              <h3>How to use</h3>
+              <ol class="steps-list">
+                <li>Paste or select your input data.</li>
+                <li>Configure optional tool options or click the primary action button.</li>
+                <li>Copy the formatted output or download the resulting file.</li>
+              </ol>
+            </div>
+            <div class="ad-card" data-ad="rectangle" style="position:sticky; top:88px"></div>
+          </aside>
+        </div>
+      </section>
+
+      <section class="section soft-section">
+        <div class="container faq-wrap">
+          <div class="section-heading">
+            <h2>Frequently Asked Questions</h2>
+          </div>
+          <details class="faq-item" open>
+            <summary>Is my data stored or uploaded when using Base64 Decoder?</summary>
+            <p>No. All calculations and transformations run entirely in your web browser using client-side JavaScript. Your data never leaves your computer or phone.</p>
+          </details>
+          <details class="faq-item">
+            <summary>Is Base64 Decoder free to use?</summary>
+            <p>Yes! ToolMint provides 100% free browser-based productivity utilities with no account requirement.</p>
+          </details>
+        </div>
+      </section>
+
+      <section class="section">
+        <div class="container">
+          <div class="section-heading">
+            <h2>Related Tools</h2>
+          </div>
+          <div class="tool-grid related-grid">
+              <article class="tool-card" data-category="developer" data-trending="true" data-search="css gradient generator create beautiful linear and radial css gradients with live preview and instant css code copy. css gradient generator background gradient css linear gradient builder">
+                <div class="tool-card-top">
+                  <span class="tool-icon">🎨</span>
+                  <span class="pill trending-pill">🔥 Trending</span>
+                </div>
+                <h3><a href="/tools/css-gradient-generator/">CSS Gradient Generator</a></h3>
+                <p>Create beautiful linear and radial CSS gradients with live preview and instant CSS code copy.</p>
+                <a class="tool-link" href="/tools/css-gradient-generator/">Open tool <span aria-hidden="true">→</span></a>
+              </article>
+              <article class="tool-card" data-category="developer" data-trending="true" data-search="glassmorphism generator customize backdrop blur, opacity, borders, and shadows to generate modern glass ui css code. glassmorphism generator css glass effect backdrop filter css generator">
+                <div class="tool-card-top">
+                  <span class="tool-icon">✨</span>
+                  <span class="pill trending-pill">🔥 Trending</span>
+                </div>
+                <h3><a href="/tools/glassmorphism-generator/">Glassmorphism Generator</a></h3>
+                <p>Customize backdrop blur, opacity, borders, and shadows to generate modern glass UI CSS code.</p>
+                <a class="tool-link" href="/tools/glassmorphism-generator/">Open tool <span aria-hidden="true">→</span></a>
+              </article>
+              <article class="tool-card" data-category="developer" data-trending="true" data-search="cron expression parser parse cron schedule syntax into plain english explanations and next run schedules. cron parser cron expression generator crontab visualizer">
+                <div class="tool-card-top">
+                  <span class="tool-icon">⏰</span>
+                  <span class="pill trending-pill">🔥 Trending</span>
+                </div>
+                <h3><a href="/tools/cron-expression-parser/">Cron Expression Parser</a></h3>
+                <p>Parse cron schedule syntax into plain English explanations and next run schedules.</p>
+                <a class="tool-link" href="/tools/cron-expression-parser/">Open tool <span aria-hidden="true">→</span></a>
+              </article>
           </div>
         </div>
-        <aside class="tool-sidebar">
-          <div class="side-card">
-            <h3>Why users like this</h3>
-            <ul class="feature-list">
-              <li>No login or account required</li>
-              <li>Fast browser-side processing</li>
-              <li>Works well on mobile and desktop</li>
-            </ul>
-          </div>
-          <div class="side-card">
-            <h3>How to use</h3>
-            <ol class="steps-list"><li>Paste a Base64 string into the input box.</li><li>Click decode to restore the original text.</li><li>Copy the output or continue editing it.</li></ol>
-          </div>
-        
-          <div class="ad-card" data-ad="rectangle" style="position:sticky; top:88px"></div>
-        </aside>
-      </div>
-    </section>
+      </section>
 
-    <section class="section soft-section">
-      <div class="container faq-wrap">
-        <div class="section-heading">
-          <h2>Frequently asked questions</h2>
-        </div>
-        <details class="faq-item"><summary>What if the string is invalid?</summary><p>The tool will show a friendly error and leave your input unchanged.</p></details>
-<details class="faq-item"><summary>Can I decode text copied from APIs?</summary><p>Yes. It is handy for tokens, payload samples, and encoded strings.</p></details>
-      </div>
-    </section>
-
-    
-    <section class="section">
-      <div class="container">
-        <div class="section-heading">
-          <h2>Related tools</h2>
-        </div>
-        <div class="tool-grid related-grid">
-    <article class="tool-card" data-category="text" data-search="base64 encoder encode plain text to base64 locally in your browser.">
-      <div class="tool-card-top">
-        <span class="tool-icon">64</span>
-        <span class="pill">Text</span>
-      </div>
-      <h3><a href="/tools/base64-encoder/">Base64 Encoder</a></h3>
-      <p>Encode plain text to Base64 locally in your browser.</p>
-      <a class="tool-link" href="/tools/base64-encoder/">Open tool <span aria-hidden="true">→</span></a>
-    </article>
-    
-
-    <article class="tool-card" data-category="developer" data-search="jwt decoder inspect jwt header and payload without sending tokens anywhere.">
-      <div class="tool-card-top">
-        <span class="tool-icon">🔑</span>
-        <span class="pill">Developer</span>
-      </div>
-      <h3><a href="/tools/jwt-decoder/">JWT Decoder</a></h3>
-      <p>Inspect JWT header and payload without sending tokens anywhere.</p>
-      <a class="tool-link" href="/tools/jwt-decoder/">Open tool <span aria-hidden="true">→</span></a>
-    </article>
-    
-
-    <article class="tool-card" data-category="developer" data-search="url decoder decode percent-encoded strings into human-readable text.">
-      <div class="tool-card-top">
-        <span class="tool-icon">↧</span>
-        <span class="pill">Developer</span>
-      </div>
-      <h3><a href="/tools/url-decoder/">URL Decoder</a></h3>
-      <p>Decode percent-encoded strings into human-readable text.</p>
-      <a class="tool-link" href="/tools/url-decoder/">Open tool <span aria-hidden="true">→</span></a>
-    </article>
-    </div>
-      </div>
-    </section>
-    
-
-    <script id="tool-data" type="application/json">{"id": "base64-decoder", "slug": "base64-decoder", "title": "Base64 Decoder", "category": "text", "icon": "\u21ba", "type": "text", "summary": "Decode Base64 back into readable text safely on your device.", "seo_title": "Base64 Decoder Online - Browser Based Decoder", "meta_description": "Decode Base64 text online using a clean privacy-first browser tool.", "keywords": ["base64 decode", "decode base64", "base64 text decoder"]}</script>
-    
+      <script id="tool-data" type="application/json">{"id": "base64-decoder", "slug": "base64-decoder", "title": "Base64 Decoder", "category": "developer", "icon": "64B", "type": "text", "summary": "Decode Base64 strings back into readable plain text.", "seo_title": "Base64 Decoder Online - Decode Base64 Text Privately", "meta_description": "Decode Base64 strings back to text instantly and privately.", "keywords": ["base64 decoder", "decode base64", "base64 to text"]}</script>
     </main>
     <footer class="site-footer">
       <div class="container footer-grid">
         <div>
           <h3>ToolMint</h3>
-          <p>ToolMint is a privacy-friendly collection of online utilities for text, developer data, images, and everyday calculators. All tools run directly in your browser.</p>
-          <p class="muted">© 2026 ToolMint. Built for fast browser-side tools.</p>
+          <p>ToolMint is a privacy-friendly collection of 72+ browser-side utilities for developer data, text formatting, image tools, PDFs, and everyday calculators.</p>
+          <p class="footer-bottom" style="margin-top:1rem; text-align:left; padding-top:0; border:none;">© 2026 ToolMint. 100% Client-Side Processing.</p>
         </div>
         <div>
-          <h4>Useful pages</h4>
-          <div class="footer-links"><a href="/about/">About</a><a href="/privacy/">Privacy</a><a href="/terms/">Terms</a><a href="/contact/">Contact</a><a href="/sitemap.xml">Sitemap</a></div>
+          <h4>Categories &amp; Tools</h4>
+          <div class="footer-links">
+            <a href="/category/developer/">Developer &amp; Data</a>
+            <a href="/category/text/">Text Utilities</a>
+            <a href="/category/calculators/">Calculators</a>
+            <a href="/category/image/">Image Tools</a>
+            <a href="/category/pdf/">PDF &amp; Document Tools</a>
+          </div>
         </div>
         <div>
-          <h4>Privacy-first setup</h4>
+          <h4>Privacy &amp; Security</h4>
           <ul class="footer-list">
-            <li>Most tools run locally in the browser</li>
-            <li>No login wall or forced upload</li>
-            <li>Fast static pages</li>
+            <li>100% Client-Side Browser Execution</li>
+            <li>No file uploads to external servers</li>
+            <li>Instant offline performance</li>
+            <li>Free to use anytime</li>
           </ul>
+          <div class="footer-links" style="margin-top:1rem;">
+            <a href="/about/">About ToolMint</a>
+            <a href="/privacy/">Privacy Policy</a>
+            <a href="/terms/">Terms of Service</a>
+            <a href="/contact/">Contact Us</a>
+            <a href="/sitemap.xml">Sitemap</a>
+          </div>
         </div>
       </div>
     </footer>

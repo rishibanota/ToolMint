@@ -1,73 +1,413 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-<url><loc>https://toolmint.rishibanota.workers.dev/</loc><lastmod>2026-07-05</lastmod></url>
-<url><loc>https://toolmint.rishibanota.workers.dev/category/developer/</loc><lastmod>2026-07-05</lastmod></url>
-<url><loc>https://toolmint.rishibanota.workers.dev/category/text/</loc><lastmod>2026-07-05</lastmod></url>
-<url><loc>https://toolmint.rishibanota.workers.dev/category/image/</loc><lastmod>2026-07-05</lastmod></url>
-<url><loc>https://toolmint.rishibanota.workers.dev/category/calculators/</loc><lastmod>2026-07-05</lastmod></url>
-<url><loc>https://toolmint.rishibanota.workers.dev/tools/json-formatter/</loc><lastmod>2026-07-05</lastmod></url>
-<url><loc>https://toolmint.rishibanota.workers.dev/tools/json-to-csv/</loc><lastmod>2026-07-05</lastmod></url>
-<url><loc>https://toolmint.rishibanota.workers.dev/tools/csv-to-json/</loc><lastmod>2026-07-05</lastmod></url>
-<url><loc>https://toolmint.rishibanota.workers.dev/tools/base64-encoder/</loc><lastmod>2026-07-05</lastmod></url>
-<url><loc>https://toolmint.rishibanota.workers.dev/tools/base64-decoder/</loc><lastmod>2026-07-05</lastmod></url>
-<url><loc>https://toolmint.rishibanota.workers.dev/tools/url-encoder/</loc><lastmod>2026-07-05</lastmod></url>
-<url><loc>https://toolmint.rishibanota.workers.dev/tools/url-decoder/</loc><lastmod>2026-07-05</lastmod></url>
-<url><loc>https://toolmint.rishibanota.workers.dev/tools/case-converter/</loc><lastmod>2026-07-05</lastmod></url>
-<url><loc>https://toolmint.rishibanota.workers.dev/tools/slug-generator/</loc><lastmod>2026-07-05</lastmod></url>
-<url><loc>https://toolmint.rishibanota.workers.dev/tools/sha256-generator/</loc><lastmod>2026-07-05</lastmod></url>
-<url><loc>https://toolmint.rishibanota.workers.dev/tools/jwt-decoder/</loc><lastmod>2026-07-05</lastmod></url>
-<url><loc>https://toolmint.rishibanota.workers.dev/tools/timestamp-converter/</loc><lastmod>2026-07-05</lastmod></url>
-<url><loc>https://toolmint.rishibanota.workers.dev/tools/image-to-base64/</loc><lastmod>2026-07-05</lastmod></url>
-<url><loc>https://toolmint.rishibanota.workers.dev/tools/image-resizer/</loc><lastmod>2026-07-05</lastmod></url>
-<url><loc>https://toolmint.rishibanota.workers.dev/tools/gst-calculator/</loc><lastmod>2026-07-05</lastmod></url>
-<url><loc>https://toolmint.rishibanota.workers.dev/tools/emi-calculator/</loc><lastmod>2026-07-05</lastmod></url>
-<url><loc>https://toolmint.rishibanota.workers.dev/tools/percentage-calculator/</loc><lastmod>2026-07-05</lastmod></url>
-<url><loc>https://toolmint.rishibanota.workers.dev/tools/word-counter/</loc><lastmod>2026-07-05</lastmod></url>
-<url><loc>https://toolmint.rishibanota.workers.dev/tools/password-generator/</loc><lastmod>2026-07-05</lastmod></url>
-<url><loc>https://toolmint.rishibanota.workers.dev/tools/uuid-generator/</loc><lastmod>2026-07-05</lastmod></url>
-<url><loc>https://toolmint.rishibanota.workers.dev/tools/color-converter/</loc><lastmod>2026-07-05</lastmod></url>
-<url><loc>https://toolmint.rishibanota.workers.dev/tools/html-encoder/</loc><lastmod>2026-07-25</lastmod></url>
-<url><loc>https://toolmint.rishibanota.workers.dev/tools/html-decoder/</loc><lastmod>2026-07-25</lastmod></url>
-<url><loc>https://toolmint.rishibanota.workers.dev/tools/markdown-to-html/</loc><lastmod>2026-07-25</lastmod></url>
-<url><loc>https://toolmint.rishibanota.workers.dev/tools/regex-tester/</loc><lastmod>2026-07-25</lastmod></url>
-<url><loc>https://toolmint.rishibanota.workers.dev/tools/qr-code-generator/</loc><lastmod>2026-07-25</lastmod></url>
-<url><loc>https://toolmint.rishibanota.workers.dev/tools/tip-calculator/</loc><lastmod>2026-07-25</lastmod></url>
-<url><loc>https://toolmint.rishibanota.workers.dev/tools/age-calculator/</loc><lastmod>2026-07-25</lastmod></url>
-<url><loc>https://toolmint.rishibanota.workers.dev/tools/unit-converter/</loc><lastmod>2026-07-25</lastmod></url>
-<url><loc>https://toolmint.rishibanota.workers.dev/tools/text-reverser/</loc><lastmod>2026-07-25</lastmod></url>
-<url><loc>https://toolmint.rishibanota.workers.dev/tools/find-and-replace/</loc><lastmod>2026-07-25</lastmod></url>
-<url><loc>https://toolmint.rishibanota.workers.dev/about/</loc><lastmod>2026-07-05</lastmod></url>
-<url><loc>https://toolmint.rishibanota.workers.dev/privacy/</loc><lastmod>2026-07-05</lastmod></url>
-<url><loc>https://toolmint.rishibanota.workers.dev/terms/</loc><lastmod>2026-07-05</lastmod></url>
-<url><loc>https://toolmint.rishibanota.workers.dev/contact/</loc><lastmod>2026-07-05</lastmod></url>
-<url><loc>https://toolmint.rishibanota.workers.dev/tools/lorem-ipsum-generator/</loc><lastmod>2026-07-28</lastmod></url>
-<url><loc>https://toolmint.rishibanota.workers.dev/tools/text-cleaner/</loc><lastmod>2026-07-28</lastmod></url>
-<url><loc>https://toolmint.rishibanota.workers.dev/tools/diff-checker/</loc><lastmod>2026-07-28</lastmod></url>
-<url><loc>https://toolmint.rishibanota.workers.dev/tools/yaml-to-json/</loc><lastmod>2026-07-28</lastmod></url>
-<url><loc>https://toolmint.rishibanota.workers.dev/tools/json-to-yaml/</loc><lastmod>2026-07-28</lastmod></url>
-<url><loc>https://toolmint.rishibanota.workers.dev/tools/md5-generator/</loc><lastmod>2026-07-28</lastmod></url>
-<url><loc>https://toolmint.rishibanota.workers.dev/tools/binary-converter/</loc><lastmod>2026-07-28</lastmod></url>
-<url><loc>https://toolmint.rishibanota.workers.dev/tools/bmi-calculator/</loc><lastmod>2026-07-28</lastmod></url>
-<url><loc>https://toolmint.rishibanota.workers.dev/tools/discount-calculator/</loc><lastmod>2026-07-28</lastmod></url>
-<url><loc>https://toolmint.rishibanota.workers.dev/tools/aspect-ratio-calculator/</loc><lastmod>2026-07-28</lastmod></url>
-<url><loc>https://toolmint.rishibanota.workers.dev/tools/json-minifier/</loc><lastmod>2026-07-30</lastmod></url>
-<url><loc>https://toolmint.rishibanota.workers.dev/tools/random-number-generator/</loc><lastmod>2026-07-30</lastmod></url>
-<url><loc>https://toolmint.rishibanota.workers.dev/tools/mac-address-generator/</loc><lastmod>2026-07-30</lastmod></url>
-<url><loc>https://toolmint.rishibanota.workers.dev/tools/morse-code-converter/</loc><lastmod>2026-07-30</lastmod></url>
-<url><loc>https://toolmint.rishibanota.workers.dev/tools/hex-to-text/</loc><lastmod>2026-07-30</lastmod></url>
-<url><loc>https://toolmint.rishibanota.workers.dev/tools/text-to-hex/</loc><lastmod>2026-07-30</lastmod></url>
-<url><loc>https://toolmint.rishibanota.workers.dev/tools/vowel-counter/</loc><lastmod>2026-07-30</lastmod></url>
-<url><loc>https://toolmint.rishibanota.workers.dev/tools/palindrome-checker/</loc><lastmod>2026-07-30</lastmod></url>
-<url><loc>https://toolmint.rishibanota.workers.dev/tools/number-to-words/</loc><lastmod>2026-07-30</lastmod></url>
-<url><loc>https://toolmint.rishibanota.workers.dev/tools/html-minifier/</loc><lastmod>2026-07-30</lastmod></url>
-<url><loc>https://toolmint.rishibanota.workers.dev/tools/sql-formatter/</loc><lastmod>2026-08-06</lastmod></url>
-<url><loc>https://toolmint.rishibanota.workers.dev/tools/xml-to-json/</loc><lastmod>2026-08-06</lastmod></url>
-<url><loc>https://toolmint.rishibanota.workers.dev/tools/url-parser/</loc><lastmod>2026-08-06</lastmod></url>
-<url><loc>https://toolmint.rishibanota.workers.dev/tools/duplicate-line-remover/</loc><lastmod>2026-08-06</lastmod></url>
-<url><loc>https://toolmint.rishibanota.workers.dev/tools/line-sorter/</loc><lastmod>2026-08-06</lastmod></url>
-<url><loc>https://toolmint.rishibanota.workers.dev/tools/sha512-generator/</loc><lastmod>2026-08-06</lastmod></url>
-<url><loc>https://toolmint.rishibanota.workers.dev/tools/json-escape/</loc><lastmod>2026-08-06</lastmod></url>
-<url><loc>https://toolmint.rishibanota.workers.dev/tools/simple-interest-calculator/</loc><lastmod>2026-08-06</lastmod></url>
-<url><loc>https://toolmint.rishibanota.workers.dev/tools/compound-interest-calculator/</loc><lastmod>2026-08-06</lastmod></url>
-<url><loc>https://toolmint.rishibanota.workers.dev/tools/ip-calculator/</loc><lastmod>2026-08-06</lastmod></url>
+  <url>
+    <loc>https://toolmint.rishibanota.workers.dev/</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://toolmint.rishibanota.workers.dev/about/</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://toolmint.rishibanota.workers.dev/contact/</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://toolmint.rishibanota.workers.dev/privacy/</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://toolmint.rishibanota.workers.dev/terms/</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://toolmint.rishibanota.workers.dev/category/developer/</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://toolmint.rishibanota.workers.dev/category/text/</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://toolmint.rishibanota.workers.dev/category/calculators/</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://toolmint.rishibanota.workers.dev/category/image/</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://toolmint.rishibanota.workers.dev/category/pdf/</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://toolmint.rishibanota.workers.dev/tools/pdf-merger/</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://toolmint.rishibanota.workers.dev/tools/pdf-to-image/</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://toolmint.rishibanota.workers.dev/tools/image-to-pdf/</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://toolmint.rishibanota.workers.dev/tools/pdf-page-rotator/</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://toolmint.rishibanota.workers.dev/tools/image-format-converter/</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://toolmint.rishibanota.workers.dev/tools/image-resizer/</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://toolmint.rishibanota.workers.dev/tools/color-palette-generator/</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://toolmint.rishibanota.workers.dev/tools/image-to-base64/</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://toolmint.rishibanota.workers.dev/tools/css-gradient-generator/</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://toolmint.rishibanota.workers.dev/tools/glassmorphism-generator/</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://toolmint.rishibanota.workers.dev/tools/cron-expression-parser/</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://toolmint.rishibanota.workers.dev/tools/meta-tag-generator/</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://toolmint.rishibanota.workers.dev/tools/svg-optimizer/</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://toolmint.rishibanota.workers.dev/tools/json-formatter/</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://toolmint.rishibanota.workers.dev/tools/json-to-csv/</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://toolmint.rishibanota.workers.dev/tools/csv-to-json/</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://toolmint.rishibanota.workers.dev/tools/base64-encoder/</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://toolmint.rishibanota.workers.dev/tools/base64-decoder/</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://toolmint.rishibanota.workers.dev/tools/url-encoder/</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://toolmint.rishibanota.workers.dev/tools/url-decoder/</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://toolmint.rishibanota.workers.dev/tools/case-converter/</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://toolmint.rishibanota.workers.dev/tools/slug-generator/</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://toolmint.rishibanota.workers.dev/tools/sha256-generator/</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://toolmint.rishibanota.workers.dev/tools/jwt-decoder/</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://toolmint.rishibanota.workers.dev/tools/timestamp-converter/</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://toolmint.rishibanota.workers.dev/tools/word-counter/</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://toolmint.rishibanota.workers.dev/tools/color-converter/</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://toolmint.rishibanota.workers.dev/tools/html-encoder/</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://toolmint.rishibanota.workers.dev/tools/html-decoder/</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://toolmint.rishibanota.workers.dev/tools/markdown-to-html/</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://toolmint.rishibanota.workers.dev/tools/text-reverser/</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://toolmint.rishibanota.workers.dev/tools/find-and-replace/</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://toolmint.rishibanota.workers.dev/tools/lorem-ipsum-generator/</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://toolmint.rishibanota.workers.dev/tools/yaml-to-json/</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://toolmint.rishibanota.workers.dev/tools/json-to-yaml/</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://toolmint.rishibanota.workers.dev/tools/md5-generator/</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://toolmint.rishibanota.workers.dev/tools/text-cleaner/</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://toolmint.rishibanota.workers.dev/tools/diff-checker/</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://toolmint.rishibanota.workers.dev/tools/binary-converter/</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://toolmint.rishibanota.workers.dev/tools/json-minifier/</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://toolmint.rishibanota.workers.dev/tools/random-number-generator/</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://toolmint.rishibanota.workers.dev/tools/mac-address-generator/</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://toolmint.rishibanota.workers.dev/tools/morse-code-converter/</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://toolmint.rishibanota.workers.dev/tools/hex-to-text/</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://toolmint.rishibanota.workers.dev/tools/text-to-hex/</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://toolmint.rishibanota.workers.dev/tools/vowel-counter/</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://toolmint.rishibanota.workers.dev/tools/palindrome-checker/</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://toolmint.rishibanota.workers.dev/tools/number-to-words/</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://toolmint.rishibanota.workers.dev/tools/html-minifier/</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://toolmint.rishibanota.workers.dev/tools/sql-formatter/</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://toolmint.rishibanota.workers.dev/tools/xml-to-json/</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://toolmint.rishibanota.workers.dev/tools/url-parser/</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://toolmint.rishibanota.workers.dev/tools/duplicate-line-remover/</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://toolmint.rishibanota.workers.dev/tools/line-sorter/</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://toolmint.rishibanota.workers.dev/tools/sha512-generator/</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://toolmint.rishibanota.workers.dev/tools/json-escape/</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://toolmint.rishibanota.workers.dev/tools/uuid-generator/</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://toolmint.rishibanota.workers.dev/tools/simple-interest-calculator/</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://toolmint.rishibanota.workers.dev/tools/compound-interest-calculator/</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://toolmint.rishibanota.workers.dev/tools/ip-calculator/</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://toolmint.rishibanota.workers.dev/tools/gst-calculator/</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://toolmint.rishibanota.workers.dev/tools/emi-calculator/</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://toolmint.rishibanota.workers.dev/tools/percentage-calculator/</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://toolmint.rishibanota.workers.dev/tools/regex-tester/</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://toolmint.rishibanota.workers.dev/tools/qr-code-generator/</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://toolmint.rishibanota.workers.dev/tools/tip-calculator/</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://toolmint.rishibanota.workers.dev/tools/age-calculator/</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://toolmint.rishibanota.workers.dev/tools/unit-converter/</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://toolmint.rishibanota.workers.dev/tools/bmi-calculator/</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://toolmint.rishibanota.workers.dev/tools/discount-calculator/</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://toolmint.rishibanota.workers.dev/tools/aspect-ratio-calculator/</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://toolmint.rishibanota.workers.dev/tools/password-generator/</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
 </urlset>
