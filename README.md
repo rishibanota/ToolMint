@@ -8,6 +8,8 @@ ToolMint is a lightweight collection of browser-based utility tools built for de
 
 ToolMint brings together handy tools for text, data, images, and developer workflows, including:
 
+
+- 72 Tools Currently Live 🔥
 - Text utilities: Base64 encoder/decoder, HTML encoder/decoder, case converter, slug generator, and word counter
 - Data helpers: JSON formatter, JSON-to-CSV, CSV-to-JSON, and markdown-to-HTML
 - Image utilities: image resizer, image-to-base64 conversion, and QR code generation
